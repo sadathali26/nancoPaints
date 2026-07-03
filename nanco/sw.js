@@ -1,11 +1,11 @@
 const CACHE_NAME = 'nanco-pwa-cache-v6';
 const ASSETS = [
-  './',
-  './index.html',
-  './style.css',
-  './assets/light-logo.png',
-  './assets/dark-logo.png',
-  './assets/logo.png'
+  '/',                     // Caches your primary route
+  '/index.html',           // Resolves flawlessly on root domain
+  '/style.css',            // Absolute link matching your HTML update
+  '/assets/light-logo.png',
+  '/assets/dark-logo.png',
+  '/assets/logo.png'
 ];
 
 self.addEventListener('install', event => {
