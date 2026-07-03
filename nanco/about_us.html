@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | Nanco Paints</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+</head>
+<body>
+
+  <!-- FLOATING NAV -->
+  <nav class="nav-float" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html" id="nav-home-logo">
+        <img src="assets/light-logo.png" alt="Nanco Paints">
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html" id="nav-home">Home</a></li>
+        <li><a href="products.html" id="nav-products">Products</a></li>
+        <li><a href="services.html" id="nav-services">Services</a></li>
+        <li><a href="calculators.html" id="nav-calculators">Calculators</a></li>
+        <li><a href="colors.html" id="nav-colors">Color Studio</a></li>
+        <li><a href="about_us.html" id="nav-about" style="font-weight: 800; color: var(--color-cobalt-band);">About Us</a></li>
+      </ul>
+      <div class="nav-search-bar">
+        <input type="text" id="nav-search-input" placeholder="Search..." aria-label="Search site">
+        <button class="nav-search-submit" aria-label="Submit search"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="nav-right" style="display:flex;align-items:center;gap:12px;">
+        <button class="nav-search-btn" aria-label="Toggle search">
+          <i class="fas fa-search search-icon"></i>
+          <i class="fas fa-times close-icon"></i>
+        </button>
+        <div class="nav-lang-selector">
+          <button class="nav-lang-btn" id="lang-btn" aria-label="Select Language" aria-expanded="false" style="width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%;">
+            <span class="lang-text">EN</span>
+          </button>
+          <div class="nav-lang-dropdown" id="lang-dropdown">
+            <a href="#" class="lang-option active" data-lang="en">English</a>
+            <a href="#" class="lang-option" data-lang="ml">മലയാളം</a>
+          </div>
+        </div>
+        <a class="nav-cta" href="login.html" id="nav-login-btn">Login</a>
+      </div>
+      <button class="nav-toggle" id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <style>
+      /* Smooth Search Bar Animations */
+      .nav-links {
+        transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, transform 0.3s ease;
+        max-width: 800px;
+        opacity: 1;
+        transform: translateY(0);
+        overflow: hidden;
+      }
+      .nav-inner.search-active .nav-links {
+        max-width: 0;
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+      }
+      .nav-search-bar {
+        display: flex;
+        align-items: center;
+        background: #f3f3f1;
+        border-radius: 99px;
+        height: 40px;
+        margin: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.4s ease, border-radius 0.4s ease;
+        pointer-events: none;
+        flex: 1;
+      }
+      .nav-inner.search-active .nav-search-bar {
+        max-width: 1000px;
+        opacity: 1;
+        margin-right: -16px; /* Perfectly touches the search toggle button, overriding nav-inner gap */
+        border-radius: 99px 0 0 99px;
+        pointer-events: auto;
+      }
+      .nav-search-bar input {
+        border: none;
+        background: transparent;
+        outline: none;
+        flex: 1;
+        padding: 8px 16px;
+        font-size: 15px;
+        color: var(--color-ink-black);
+        width: 100%;
+      }
+      .nav-search-submit {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-ink-black);
+      }
+      
+      /* Morphing Search/Close Button with Seamless Merge styling */
+      .nav-search-btn {
+        background: transparent;
+        border: none;
+        color: var(--color-ink-black);
+        font-size: 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        transition: background 0.3s ease, border-radius 0.3s ease;
+      }
+      .nav-inner.search-active .nav-search-btn {
+        background: #f3f3f1;
+        border-radius: 0 99px 99px 0;
+      }
+      .nav-search-btn .search-icon,
+      .nav-search-btn .close-icon {
+        position: absolute;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      }
+      .nav-search-btn .close-icon {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.5);
+      }
+      .nav-inner.search-active .nav-search-btn .search-icon {
+        opacity: 0;
+        transform: rotate(90deg) scale(0.5);
+      }
+      .nav-inner.search-active .nav-search-btn .close-icon {
+        opacity: 1;
+        transform: rotate(0) scale(1);
+      }
+    </style>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const searchBtn = document.querySelector('.nav-search-btn');
+        const navInner = document.querySelector('.nav-inner');
+        const searchInput = document.querySelector('.nav-search-bar input');
+        
+        if (searchBtn && navInner) {
+          searchBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isActive = navInner.classList.toggle('search-active');
+            if (isActive && searchInput) {
+              setTimeout(() => searchInput.focus(), 200);
+            }
+          });
+        }
+      });
+    
+
+// Mobile nav toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const nav = document.getElementById('mobile-nav');
+    btn.addEventListener('click', () => {
+      const isOpen = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', isOpen);
+    });
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    });
+
+// Language switcher toggle
+    const langBtn = document.getElementById('lang-btn');
+    const langDropdown = document.getElementById('lang-dropdown');
+
+    if (langBtn && langDropdown) {
+      langBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = langDropdown.classList.toggle('open');
+        langBtn.setAttribute('aria-expanded', isOpen);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+          langDropdown.classList.remove('open');
+          langBtn.setAttribute('aria-expanded', false);
+        }
+      });
+    }
+
+    // Language selection logic
+    const desktopLangOpts = document.querySelectorAll('.lang-option');
+    const mobileLangOpts = document.querySelectorAll('.mnav-lang-opt');
+    const langBtnText = document.querySelector('.lang-text');
+
+    const translations = {
+      en: {
+        'nav-home': 'Home',
+        'nav-outlets': 'Our Outlets',
+        'nav-products': 'Products',
+        'nav-services': 'Services',
+        'nav-calculators': 'Calculators',
+        'nav-colors': 'Color Studio',
+        'nav-about': 'About Us',
+        'nav-login-btn': 'Login',
+        'nav-search-input': 'Search...',
+
+        'mnav-home': 'Home',
+        'mnav-outlets': 'Our Outlets',
+        'mnav-products': 'Products',
+        'mnav-services': 'Services',
+        'mnav-calculators': 'Calculators',
+        'mnav-colors': 'Color Studio',
+        'mnav-about': 'About Us',
+        'mnav-login': 'Login',
+
+        'hero-tag': '<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> <span style="color:#000000;">ISO 9001-2015 Certified</span>',
+        'hero-title': 'Paint for<br>Better Lives.',
+        'hero-sub': 'Nanco Paints brings premium-quality, certified paints to homes, offices, and factories across Kerala. Bold colours. Lasting finish.',
+        'hero-view-products': 'I will help you buy',
+        'hero-find-outlet': 'Find an Outlet',
+        'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> Install App',
+
+        'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> Curated Shades',
+        'coy-heading': 'Colour of the Year',
+        'coy-sub': 'Explore and elevate your space with featured shades of Nanco Paints.',
+        'coy-catalog-btn': 'View colour catalogue <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
+
+        'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> Curated Collection',
+        'featured-heading': 'Featured Products',
+
+        'services-label': '<i class="fas fa-tools" style="margin-right:6px;"></i> Our Services',
+        'services-heading': 'Everything you need<br>in one place.',
+        'services-sub': 'Access worker portals, product info, project galleries, and tools — all designed for the Nanco community.',
+
+        'card-paint-workers-title': 'Paint Workers Portal',
+        'card-paint-workers-desc': 'Exclusive offers, training resources, and the latest announcements for registered Nanco paint workers.',
+        'card-paint-workers-arrow': 'View Portal',
+
+        'card-outlets-title': 'Factory Outlets',
+        'card-outlets-desc': 'Find your nearest Nanco outlet and get directions.',
+        'card-outlets-arrow': 'View Map',
+
+        'card-products-title': 'Product Info & Videos',
+        'card-products-desc': 'Full product range with pricing, specs, and how-to videos.',
+        'card-products-arrow': 'View Products',
+
+        'card-colors-title': 'Color Studio',
+        'card-colors-desc': 'Browse project photos, gallery, and colour inspiration boards.',
+        'card-colors-arrow': 'Explore',
+
+        'card-catalogs-title': 'Catalogs',
+        'card-catalogs-desc': 'Download full product catalogs with colour codes and usage guides.',
+        'card-catalogs-arrow': 'Download',
+
+        'card-calculator-title': 'Paint Calculator',
+        'card-calculator-desc': 'Calculate the exact quantity and cost of paint for any room or surface.',
+        'card-calculator-arrow': 'Calculate',
+
+        'card-visualizer-title': 'Virtual Paint Visualizer',
+        'card-visualizer-desc': 'Try on different shades and visualize your dream space virtually before you buy.',
+        'card-visualizer-arrow': 'Try Visualizer',
+
+        'stats-label': '<i class="fas fa-chart-bar" style="margin-right:6px;"></i> By the Numbers',
+        'stats-heading': 'Trusted across<br>all of Kerala.',
+        'stats-sub': 'Nanco Paints has built a reputation for quality, certification, and service excellence.',
+        'stat-1-label': 'Years of certified excellence in the paint industry',
+        'stat-2-label': 'Retail and factory outlets across Malappuram & Kerala',
+        'stat-3-label': 'Premium paint products and finish variants available',
+
+        'shorts-label': '<i class="fas fa-lightbulb" style="margin-right:6px;"></i> Inspiration',
+        'shorts-heading': 'Here is what are we.',
+
+        'contact-label': '<i class="fas fa-map-marker-alt" style="margin-right:6px;"></i> Get in Touch',
+        'contact-heading': 'We\'re here<br>for you.',
+        'contact-sub': 'Visit us, call us, or drop us a line. Our team is ready to help with any enquiry.',
+        'contact-visit-title': 'Visit Us',
+        'contact-visit-desc': 'ISO 9001-2015 Certified Company<br>Malappuram, Kerala — Pin 676301',
+        'contact-visit-badge': '<i class="fas fa-check-circle" style="margin-right:6px;"></i> ISO 9001-2015 Certified',
+        'contact-call-title': 'Call Us',
+        'contact-call-desc': 'Ph: +91 8891220590<br>Tel: 7594050590',
+        'contact-call-btn': 'Call Now',
+        'contact-mail-title': 'Mail Us',
+        'contact-mail-desc': 'nancopaints90@gmail.com',
+        'contact-email-btn': 'Send Email',
+
+        'cta-label': '<i class="fas fa-rocket" style="margin-right:6px;"></i> Get Started',
+        'cta-heading': 'Ready to paint<br>your world?',
+        'cta-sub': 'Browse our full range of premium products, find your nearest outlet, or log in to your account.',
+        'cta-products-btn': 'Browse Products',
+        'cta-login-btn': 'Login to Account',
+
+        'footer-tagline': 'Paints for Better Satisfaction.<br>ISO 9001-2015 Certified. Kerala, India.',
+        'footer-nav-title': 'Navigation',
+        'footer-home': 'Home',
+        'footer-outlets': 'Our Outlets',
+        'footer-products': 'Products',
+        'footer-services': 'Services',
+        'footer-about': 'About Us',
+        'footer-res-title': 'Resources',
+        'footer-catalogs': 'Catalogs',
+        'footer-calculator': 'Paint Calculator',
+        'footer-color-studio': 'Color Studio',
+        'footer-login': 'Worker Login',
+        'footer-sub-title': 'Subscribe',
+        'footer-sub-desc': 'Stay updated on new products, offers, and announcements from Nanco.',
+        'footer-email-input': 'your@email.com',
+        'footer-copy': '© 2024 Nanco Paints. All rights reserved.',
+        'footer-terms': 'Terms',
+        'footer-privacy': 'Privacy',
+        'footer-contact': 'Contact',
+        'announcement-text': '<i class="fas fa-palette" style="margin-right:6px;"></i> <span>ISO 9001-2015 CERTIFIED</span> — Nanco Paints: Trusted quality across Kerala &nbsp;·&nbsp; Factory Outlets now open in Malappuram'
+      },
+      ml: {
+        'nav-home': 'ഹോം',
+        'nav-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
+        'nav-products': 'ഉൽപ്പന്നങ്ങൾ',
+        'nav-services': 'സേവനങ്ങൾ',
+        'nav-calculators': 'കാൽക്കുലേറ്ററുകൾ',
+        'nav-colors': 'കളർ സ്റ്റുഡിയോ',
+        'nav-about': 'ഞങ്ങളെക്കുറിച്ച്',
+        'nav-login-btn': 'ലോഗിൻ',
+        'nav-search-input': 'തിരയുക...',
+
+        'mnav-home': 'ഹോം',
+        'mnav-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
+        'mnav-products': 'ഉൽപ്പന്നങ്ങൾ',
+        'mnav-services': 'സേവനങ്ങൾ',
+        'mnav-calculators': 'കാൽക്കുലേറ്ററുകൾ',
+        'mnav-colors': 'കളർ സ്റ്റുഡിയോ',
+        'mnav-about': 'ഞങ്ങളെക്കുറിച്ച്',
+        'mnav-login': 'ലോഗിൻ',
+
+        'hero-tag': '<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> ISO 9001-2015 സാക്ഷ്യപ്പെടുത്തിയത്',
+        'hero-title': 'മെച്ചപ്പെട്ട ജീവിതത്തിന്<br>വർണ്ണങ്ങളേകൂ.',
+        'hero-sub': 'നാൻകോ പെയിന്റ്സ് കേരളത്തിലുടനീളമുള്ള വീടുകളിലും ഓഫീസുകളിലും ഫാക്ടറികളിലും മികച്ച ഗുണനിലവാരമുള്ള പെയിന്റുകൾ എത്തിക്കുന്നു. മനോഹരമായ നിറങ്ങൾ, ഈടുനിൽക്കുന്ന ഭംഗി.',
+        'hero-view-products': 'നിങ്ങളെ വാങ്ങാൻ സഹായിക്കാം',
+        'hero-find-outlet': 'ശാഖകൾ കണ്ടെത്തുക',
+        'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക',
+
+        'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> തിരഞ്ഞെടുത്ത നിറങ്ങൾ',
+        'coy-heading': 'വർഷത്തിന്റെ നിറം',
+        'coy-sub': 'നാൻകോ പെയിന്റ്സിന്റെ പ്രധാന നിറങ്ങൾ ഉപയോഗിച്ച് നിങ്ങളുടെ ഇടം മനോഹരമാക്കൂ.',
+        'coy-catalog-btn': 'കളർ കാറ്റലോഗ് കാണുക <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
+
+        'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> മികച്ച കളക്ഷനുകൾ',
+        'featured-heading': 'പ്രത്യേക ഉൽപ്പന്നങ്ങൾ',
+
+        'services-label': '<i class="fas fa-tools" style="margin-right:6px;"></i> ഞങ്ങളുടെ സേവനങ്ങൾ',
+        'services-heading': 'നിങ്ങൾക്ക് ആവശ്യമുള്ളതെല്ലാം<br>ഒരു കുടക്കീഴിൽ.',
+        'services-sub': 'വർക്കർ പോർട്ടലുകൾ, ഉൽപ്പന്ന വിവരങ്ങൾ, പ്രോജക്റ്റ് ഗാലറികൾ, കാൽക്കുലേറ്ററുകൾ എന്നിവയെല്ലാം ഇവിടെ ലഭ്യമാണ്.',
+
+        'card-paint-workers-title': 'പെയിന്റ് വർക്കേഴ്സ് പോർട്ടൽ',
+        'card-paint-workers-desc': 'രജിസ്റ്റർ ചെയ്ത പെയിന്റിംഗ് തൊഴിലാളികൾക്കായി പ്രത്യേക ഓഫറുകളും പരിശീലനങ്ങളും അറിയിപ്പുകളും.',
+        'card-paint-workers-arrow': 'പോർട്ടലിൽ പ്രവേശിക്കുക',
+
+        'card-outlets-title': 'ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ',
+        'card-outlets-desc': 'നിങ്ങളുടെ ഏറ്റവും അടുത്തുള്ള നാൻകോ ഔട്ട്‌ലെറ്റുകൾ കണ്ടെത്തുക.',
+        'card-outlets-arrow': 'മാപ്പ് കാണുക',
+
+        'card-products-title': 'ഉൽപ്പന്ന വിവരങ്ങളും വീഡിയോകളും',
+        'card-products-desc': 'വില വിവരങ്ങൾ, സവിശേഷതകൾ, പരിശീലന വീഡിയോകൾ എന്നിവയടങ്ങിയ ഉൽപ്പന്ന ശ്രേണി.',
+        'card-products-arrow': 'ഉൽപ്പന്നങ്ങൾ കാണുക',
+
+        'card-colors-title': 'കളർ സ്റ്റുഡിയോ',
+        'card-colors-desc': 'പ്രോജക്റ്റ് ഫോട്ടോകൾ, ഗാലറികൾ, ഡിസൈൻ പ്രചോദനങ്ങൾ എന്നിവ പര്യവേക്ഷണം ചെയ്യുക.',
+        'card-colors-arrow': 'തുടങ്ങുക',
+
+        'card-catalogs-title': 'കാറ്റലോഗുകൾ',
+        'card-catalogs-desc': 'കളർ കോഡുകളും നിർദ്ദേശങ്ങളുമുള്ള പൂർണ്ണ കാറ്റലോഗുകൾ ഡൗൺലോഡ് ചെയ്യുക.',
+        'card-catalogs-arrow': 'ഡൗൺലോഡ്',
+
+        'card-calculator-title': 'പെയിന്റ് കാൽക്കുലേറ്റർ',
+        'card-calculator-desc': 'മുറികൾക്കോ പ്രതലങ്ങൾക്കോ ആവശ്യമായ പെയിന്റിന്റെ അളവും ചിലവും കണക്കാക്കുക.',
+        'card-calculator-arrow': 'കണക്കാക്കുക',
+
+        'card-visualizer-title': 'വെർച്വൽ പെയിന്റ് വിഷ്വലൈസർ',
+        'card-visualizer-desc': 'വാങ്ങുന്നതിന് മുൻപായി നിങ്ങളുടെ സ്വപ്ന ഇടം വ്യത്യസ്ത നിറങ്ങളിൽ വെർച്വലായി പരീക്ഷിക്കുക.',
+        'card-visualizer-arrow': 'വിഷ്വലൈസർ നോക്കുക',
+
+        'stats-label': '<i class="fas fa-chart-bar" style="margin-right:6px;"></i> കണക്കുകളിലൂടെ',
+        'stats-heading': 'കേരളത്തിലുടനീളം<br>വിശ്വസനീയം.',
+        'stats-sub': 'ഗുണനിലവാരം, അംഗീകാരങ്ങൾ, മികച്ച സേവനം എന്നിവയിലൂടെ നാൻകോ പെയിന്റ്സ് വിശ്വാസ്യത നേടിയെടുത്തിരിക്കുന്നു.',
+        'stat-1-label': 'പെയിന്റ് വ്യവസായത്തിലെ 25 വർഷത്തിലധികം സാക്ഷ്യപ്പെടുത്തിയ മികവ്',
+        'stat-2-label': 'മലപ്പുറത്തും കേരളത്തിലുടനീളവുമായി 50-ലധികം റീട്ടെയിൽ, ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ',
+        'stat-3-label': '200-ലധികം പ്രീമിയം പെയിന്റ് ഉൽപ്പന്നങ്ങളും ഫിനിഷ് വേരിയന്റുകളും ലഭ്യമാണ്',
+
+        'shorts-label': '<i class="fas fa-lightbulb" style="margin-right:6px;"></i> പ്രചോദനം',
+        'shorts-heading': 'ഞങ്ങൾ ആരാണെന്ന് കാണൂ.',
+
+        'contact-label': '<i class="fas fa-map-marker-alt" style="margin-right:6px;"></i> ഞങ്ങളുമായി ബന്ധപ്പെടുക',
+        'contact-heading': 'ഞങ്ങൾ നിങ്ങൾക്കായി<br>ഇവിടെയുണ്ട്.',
+        'contact-sub': 'ഞങ്ങളെ സന്ദർശിക്കുക, വിളിക്കുക അല്ലെങ്കിൽ ഇമെയിൽ അയക്കുക. സഹായിക്കാൻ ഞങ്ങൾ സദാ സന്നദ്ധരാണ്.',
+        'contact-visit-title': 'ഞങ്ങളെ സന്ദർശിക്കുക',
+        'contact-visit-desc': 'ISO 9001-2015 അംഗീകൃത കമ്പനി<br>മലപ്പുറം, കേരളം — പിൻ 676301',
+        'contact-visit-badge': '<i class="fas fa-check-circle" style="margin-right:6px;"></i> ISO 9001-2015 അംഗീകൃതം',
+        'contact-call-title': 'ഞങ്ങളെ വിളിക്കുക',
+        'contact-call-desc': 'ഫോൺ: +91 8891220590<br>ടെലിഫോൺ: 7594050590',
+        'contact-call-btn': 'ഇപ്പോൾ വിളിക്കുക',
+        'contact-mail-title': 'മെയിൽ അയക്കുക',
+        'contact-mail-desc': 'nancopaints90@gmail.com',
+        'contact-email-btn': 'ഇമെയിൽ അയക്കുക',
+
+        'cta-label': '<i class="fas fa-rocket" style="margin-right:6px;"></i> ആരംഭിക്കുക',
+        'cta-heading': 'നിങ്ങളുടെ ലോകം<br>വർണ്ണാഭമാക്കാൻ തയ്യാറാണോ?',
+        'cta-sub': 'ഞങ്ങളുടെ മുഴുവൻ ഉൽപ്പന്നങ്ങളും കാണുക, അടുത്തുള്ള ഔട്ട്‌ലെറ്റ് കണ്ടെത്തുക, അല്ലെങ്കിൽ അക്കൗണ്ടിലേക്ക് ലോഗിൻ ചെയ്യുക.',
+        'cta-products-btn': 'ഉൽപ്പന്നങ്ങൾ കാണുക',
+        'cta-login-btn': 'അക്കൗണ്ടിൽ ലോഗിൻ ചെയ്യുക',
+
+        'footer-tagline': 'മികച്ച സംതൃപ്തിക്കായി പെയിന്റുകൾ.<br>ISO 9001-2015 അംഗീകൃതം. കേരളം, ഇന്ത്യ.',
+        'footer-nav-title': 'നാവിഗേഷൻ',
+        'footer-home': 'ഹോം',
+        'footer-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
+        'footer-products': 'ഉൽപ്പന്നങ്ങൾ',
+        'footer-services': 'സേവനങ്ങൾ',
+        'footer-about': 'ഞങ്ങളെക്കുറിച്ച്',
+        'footer-res-title': 'വിഭവങ്ങൾ',
+        'footer-catalogs': 'കാറ്റലോഗുകൾ',
+        'footer-calculator': 'പെയിന്റ് കാൽക്കുലേറ്റർ',
+        'footer-color-studio': 'കളർ സ്റ്റുഡിയോ',
+        'footer-login': 'തൊഴിലാളി ലോഗിൻ',
+        'footer-sub-title': 'അംഗത്വമെടുക്കുക',
+        'footer-sub-desc': 'നാൻകോയിൽ നിന്നുള്ള പുതിയ ഉൽപ്പന്നങ്ങളും ഓഫറുകളും അറിയിപ്പുകളും അറിയുക.',
+        'footer-email-input': 'നിങ്ങളുടെ@ഇമെയിൽ.com',
+        'footer-copy': '© 2024 നാൻകോ പെയിന്റ്സ്. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം.',
+        'footer-terms': 'വ്യവസ്ഥകൾ',
+        'footer-privacy': 'സ്വകാര്യത',
+        'footer-contact': 'ബന്ധപ്പെടുക',
+        'announcement-text': '<i class="fas fa-palette" style="margin-right:6px;"></i> <span>ISO 9001-2015 അംഗീകൃതം</span> — നാൻകോ പെയിന്റ്സ്: കേരളത്തിലുടനീളം വിശ്വസനീയമായ ഗുണനിലവാരം &nbsp;·&nbsp; ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ ഇപ്പോൾ മലപ്പുറത്ത് ആരംഭിച്ചിരിക്കുന്നു'
+      }
+    }
+
+</script>
+  </nav>
+<!-- MOBILE NAV OVERLAY -->
+  <div class="mobile-nav" id="mobile-nav" role="dialog" aria-label="Mobile menu">
+    <a href="index.html" id="mnav-home">Home</a>
+    <a href="products.html" id="mnav-products">Products</a>
+    <a href="services.html" id="mnav-services">Services</a>
+    <a href="calculators.html" id="mnav-calculators">Calculators</a>
+    <a href="colors.html" id="mnav-colors">Color Studio</a>
+    <a href="about_us.html" id="mnav-about">About Us</a>
+    <div class="mnav-lang-selector"
+      style="padding: 12px 16px; border: 1px solid rgba(0, 0, 0, 0.08); border-radius: 12px; display: flex; flex-direction: column; gap: 8px; margin: 4px 0;">
+      <span
+        style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--color-sage-mute); letter-spacing: 0.04em;"><i
+          class="fas fa-globe" style="margin-right:6px;"></i> Language / ഭാഷ</span>
+      <div style="display: flex; gap: 8px;">
+        <a href="#" class="mnav-lang-opt active" data-lang="en"
+          style="flex: 1; text-align: center; padding: 10px; font-size: 14px; border: 1.5px solid var(--color-ink-black); border-radius: 8px; font-weight: 700; text-decoration: none; color: var(--color-ink-black);">English</a>
+        <a href="#" class="mnav-lang-opt" data-lang="ml"
+          style="flex: 1; text-align: center; padding: 10px; font-size: 14px; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 8px; font-weight: 500; text-decoration: none; color: var(--color-sage-mute);">മലയാളം</a>
+      </div>
+    </div>
+    <a href="login.html" id="mnav-login" style="background:var(--color-lime-spark);font-weight:700;">Login</a>
+  </div>
+
+    <script>
+        // Mobile nav toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('mobile-menu-btn');
+            const nav = document.getElementById('mobile-nav');
+            if (btn && nav) {
+                btn.addEventListener('click', () => {
+                    const isOpen = nav.classList.toggle('open');
+                    btn.setAttribute('aria-expanded', isOpen);
+                });
+                document.addEventListener('click', (e) => {
+                    if (!btn.contains(e.target) && !nav.contains(e.target)) {
+                        nav.classList.remove('open');
+                        btn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        });
+    </script>
+  <main>
+    <section class="band-cobalt" style="padding: 140px 24px 80px; text-align: center; background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('assets/outlet.png') no-repeat center center / cover;">
+      <div class="section-inner">
+        <span class="section-label" style="background:var(--color-white-plate); color:var(--color-ink-black); border-color:var(--color-ink-black);"><i class="fas fa-info-circle" style="margin-right:6px;"></i> Our Story</span>
+        <h1 class="section-title" style="font-size: clamp(48px, 6vw, 80px); color:var(--color-white-plate); letter-spacing:-2px;">About Nanco Paints</h1>
+        <p class="section-sub" style="color: rgba(255,255,255,0.8); text-align: center; margin-left: auto; margin-right: auto;">Paints for Better Satisfaction. ISO 9001-2015 Certified in Kerala, India.</p>
+      </div>
+    </section>
+
+    <div style="max-width: var(--page-max-width); margin: 64px auto; padding: 0 24px;">
+      <div class="bento-grid">
+        <div class="bento-card span2" style="background: var(--color-white-plate); padding: 48px; border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius-cards);">
+          <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 24px; color: var(--color-ink-black);">Who We Are</h2>
+          <p style="font-size: 16px; color: var(--color-sage-mute); line-height: 1.6; margin-bottom: 24px;">Nanco Paints is Kerala's premier ISO certified paint manufacturing company. Established with a passion for quality and durability, we specialize in high-performance coatings, emulsions, and waterproofing solutions. Our products are formulated to withstand the harsh coastal monsoons and intense sun, ensuring your homes remain vibrant and protected year after year.</p>
+          <p style="font-size: 16px; color: var(--color-sage-mute); line-height: 1.6;">We believe in empowering local paint workers and providing unparalleled support to our factory outlets across the state.</p>
+        </div>
+        <div class="bento-card card-lime" style="padding: 48px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+          <i class="fas fa-certificate" style="font-size: 48px; color: var(--color-ink-black); margin-bottom: 24px;"></i>
+          <h3 style="font-size: 24px; font-weight: 800; color: var(--color-ink-black); margin-bottom: 8px;">ISO Certified</h3>
+          <p style="font-size: 14px; color: var(--color-ink-black);">9001-2015 Quality Management Standards</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer-section" aria-label="Footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand-name">
+          <img src="assets/dark-logo.png" alt="Nanco Paints">
+        </div>
+        <p class="footer-tagline" id="footer-tagline" style="color:var(--color-white-plate);">Paints for Better Satisfaction.<br>ISO 9001-2015 Certified. Kerala, India.</p>
+      </div>
+      <div class="footer-col" style="color:var(--color-white-plate);">
+        <h5 id="footer-nav-title" style="margin-bottom:16px;">Navigation</h5>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li><a href="index.html" style="color:#fff;text-decoration:none;">Home</a></li>
+          <li><a href="services.html" style="color:#fff;text-decoration:none;">Services</a></li>
+          <li><a href="products.html" style="color:#fff;text-decoration:none;">Products</a></li>
+          <li><a href="about_us.html" style="color:#fff;text-decoration:none;">About Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" style="color:var(--color-white-plate);">
+        <h5 id="footer-res-title" style="margin-bottom:16px;">Resources</h5>
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          <li><a href="calculators.html" style="color:#fff;text-decoration:none;">Paint Calculator</a></li>
+          <li><a href="paint_visualizer.html" style="color:#fff;text-decoration:none;">Color Studio</a></li>
+          <li><a href="login/login.php" style="color:#fff;text-decoration:none;">Worker Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const btn = document.getElementById('mobile-menu-btn');
+    const nav = document.getElementById('mobile-nav');
+    if (btn && nav) {
+      btn.addEventListener('click', () => {
+        const isOpen = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', isOpen);
+      });
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!btn.contains(e.target) && !nav.contains(e.target)) {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', false);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
