@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | Nanco Paints</title>
   <meta name="description" content="Sign in or create an account to shop premium Nanco Paints.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="../nanco/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -236,7 +236,7 @@
       .auth-form-panel { padding: 36px 28px; }
     }
   </style>
-  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="icon" type="image/png" href="../nanco/assets/logo.png">
 </head>
 <body>
   <div class="blob blob-1"></div>
@@ -247,7 +247,7 @@
     <!-- Left Brand Panel -->
     <div class="auth-brand">
       <div class="brand-logo">
-        <img src="assets/dark-logo.png" alt="Nanco Paints">
+        <img src="../nanco/assets/dark-logo.png" alt="Nanco Paints">
       </div>
       <div class="brand-body">
         <div class="brand-features">
@@ -262,7 +262,7 @@
 
     <!-- Right Form Panel -->
     <div class="auth-form-panel">
-      <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to site</a>
+      <a href="../nanco/index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to site</a>
 
       <!-- Tab Switcher -->
       <div class="auth-tabs">
@@ -374,8 +374,8 @@
     // Redirect if already logged in
     const session = JSON.parse(sessionStorage.getItem('nanco_session') || 'null');
     if (session && session.token) {
-      if (session.role === 'admin') window.location.href = 'admin.html';
-      else window.location.href = 'index.html';
+      if (session.role === 'admin') window.location.href = '../nanco/admin.html';
+      else window.location.href = '../nanco/index.html';
     }
 
     function switchTab(tab) {
@@ -454,8 +454,8 @@
         const data = await res.json();
         if (data.token) {
           saveSession(data);
-          if (data.role === 'admin') window.location.href = 'admin.html';
-          else window.location.href = 'index.html';
+          if (data.role === 'admin') window.location.href = '../nanco/admin.html';
+          else window.location.href = '../nanco/index.html';
         } else {
           showAlert('loginAlert', 'error', data.error || 'Invalid credentials.');
           btn.disabled = false;
@@ -501,7 +501,7 @@
         const data = await res.json();
         if (data.token) {
           saveSession(data);
-          window.location.href = 'index.html';
+          window.location.href = '../nanco/index.html';
         } else {
           showAlert('registerAlert', 'error', data.error || 'Registration failed.');
           btn.disabled = false;
