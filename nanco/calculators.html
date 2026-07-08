@@ -206,8 +206,6 @@
       border: 1px solid rgba(0, 0, 0, 0.08);
       border-radius: var(--radius-cards);
       padding: 32px;
-      position: sticky;
-      top: 100px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.05);
     }
     .result-title {
@@ -313,7 +311,16 @@
       padding: 4px;
     }
   </style>
-  <link rel="icon" type="image/png" href="../nanco/assets/logo.png">
+  <link rel="icon" type="image/png" data-asset-href="logos.main">
+<script src="assets.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const calcHero = document.getElementById('calculators-hero');
+    if (calcHero) {
+      calcHero.style.background = `linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('${NancoAssets.misc.calcBg}') no-repeat center center / cover`;
+    }
+  });
+</script>
 </head>
 <body>
 
@@ -321,7 +328,7 @@
   <nav class="nav-float" aria-label="Main navigation">
     <div class="nav-inner">
       <a class="nav-logo" href="../nanco/index.html" id="nav-home-logo">
-        <img src="../nanco/assets/light-logo.png" alt="Nanco Paints">
+        <img data-asset="logos.light" alt="Nanco Paints">
       </a>
       <ul class="nav-links" role="list">
         <li><a href="../nanco/index.html" id="nav-home">Home</a></li>
@@ -470,281 +477,284 @@
       });
     
 
-// Mobile nav toggle
-    const btn = document.getElementById('mobile-menu-btn');
-    const nav = document.getElementById('mobile-nav');
-    btn.addEventListener('click', () => {
-      const isOpen = nav.classList.toggle('open');
-      btn.setAttribute('aria-expanded', isOpen);
-    });
-    // Close on outside click
-    document.addEventListener('click', (e) => {
-      if (!btn.contains(e.target) && !nav.contains(e.target)) {
-        nav.classList.remove('open');
-        btn.setAttribute('aria-expanded', false);
-      }
-    });
-
-// Language switcher toggle
-    const langBtn = document.getElementById('lang-btn');
-    const langDropdown = document.getElementById('lang-dropdown');
-
-    if (langBtn && langDropdown) {
-      langBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const isOpen = langDropdown.classList.toggle('open');
-        langBtn.setAttribute('aria-expanded', isOpen);
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
-          langDropdown.classList.remove('open');
-          langBtn.setAttribute('aria-expanded', false);
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mobile nav toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const nav = document.getElementById('mobile-nav');
+        if (btn && nav) {
+          btn.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('open');
+            btn.setAttribute('aria-expanded', isOpen);
+          });
+          document.addEventListener('click', (e) => {
+            if (!btn.contains(e.target) && !nav.contains(e.target)) {
+              nav.classList.remove('open');
+              btn.setAttribute('aria-expanded', false);
+            }
+          });
         }
-      });
-    }
 
-    // Language selection logic
-    const desktopLangOpts = document.querySelectorAll('.lang-option');
-    const mobileLangOpts = document.querySelectorAll('.mnav-lang-opt');
-    const langBtnText = document.querySelector('.lang-text');
-
-    const translations = {
-      en: {
-        'nav-home': 'Home',
-        'nav-outlets': 'Our Outlets',
-        'nav-products': 'Products',
-        'nav-services': 'Services',
-        'nav-calculators': 'Calculators',
-        'nav-colors': 'Color Studio',
-        'nav-about': 'About Us',
-        'nav-login-btn': 'Login',
-        'nav-search-input': 'Search...',
-
-        'mnav-home': 'Home',
-        'mnav-outlets': 'Our Outlets',
-        'mnav-products': 'Products',
-        'mnav-services': 'Services',
-        'mnav-calculators': 'Calculators',
-        'mnav-colors': 'Color Studio',
-        'mnav-about': 'About Us',
-        'mnav-login': 'Login',
-
-        'hero-tag': '<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> <span style="color:#000000;">ISO 9001-2015 Certified</span>',
-        'hero-title': 'Paint for<br>Better Lives.',
-        'hero-sub': 'Nanco Paints brings premium-quality, certified paints to homes, offices, and factories across Kerala. Bold colours. Lasting finish.',
-        'hero-view-products': 'I will help you buy',
-        'hero-find-outlet': 'Find an Outlet',
-        'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> Install App',
-
-        'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> Curated Shades',
-        'coy-heading': 'Colour of the Year',
-        'coy-sub': 'Explore and elevate your space with featured shades of Nanco Paints.',
-        'coy-catalog-btn': 'View colour catalogue <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
-
-        'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> Curated Collection',
-        'featured-heading': 'Featured Products',
-
-        'services-label': '<i class="fas fa-tools" style="margin-right:6px;"></i> Our Services',
-        'services-heading': 'Everything you need<br>in one place.',
-        'services-sub': 'Access worker portals, product info, project galleries, and tools — all designed for the Nanco community.',
-
-        'card-paint-workers-title': 'Paint Workers Portal',
-        'card-paint-workers-desc': 'Exclusive offers, training resources, and the latest announcements for registered Nanco paint workers.',
-        'card-paint-workers-arrow': 'View Portal',
-
-        'card-outlets-title': 'Factory Outlets',
-        'card-outlets-desc': 'Find your nearest Nanco outlet and get directions.',
-        'card-outlets-arrow': 'View Map',
-
-        'card-products-title': 'Product Info & Videos',
-        'card-products-desc': 'Full product range with pricing, specs, and how-to videos.',
-        'card-products-arrow': 'View Products',
-
-        'card-colors-title': 'Color Studio',
-        'card-colors-desc': 'Browse project photos, gallery, and colour inspiration boards.',
-        'card-colors-arrow': 'Explore',
-
-        'card-catalogs-title': 'Catalogs',
-        'card-catalogs-desc': 'Download full product catalogs with colour codes and usage guides.',
-        'card-catalogs-arrow': 'Download',
-
-        'card-calculator-title': 'Paint Calculator',
-        'card-calculator-desc': 'Calculate the exact quantity and cost of paint for any room or surface.',
-        'card-calculator-arrow': 'Calculate',
-
-        'card-visualizer-title': 'Virtual Paint Visualizer',
-        'card-visualizer-desc': 'Try on different shades and visualize your dream space virtually before you buy.',
-        'card-visualizer-arrow': 'Try Visualizer',
-
-        'stats-label': '<i class="fas fa-chart-bar" style="margin-right:6px;"></i> By the Numbers',
-        'stats-heading': 'Trusted across<br>all of Kerala.',
-        'stats-sub': 'Nanco Paints has built a reputation for quality, certification, and service excellence.',
-        'stat-1-label': 'Years of certified excellence in the paint industry',
-        'stat-2-label': 'Retail and factory outlets across Malappuram & Kerala',
-        'stat-3-label': 'Premium paint products and finish variants available',
-
-        'shorts-label': '<i class="fas fa-lightbulb" style="margin-right:6px;"></i> Inspiration',
-        'shorts-heading': 'Here is what are we.',
-
-        'contact-label': '<i class="fas fa-map-marker-alt" style="margin-right:6px;"></i> Get in Touch',
-        'contact-heading': 'We\'re here<br>for you.',
-        'contact-sub': 'Visit us, call us, or drop us a line. Our team is ready to help with any enquiry.',
-        'contact-visit-title': 'Visit Us',
-        'contact-visit-desc': 'ISO 9001-2015 Certified Company<br>Malappuram, Kerala — Pin 676301',
-        'contact-visit-badge': '<i class="fas fa-check-circle" style="margin-right:6px;"></i> ISO 9001-2015 Certified',
-        'contact-call-title': 'Call Us',
-        'contact-call-desc': 'Ph: +91 8891220590<br>Tel: 7594050590',
-        'contact-call-btn': 'Call Now',
-        'contact-mail-title': 'Mail Us',
-        'contact-mail-desc': 'nancopaints90@gmail.com',
-        'contact-email-btn': 'Send Email',
-
-        'cta-label': '<i class="fas fa-rocket" style="margin-right:6px;"></i> Get Started',
-        'cta-heading': 'Ready to paint<br>your world?',
-        'cta-sub': 'Browse our full range of premium products, find your nearest outlet, or log in to your account.',
-        'cta-products-btn': 'Browse Products',
-        'cta-login-btn': 'Login to Account',
-
-        'footer-tagline': 'Paints for Better Satisfaction.<br>ISO 9001-2015 Certified. Kerala, India.',
-        'footer-nav-title': 'Navigation',
-        'footer-home': 'Home',
-        'footer-outlets': 'Our Outlets',
-        'footer-products': 'Products',
-        'footer-services': 'Services',
-        'footer-about': 'About Us',
-        'footer-res-title': 'Resources',
-        'footer-catalogs': 'Catalogs',
-        'footer-calculator': 'Paint Calculator',
-        'footer-color-studio': 'Color Studio',
-        'footer-login': 'Worker Login',
-        'footer-sub-title': 'Subscribe',
-        'footer-sub-desc': 'Stay updated on new products, offers, and announcements from Nanco.',
-        'footer-email-input': 'your@email.com',
-        'footer-copy': '© 2024 Nanco Paints. All rights reserved.',
-        'footer-terms': 'Terms',
-        'footer-privacy': 'Privacy',
-        'footer-contact': 'Contact',
-        'announcement-text': '<i class="fas fa-palette" style="margin-right:6px;"></i> <span>ISO 9001-2015 CERTIFIED</span> — Nanco Paints: Trusted quality across Kerala &nbsp;·&nbsp; Factory Outlets now open in Malappuram'
-      },
-      ml: {
-        'nav-home': 'ഹോം',
-        'nav-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
-        'nav-products': 'ഉൽപ്പന്നങ്ങൾ',
-        'nav-services': 'സേവനങ്ങൾ',
-        'nav-calculators': 'കാൽക്കുലേറ്ററുകൾ',
-        'nav-colors': 'കളർ സ്റ്റുഡിയോ',
-        'nav-about': 'ഞങ്ങളെക്കുറിച്ച്',
-        'nav-login-btn': 'ലോഗിൻ',
-        'nav-search-input': 'തിരയുക...',
-
-        'mnav-home': 'ഹോം',
-        'mnav-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
-        'mnav-products': 'ഉൽപ്പന്നങ്ങൾ',
-        'mnav-services': 'സേവനങ്ങൾ',
-        'mnav-calculators': 'കാൽക്കുലേറ്ററുകൾ',
-        'mnav-colors': 'കളർ സ്റ്റുഡിയോ',
-        'mnav-about': 'ഞങ്ങളെക്കുറിച്ച്',
-        'mnav-login': 'ലോഗിൻ',
-
-        'hero-tag': '<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> ISO 9001-2015 സാക്ഷ്യപ്പെടുത്തിയത്',
-        'hero-title': 'മെച്ചപ്പെട്ട ജീവിതത്തിന്<br>വർണ്ണങ്ങളേകൂ.',
-        'hero-sub': 'നാൻകോ പെയിന്റ്സ് കേരളത്തിലുടനീളമുള്ള വീടുകളിലും ഓഫീസുകളിലും ഫാക്ടറികളിലും മികച്ച ഗുണനിലവാരമുള്ള പെയിന്റുകൾ എത്തിക്കുന്നു. മനോഹരമായ നിറങ്ങൾ, ഈടുനിൽക്കുന്ന ഭംഗി.',
-        'hero-view-products': 'നിങ്ങളെ വാങ്ങാൻ സഹായിക്കാം',
-        'hero-find-outlet': 'ശാഖകൾ കണ്ടെത്തുക',
-        'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക',
-
-        'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> തിരഞ്ഞെടുത്ത നിറങ്ങൾ',
-        'coy-heading': 'വർഷത്തിന്റെ നിറം',
-        'coy-sub': 'നാൻകോ പെയിന്റ്സിന്റെ പ്രധാന നിറങ്ങൾ ഉപയോഗിച്ച് നിങ്ങളുടെ ഇടം മനോഹരമാക്കൂ.',
-        'coy-catalog-btn': 'കളർ കാറ്റലോഗ് കാണുക <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
-
-        'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> മികച്ച കളക്ഷനുകൾ',
-        'featured-heading': 'പ്രത്യേക ഉൽപ്പന്നങ്ങൾ',
-
-        'services-label': '<i class="fas fa-tools" style="margin-right:6px;"></i> ഞങ്ങളുടെ സേവനങ്ങൾ',
-        'services-heading': 'നിങ്ങൾക്ക് ആവശ്യമുള്ളതെല്ലാം<br>ഒരു കുടക്കീഴിൽ.',
-        'services-sub': 'വർക്കർ പോർട്ടലുകൾ, ഉൽപ്പന്ന വിവരങ്ങൾ, പ്രോജക്റ്റ് ഗാലറികൾ, കാൽക്കുലേറ്ററുകൾ എന്നിവയെല്ലാം ഇവിടെ ലഭ്യമാണ്.',
-
-        'card-paint-workers-title': 'പെയിന്റ് വർക്കേഴ്സ് പോർട്ടൽ',
-        'card-paint-workers-desc': 'രജിസ്റ്റർ ചെയ്ത പെയിന്റിംഗ് തൊഴിലാളികൾക്കായി പ്രത്യേക ഓഫറുകളും പരിശീലനങ്ങളും അറിയിപ്പുകളും.',
-        'card-paint-workers-arrow': 'പോർട്ടലിൽ പ്രവേശിക്കുക',
-
-        'card-outlets-title': 'ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ',
-        'card-outlets-desc': 'നിങ്ങളുടെ ഏറ്റവും അടുത്തുള്ള നാൻകോ ഔട്ട്‌ലെറ്റുകൾ കണ്ടെത്തുക.',
-        'card-outlets-arrow': 'മാപ്പ് കാണുക',
-
-        'card-products-title': 'ഉൽപ്പന്ന വിവരങ്ങളും വീഡിയോകളും',
-        'card-products-desc': 'വില വിവരങ്ങൾ, സവിശേഷതകൾ, പരിശീലന വീഡിയോകൾ എന്നിവയടങ്ങിയ ഉൽപ്പന്ന ശ്രേണി.',
-        'card-products-arrow': 'ഉൽപ്പന്നങ്ങൾ കാണുക',
-
-        'card-colors-title': 'കളർ സ്റ്റുഡിയോ',
-        'card-colors-desc': 'പ്രോജക്റ്റ് ഫോട്ടോകൾ, ഗാലറികൾ, ഡിസൈൻ പ്രചോദനങ്ങൾ എന്നിവ പര്യവേക്ഷണം ചെയ്യുക.',
-        'card-colors-arrow': 'തുടങ്ങുക',
-
-        'card-catalogs-title': 'കാറ്റലോഗുകൾ',
-        'card-catalogs-desc': 'കളർ കോഡുകളും നിർദ്ദേശങ്ങളുമുള്ള പൂർണ്ണ കാറ്റലോഗുകൾ ഡൗൺലോഡ് ചെയ്യുക.',
-        'card-catalogs-arrow': 'ഡൗൺലോഡ്',
-
-        'card-calculator-title': 'പെയിന്റ് കാൽക്കുലേറ്റർ',
-        'card-calculator-desc': 'മുറികൾക്കോ പ്രതലങ്ങൾക്കോ ആവശ്യമായ പെയിന്റിന്റെ അളവും ചിലവും കണക്കാക്കുക.',
-        'card-calculator-arrow': 'കണക്കാക്കുക',
-
-        'card-visualizer-title': 'വെർച്വൽ പെയിന്റ് വിഷ്വലൈസർ',
-        'card-visualizer-desc': 'വാങ്ങുന്നതിന് മുൻപായി നിങ്ങളുടെ സ്വപ്ന ഇടം വ്യത്യസ്ത നിറങ്ങളിൽ വെർച്വലായി പരീക്ഷിക്കുക.',
-        'card-visualizer-arrow': 'വിഷ്വലൈസർ നോക്കുക',
-
-        'stats-label': '<i class="fas fa-chart-bar" style="margin-right:6px;"></i> കണക്കുകളിലൂടെ',
-        'stats-heading': 'കേരളത്തിലുടനീളം<br>വിശ്വസനീയം.',
-        'stats-sub': 'ഗുണനിലവാരം, അംഗീകാരങ്ങൾ, മികച്ച സേവനം എന്നിവയിലൂടെ നാൻകോ പെയിന്റ്സ് വിശ്വാസ്യത നേടിയെടുത്തിരിക്കുന്നു.',
-        'stat-1-label': 'പെയിന്റ് വ്യവസായത്തിലെ 25 വർഷത്തിലധികം സാക്ഷ്യപ്പെടുത്തിയ മികവ്',
-        'stat-2-label': 'മലപ്പുറത്തും കേരളത്തിലുടനീളവുമായി 50-ലധികം റീട്ടെയിൽ, ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ',
-        'stat-3-label': '200-ലധികം പ്രീമിയം പെയിന്റ് ഉൽപ്പന്നങ്ങളും ഫിനിഷ് വേരിയന്റുകളും ലഭ്യമാണ്',
-
-        'shorts-label': '<i class="fas fa-lightbulb" style="margin-right:6px;"></i> പ്രചോദനം',
-        'shorts-heading': 'ഞങ്ങൾ ആരാണെന്ന് കാണൂ.',
-
-        'contact-label': '<i class="fas fa-map-marker-alt" style="margin-right:6px;"></i> ഞങ്ങളുമായി ബന്ധപ്പെടുക',
-        'contact-heading': 'ഞങ്ങൾ നിങ്ങൾക്കായി<br>ഇവിടെയുണ്ട്.',
-        'contact-sub': 'ഞങ്ങളെ സന്ദർശിക്കുക, വിളിക്കുക അല്ലെങ്കിൽ ഇമെയിൽ അയക്കുക. സഹായിക്കാൻ ഞങ്ങൾ സദാ സന്നദ്ധരാണ്.',
-        'contact-visit-title': 'ഞങ്ങളെ സന്ദർശിക്കുക',
-        'contact-visit-desc': 'ISO 9001-2015 അംഗീകൃത കമ്പനി<br>മലപ്പുറം, കേരളം — പിൻ 676301',
-        'contact-visit-badge': '<i class="fas fa-check-circle" style="margin-right:6px;"></i> ISO 9001-2015 അംഗീകൃതം',
-        'contact-call-title': 'ഞങ്ങളെ വിളിക്കുക',
-        'contact-call-desc': 'ഫോൺ: +91 8891220590<br>ടെലിഫോൺ: 7594050590',
-        'contact-call-btn': 'ഇപ്പോൾ വിളിക്കുക',
-        'contact-mail-title': 'മെയിൽ അയക്കുക',
-        'contact-mail-desc': 'nancopaints90@gmail.com',
-        'contact-email-btn': 'ഇമെയിൽ അയക്കുക',
-
-        'cta-label': '<i class="fas fa-rocket" style="margin-right:6px;"></i> ആരംഭിക്കുക',
-        'cta-heading': 'നിങ്ങളുടെ ലോകം<br>വർണ്ണാഭമാക്കാൻ തയ്യാറാണോ?',
-        'cta-sub': 'ഞങ്ങളുടെ മുഴുവൻ ഉൽപ്പന്നങ്ങളും കാണുക, അടുത്തുള്ള ഔട്ട്‌ലെറ്റ് കണ്ടെത്തുക, അല്ലെങ്കിൽ അക്കൗണ്ടിലേക്ക് ലോഗിൻ ചെയ്യുക.',
-        'cta-products-btn': 'ഉൽപ്പന്നങ്ങൾ കാണുക',
-        'cta-login-btn': 'അക്കൗണ്ടിൽ ലോഗിൻ ചെയ്യുക',
-
-        'footer-tagline': 'മികച്ച സംതൃപ്തിക്കായി പെയിന്റുകൾ.<br>ISO 9001-2015 അംഗീകൃതം. കേരളം, ഇന്ത്യ.',
-        'footer-nav-title': 'നാവിഗേഷൻ',
-        'footer-home': 'ഹോം',
-        'footer-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
-        'footer-products': 'ഉൽപ്പന്നങ്ങൾ',
-        'footer-services': 'സേവനങ്ങൾ',
-        'footer-about': 'ഞങ്ങളെക്കുറിച്ച്',
-        'footer-res-title': 'വിഭവങ്ങൾ',
-        'footer-catalogs': 'കാറ്റലോഗുകൾ',
-        'footer-calculator': 'പെയിന്റ് കാൽക്കുലേറ്റർ',
-        'footer-color-studio': 'കളർ സ്റ്റുഡിയോ',
-        'footer-login': 'തൊഴിലാളി ലോഗിൻ',
-        'footer-sub-title': 'അംഗത്വമെടുക്കുക',
-        'footer-sub-desc': 'നാൻകോയിൽ നിന്നുള്ള പുതിയ ഉൽപ്പന്നങ്ങളും ഓഫറുകളും അറിയിപ്പുകളും അറിയുക.',
-        'footer-email-input': 'നിങ്ങളുടെ@ഇമെയിൽ.com',
-        'footer-copy': '© 2024 നാൻകോ പെയിന്റ്സ്. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം.',
-        'footer-terms': 'വ്യവസ്ഥകൾ',
-        'footer-privacy': 'സ്വകാര്യത',
-        'footer-contact': 'ബന്ധപ്പെടുക',
-        'announcement-text': '<i class="fas fa-palette" style="margin-right:6px;"></i> <span>ISO 9001-2015 അംഗീകൃതം</span> — നാൻകോ പെയിന്റ്സ്: കേരളത്തിലുടനീളം വിശ്വസനീയമായ ഗുണനിലവാരം &nbsp;·&nbsp; ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ ഇപ്പോൾ മലപ്പുറത്ത് ആരംഭിച്ചിരിക്കുന്നു'
-      }
-    }
+      // Language switcher toggle
+          const langBtn = document.getElementById('lang-btn');
+          const langDropdown = document.getElementById('lang-dropdown');
+      
+          if (langBtn && langDropdown) {
+            langBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const isOpen = langDropdown.classList.toggle('open');
+              langBtn.setAttribute('aria-expanded', isOpen);
+            });
+      
+            document.addEventListener('click', (e) => {
+              if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+                langDropdown.classList.remove('open');
+                langBtn.setAttribute('aria-expanded', false);
+              }
+            });
+          }
+      
+          // Language selection logic
+          const desktopLangOpts = document.querySelectorAll('.lang-option');
+          const mobileLangOpts = document.querySelectorAll('.mnav-lang-opt');
+          const langBtnText = document.querySelector('.lang-text');
+      
+          const translations = {
+            en: {
+              'nav-home': 'Home',
+              'nav-outlets': 'Our Outlets',
+              'nav-products': 'Products',
+              'nav-services': 'Services',
+              'nav-calculators': 'Calculators',
+              'nav-colors': 'Color Studio',
+              'nav-about': 'About Us',
+              'nav-login-btn': 'Login',
+              'nav-search-input': 'Search...',
+      
+              'mnav-home': 'Home',
+              'mnav-outlets': 'Our Outlets',
+              'mnav-products': 'Products',
+              'mnav-services': 'Services',
+              'mnav-calculators': 'Calculators',
+              'mnav-colors': 'Color Studio',
+              'mnav-about': 'About Us',
+              'mnav-login': 'Login',
+      
+              'hero-tag': '<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> <span style="color:#000000;">ISO 9001-2015 Certified</span>',
+              'hero-title': 'Paint for<br>Better Lives.',
+              'hero-sub': 'Nanco Paints brings premium-quality, certified paints to homes, offices, and factories across Kerala. Bold colours. Lasting finish.',
+              'hero-view-products': 'View Products',
+              'hero-find-outlet': 'Find an Outlet',
+              'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> Install App',
+      
+              'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> Curated Shades',
+              'coy-heading': 'Colour of the Year',
+              'coy-sub': 'Explore and elevate your space with featured shades of Nanco Paints.',
+              'coy-catalog-btn': 'View colour catalogue <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
+      
+              'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> Curated Collection',
+              'featured-heading': 'Featured Products',
+      
+              'services-label': '<i class="fas fa-tools" style="margin-right:6px;"></i> Our Services',
+              'services-heading': 'Everything you need<br>in one place.',
+              'services-sub': 'Access worker portals, product info, project galleries, and tools — all designed for the Nanco community.',
+      
+              'card-paint-workers-title': 'Paint Workers Portal',
+              'card-paint-workers-desc': 'Exclusive offers, training resources, and the latest announcements for registered Nanco paint workers.',
+              'card-paint-workers-arrow': 'View Portal',
+      
+              'card-outlets-title': 'Factory Outlets',
+              'card-outlets-desc': 'Find your nearest Nanco outlet and get directions.',
+              'card-outlets-arrow': 'View Map',
+      
+              'card-products-title': 'Product Info & Videos',
+              'card-products-desc': 'Full product range with pricing, specs, and how-to videos.',
+              'card-products-arrow': 'View Products',
+      
+              'card-colors-title': 'Color Studio',
+              'card-colors-desc': 'Browse project photos, gallery, and colour inspiration boards.',
+              'card-colors-arrow': 'Explore',
+      
+              'card-catalogs-title': 'Catalogs',
+              'card-catalogs-desc': 'Download full product catalogs with colour codes and usage guides.',
+              'card-catalogs-arrow': 'Download',
+      
+              'card-calculator-title': 'Paint Calculator',
+              'card-calculator-desc': 'Calculate the exact quantity and cost of paint for any room or surface.',
+              'card-calculator-arrow': 'Calculate',
+      
+              'card-visualizer-title': 'Virtual Paint Visualizer',
+              'card-visualizer-desc': 'Try on different shades and visualize your dream space virtually before you buy.',
+              'card-visualizer-arrow': 'Try Visualizer',
+      
+              'stats-label': '<i class="fas fa-chart-bar" style="margin-right:6px;"></i> By the Numbers',
+              'stats-heading': 'Trusted across<br>all of Kerala.',
+              'stats-sub': 'Nanco Paints has built a reputation for quality, certification, and service excellence.',
+              'stat-1-label': 'Years of certified excellence in the paint industry',
+              'stat-2-label': 'Retail and factory outlets across Malappuram & Kerala',
+              'stat-3-label': 'Premium paint products and finish variants available',
+      
+              'shorts-label': '<i class="fas fa-lightbulb" style="margin-right:6px;"></i> Inspiration',
+              'shorts-heading': 'Here is what are we.',
+      
+              'contact-label': '<i class="fas fa-map-marker-alt" style="margin-right:6px;"></i> Get in Touch',
+              'contact-heading': 'We\'re here<br>for you.',
+              'contact-sub': 'Visit us, call us, or drop us a line. Our team is ready to help with any enquiry.',
+              'contact-visit-title': 'Visit Us',
+              'contact-visit-desc': 'ISO 9001-2015 Certified Company<br>Malappuram, Kerala — Pin 676301',
+              'contact-visit-badge': '<i class="fas fa-check-circle" style="margin-right:6px;"></i> ISO 9001-2015 Certified',
+              'contact-call-title': 'Call Us',
+              'contact-call-desc': 'Ph: +91 8891220590<br>Tel: 7594050590',
+              'contact-call-btn': 'Call Now',
+              'contact-mail-title': 'Mail Us',
+              'contact-mail-desc': 'nancopaints90@gmail.com',
+              'contact-email-btn': 'Send Email',
+      
+              'cta-label': '<i class="fas fa-rocket" style="margin-right:6px;"></i> Get Started',
+              'cta-heading': 'Ready to paint<br>your world?',
+              'cta-sub': 'Browse our full range of premium products, find your nearest outlet, or log in to your account.',
+              'cta-products-btn': 'Browse Products',
+              'cta-login-btn': 'Login to Account',
+      
+              'footer-tagline': 'Paints for Better Satisfaction.<br>ISO 9001-2015 Certified. Kerala, India.',
+              'footer-nav-title': 'Navigation',
+              'footer-home': 'Home',
+              'footer-outlets': 'Our Outlets',
+              'footer-products': 'Products',
+              'footer-services': 'Services',
+              'footer-about': 'About Us',
+              'footer-res-title': 'Resources',
+              'footer-catalogs': 'Catalogs',
+              'footer-calculator': 'Paint Calculator',
+              'footer-color-studio': 'Color Studio',
+              'footer-login': 'Worker Login',
+              'footer-sub-title': 'Subscribe',
+              'footer-sub-desc': 'Stay updated on new products, offers, and announcements from Nanco.',
+              'footer-email-input': 'your@email.com',
+              'footer-copy': '© 2024 Nanco Paints. All rights reserved.',
+              'footer-terms': 'Terms',
+              'footer-privacy': 'Privacy',
+              'footer-contact': 'Contact',
+              'announcement-text': '<i class="fas fa-palette" style="margin-right:6px;"></i> <span>ISO 9001-2015 CERTIFIED</span> — Nanco Paints: Trusted quality across Kerala &nbsp;·&nbsp; Factory Outlets now open in Malappuram'
+            },
+            ml: {
+              'nav-home': 'ഹോം',
+              'nav-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
+              'nav-products': 'ഉൽപ്പന്നങ്ങൾ',
+              'nav-services': 'സേവനങ്ങൾ',
+              'nav-calculators': 'കാൽക്കുലേറ്ററുകൾ',
+              'nav-colors': 'കളർ സ്റ്റുഡിയോ',
+              'nav-about': 'ഞങ്ങളെക്കുറിച്ച്',
+              'nav-login-btn': 'ലോഗിൻ',
+              'nav-search-input': 'തിരയുക...',
+      
+              'mnav-home': 'ഹോം',
+              'mnav-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
+              'mnav-products': 'ഉൽപ്പന്നങ്ങൾ',
+              'mnav-services': 'സേവനങ്ങൾ',
+              'mnav-calculators': 'കാൽക്കുലേറ്ററുകൾ',
+              'mnav-colors': 'കളർ സ്റ്റുഡിയോ',
+              'mnav-about': 'ഞങ്ങളെക്കുറിച്ച്',
+              'mnav-login': 'ലോഗിൻ',
+      
+              'hero-tag': '<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> ISO 9001-2015 സാക്ഷ്യപ്പെടുത്തിയത്',
+              'hero-title': 'മെച്ചപ്പെട്ട ജീവിതത്തിന്<br>വർണ്ണങ്ങളേകൂ.',
+              'hero-sub': 'നാൻകോ പെയിന്റ്സ് കേരളത്തിലുടനീളമുള്ള വീടുകളിലും ഓഫീസുകളിലും ഫാക്ടറികളിലും മികച്ച ഗുണനിലവാരമുള്ള പെയിന്റുകൾ എത്തിക്കുന്നു. മനോഹരമായ നിറങ്ങൾ, ഈടുനിൽക്കുന്ന ഭംഗി.',
+              'hero-view-products': 'ഉൽപ്പന്നങ്ങൾ കാണുക',
+              'hero-find-outlet': 'ശാഖകൾ കണ്ടെത്തുക',
+              'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക',
+      
+              'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> തിരഞ്ഞെടുത്ത നിറങ്ങൾ',
+              'coy-heading': 'വർഷത്തിന്റെ നിറം',
+              'coy-sub': 'നാൻകോ പെയിന്റ്സിന്റെ പ്രധാന നിറങ്ങൾ ഉപയോഗിച്ച് നിങ്ങളുടെ ഇടം മനോഹരമാക്കൂ.',
+              'coy-catalog-btn': 'കളർ കാറ്റലോഗ് കാണുക <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
+      
+              'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> മികച്ച കളക്ഷനുകൾ',
+              'featured-heading': 'പ്രത്യേക ഉൽപ്പന്നങ്ങൾ',
+      
+              'services-label': '<i class="fas fa-tools" style="margin-right:6px;"></i> ഞങ്ങളുടെ സേവനങ്ങൾ',
+              'services-heading': 'നിങ്ങൾക്ക് ആവശ്യമുള്ളതെല്ലാം<br>ഒരു കുടക്കീഴിൽ.',
+              'services-sub': 'വർക്കർ പോർട്ടലുകൾ, ഉൽപ്പന്ന വിവരങ്ങൾ, പ്രോജക്റ്റ് ഗാലറികൾ, കാൽക്കുലേറ്ററുകൾ എന്നിവയെല്ലാം ഇവിടെ ലഭ്യമാണ്.',
+      
+              'card-paint-workers-title': 'പെയിന്റ് വർക്കേഴ്സ് പോർട്ടൽ',
+              'card-paint-workers-desc': 'രജിസ്റ്റർ ചെയ്ത പെയിന്റിംഗ് തൊഴിലാളികൾക്കായി പ്രത്യേക ഓഫറുകളും പരിശീലനങ്ങളും അറിയിപ്പുകളും.',
+              'card-paint-workers-arrow': 'പോർട്ടലിൽ പ്രവേശിക്കുക',
+      
+              'card-outlets-title': 'ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ',
+              'card-outlets-desc': 'നിങ്ങളുടെ ഏറ്റവും അടുത്തുള്ള നാൻകോ ഔട്ട്‌ലെറ്റുകൾ കണ്ടെത്തുക.',
+              'card-outlets-arrow': 'മാപ്പ് കാണുക',
+      
+              'card-products-title': 'ഉൽപ്പന്ന വിവരങ്ങളും വീഡിയോകളും',
+              'card-products-desc': 'വില വിവരങ്ങൾ, സവിശേഷതകൾ, പരിശീലന വീഡിയോകൾ എന്നിവയടങ്ങിയ ഉൽപ്പന്ന ശ്രേണി.',
+              'card-products-arrow': 'ഉൽപ്പന്നങ്ങൾ കാണുക',
+      
+              'card-colors-title': 'കളർ സ്റ്റുഡിയോ',
+              'card-colors-desc': 'പ്രോജക്റ്റ് ഫോട്ടോകൾ, ഗാലറികൾ, ഡിസൈൻ പ്രചോദനങ്ങൾ എന്നിവ പര്യവേക്ഷണം ചെയ്യുക.',
+              'card-colors-arrow': 'തുടങ്ങുക',
+      
+              'card-catalogs-title': 'കാറ്റലോഗുകൾ',
+              'card-catalogs-desc': 'കളർ കോഡുകളും നിർദ്ദേശങ്ങളുമുള്ള പൂർണ്ണ കാറ്റലോഗുകൾ ഡൗൺലോഡ് ചെയ്യുക.',
+              'card-catalogs-arrow': 'ഡൗൺലോഡ്',
+      
+              'card-calculator-title': 'പെയിന്റ് കാൽക്കുലേറ്റർ',
+              'card-calculator-desc': 'മുറികൾക്കോ പ്രതലങ്ങൾക്കോ ആവശ്യമായ പെയിന്റിന്റെ അളവും ചിലവും കണക്കാക്കുക.',
+              'card-calculator-arrow': 'കണക്കാക്കുക',
+      
+              'card-visualizer-title': 'വെർച്വൽ പെയിന്റ് വിഷ്വലൈസർ',
+              'card-visualizer-desc': 'വാങ്ങുന്നതിന് മുൻപായി നിങ്ങളുടെ സ്വപ്ന ഇടം വ്യത്യസ്ത നിറങ്ങളിൽ വെർച്വലായി പരീക്ഷിക്കുക.',
+              'card-visualizer-arrow': 'വിഷ്വലൈസർ നോക്കുക',
+      
+              'stats-label': '<i class="fas fa-chart-bar" style="margin-right:6px;"></i> കണക്കുകളിലൂടെ',
+              'stats-heading': 'കേരളത്തിലുടനീളം<br>വിശ്വസനീയം.',
+              'stats-sub': 'ഗുണനിലവാരം, അംഗീകാരങ്ങൾ, മികച്ച സേവനം എന്നിവയിലൂടെ നാൻകോ പെയിന്റ്സ് വിശ്വാസ്യത നേടിയെടുത്തിരിക്കുന്നു.',
+              'stat-1-label': 'പെയിന്റ് വ്യവസായത്തിലെ 25 വർഷത്തിലധികം സാക്ഷ്യപ്പെടുത്തിയ മികവ്',
+              'stat-2-label': 'മലപ്പുറത്തും കേരളത്തിലുടനീളവുമായി 50-ലധികം റീട്ടെയിൽ, ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ',
+              'stat-3-label': '200-ലധികം പ്രീമിയം പെയിന്റ് ഉൽപ്പന്നങ്ങളും ഫിനിഷ് വേരിയന്റുകളും ലഭ്യമാണ്',
+      
+              'shorts-label': '<i class="fas fa-lightbulb" style="margin-right:6px;"></i> പ്രചോദനം',
+              'shorts-heading': 'ഞങ്ങൾ ആരാണെന്ന് കാണൂ.',
+      
+              'contact-label': '<i class="fas fa-map-marker-alt" style="margin-right:6px;"></i> ഞങ്ങളുമായി ബന്ധപ്പെടുക',
+              'contact-heading': 'ഞങ്ങൾ നിങ്ങൾക്കായി<br>ഇവിടെയുണ്ട്.',
+              'contact-sub': 'ഞങ്ങളെ സന്ദർശിക്കുക, വിളിക്കുക അല്ലെങ്കിൽ ഇമെയിൽ അയക്കുക. സഹായിക്കാൻ ഞങ്ങൾ സദാ സന്നദ്ധരാണ്.',
+              'contact-visit-title': 'ഞങ്ങളെ സന്ദർശിക്കുക',
+              'contact-visit-desc': 'ISO 9001-2015 അംഗീകൃത കമ്പനി<br>മലപ്പുറം, കേരളം — പിൻ 676301',
+              'contact-visit-badge': '<i class="fas fa-check-circle" style="margin-right:6px;"></i> ISO 9001-2015 അംഗീകൃതം',
+              'contact-call-title': 'ഞങ്ങളെ വിളിക്കുക',
+              'contact-call-desc': 'ഫോൺ: +91 8891220590<br>ടെലിഫോൺ: 7594050590',
+              'contact-call-btn': 'ഇപ്പോൾ വിളിക്കുക',
+              'contact-mail-title': 'മെയിൽ അയക്കുക',
+              'contact-mail-desc': 'nancopaints90@gmail.com',
+              'contact-email-btn': 'ഇമെയിൽ അയക്കുക',
+      
+              'cta-label': '<i class="fas fa-rocket" style="margin-right:6px;"></i> ആരംഭിക്കുക',
+              'cta-heading': 'നിങ്ങളുടെ ലോകം<br>വർണ്ണാഭമാക്കാൻ തയ്യാറാണോ?',
+              'cta-sub': 'ഞങ്ങളുടെ മുഴുവൻ ഉൽപ്പന്നങ്ങളും കാണുക, അടുത്തുള്ള ഔട്ട്‌ലെറ്റ് കണ്ടെത്തുക, അല്ലെങ്കിൽ അക്കൗണ്ടിലേക്ക് ലോഗിൻ ചെയ്യുക.',
+              'cta-products-btn': 'ഉൽപ്പന്നങ്ങൾ കാണുക',
+              'cta-login-btn': 'അക്കൗണ്ടിൽ ലോഗിൻ ചെയ്യുക',
+      
+              'footer-tagline': 'മികച്ച സംതൃപ്തിക്കായി പെയിന്റുകൾ.<br>ISO 9001-2015 അംഗീകൃതം. കേരളം, ഇന്ത്യ.',
+              'footer-nav-title': 'നാവിഗേഷൻ',
+              'footer-home': 'ഹോം',
+              'footer-outlets': 'ഞങ്ങളുടെ ശാഖകൾ',
+              'footer-products': 'ഉൽപ്പന്നങ്ങൾ',
+              'footer-services': 'സേവനങ്ങൾ',
+              'footer-about': 'ഞങ്ങളെക്കുറിച്ച്',
+              'footer-res-title': 'വിഭവങ്ങൾ',
+              'footer-catalogs': 'കാറ്റലോഗുകൾ',
+              'footer-calculator': 'പെയിന്റ് കാൽക്കുലേറ്റർ',
+              'footer-color-studio': 'കളർ സ്റ്റുഡിയോ',
+              'footer-login': 'തൊഴിലാളി ലോഗിൻ',
+              'footer-sub-title': 'അംഗത്വമെടുക്കുക',
+              'footer-sub-desc': 'നാൻകോയിൽ നിന്നുള്ള പുതിയ ഉൽപ്പന്നങ്ങളും ഓഫറുകളും അറിയിപ്പുകളും അറിയുക.',
+              'footer-email-input': 'നിങ്ങളുടെ@ഇമെയിൽ.com',
+              'footer-copy': '© 2024 നാൻകോ പെയിന്റ്സ്. എല്ലാ അവകാശങ്ങളും നിക്ഷിപ്തം.',
+              'footer-terms': 'വ്യവസ്ഥകൾ',
+              'footer-privacy': 'സ്വകാര്യത',
+              'footer-contact': 'ബന്ധപ്പെടുക',
+              'announcement-text': '<i class="fas fa-palette" style="margin-right:6px;"></i> <span>ISO 9001-2015 അംഗീകൃതം</span> — നാൻകോ പെയിന്റ്സ്: കേരളത്തിലുടനീളം വിശ്വസനീയമായ ഗുണനിലവാരം &nbsp;·&nbsp; ഫാക്ടറി ഔട്ട്‌ലെറ്റുകൾ ഇപ്പോൾ മലപ്പുറത്ത് ആരംഭിച്ചിരിക്കുന്നു'
+            }
+          }
+    });
 
 </script>
   </nav>
@@ -792,7 +802,7 @@
     </script>
 
   <main>
-    <section class="band-cobalt" style="padding: 100px 24px 60px; text-align: center; background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url('assets/calcbg.jpg') no-repeat center center / cover;">
+    <section id="calculators-hero" class="band-cobalt" style="padding: 100px 24px 60px; text-align: center;">
       <div class="section-inner">
         <span class="section-label" style="background:var(--color-lime-spark); color:var(--color-ink-black); border-color:var(--color-ink-black);"><i class="fas fa-calculator" style="margin-right:6px;"></i> Tools</span>
         <h1 class="section-title" style="font-size: clamp(48px, 6vw, 80px); color:var(--color-white-plate); letter-spacing:-2px;">Smart Calculators</h1>
@@ -817,57 +827,9 @@
 
         <!-- TAB: BUDGET -->
         <div id="tab-budget">
-          <div class="calc-card">
-            <h2>Room Dimensions</h2>
-            <div class="range-wrap">
-              <div class="range-header"><span>Length</span> <span id="lbl-length">12 ft</span></div>
-              <input type="range" min="1" max="50" value="12" oninput="updateBudget('length', this.value)">
-            </div>
-            <div class="range-wrap">
-              <div class="range-header"><span>Width</span> <span id="lbl-width">10 ft</span></div>
-              <input type="range" min="1" max="50" value="10" oninput="updateBudget('width', this.value)">
-            </div>
-            <div class="range-wrap">
-              <div class="range-header"><span>Height</span> <span id="lbl-height">10 ft</span></div>
-              <input type="range" min="1" max="20" value="10" oninput="updateBudget('height', this.value)">
-            </div>
+          <div id="rooms-container"></div>
 
-            <div class="pill-toggle" onclick="toggleCeiling()">
-              <div>Include Ceiling</div>
-              <div class="toggle-switch active" id="btn-ceiling"><div class="toggle-thumb" id="thumb-ceiling"></div></div>
-            </div>
 
-            <div class="counter-row">
-              <div style="font-weight:700;">Doors <span style="display:block;font-size:12px;font-weight:500;color:var(--color-sage-mute)">Subtracts 21 sq.ft</span></div>
-              <div class="counter-wrap">
-                <button class="counter-btn" onclick="changeDoors(-1)">-</button>
-                <span class="counter-val" id="lbl-doors">1</span>
-                <button class="counter-btn" onclick="changeDoors(1)">+</button>
-              </div>
-            </div>
-            <div class="counter-row">
-              <div style="font-weight:700;">Windows <span style="display:block;font-size:12px;font-weight:500;color:var(--color-sage-mute)">Subtracts 15 sq.ft</span></div>
-              <div class="counter-wrap">
-                <button class="counter-btn" onclick="changeWindows(-1)">-</button>
-                <span class="counter-val" id="lbl-windows">1</span>
-                <button class="counter-btn" onclick="changeWindows(1)">+</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="calc-card">
-            <h2>Surface Condition</h2>
-            <div class="choice-grid">
-              <div class="choice-btn active" id="btn-cond-repaint" onclick="setCondition('repaint')">
-                <div class="choice-title">Repainting <i class="fas fa-check-circle" id="icon-cond-repaint"></i></div>
-                <div class="choice-desc">Already painted. Requires less paint.</div>
-              </div>
-              <div class="choice-btn" id="btn-cond-new" onclick="setCondition('new')">
-                <div class="choice-title">New Wall <i class="fas fa-check-circle hidden" id="icon-cond-new"></i></div>
-                <div class="choice-desc">Bare plaster. Needs primer & extra coats.</div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- TAB: QUOTATION -->
@@ -968,18 +930,37 @@
       </div>
 
       <!-- Right Column: Results -->
-      <div>
+      <div style="position: sticky; top: 100px; align-self: flex-start; display: flex; flex-direction: column; gap: 24px;">
         <div class="result-panel" id="receipt-panel">
           
           <div class="view-budget">
-            <div class="result-title"><i class="fas fa-paint-roller"></i> Paint Volume Estimate</div>
-            <div class="result-value-wrap">
-              <div style="font-weight:700;font-size:14px;color:var(--color-sage-mute);">Required Quantity</div>
-              <div class="result-value"><span class="out-budget-liters"></span>L</div>
+              <div class="result-title"><i class="fas fa-paint-roller"></i> Paint Volume Estimate</div>
+              <div class="result-value-wrap" style="padding:16px 24px; display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:16px;">
+                <div class="out-budget-primer-row" style="flex:1; cursor:pointer; text-align:center; padding:12px 0; border-radius:12px; transition:background 0.2s;" onclick="navigator.clipboard.writeText(document.getElementById('primer-vol-val').innerText); alert('Primer volume copied!');" title="Click to copy Primer Volume" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                  <div style="font-weight:700;font-size:13px;color:var(--color-sage-mute);margin-bottom:4px;">Primer Qty</div>
+                  <div class="result-value" style="font-size:36px; margin-top:0;"><span class="out-budget-primer" id="primer-vol-val"></span><span style="font-size:16px;">L</span></div>
+                </div>
+                
+                <div class="out-budget-primer-row" style="width:2px; height:40px; background:rgba(0,0,0,0.1);"></div>
+                
+                <div style="flex:1; cursor:pointer; text-align:center; padding:12px 0; border-radius:12px; transition:background 0.2s;" onclick="navigator.clipboard.writeText(document.getElementById('emul-vol-val').innerText); alert('Emulsion volume copied!');" title="Click to copy Emulsion Volume" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                  <div style="font-weight:700;font-size:13px;color:var(--color-sage-mute);margin-bottom:4px;">Emulsion Qty</div>
+                  <div class="result-value" style="font-size:36px; margin-top:0;"><span class="out-budget-emulsion" id="emul-vol-val"></span><span style="font-size:16px;">L</span></div>
+                </div>
+              </div>
+              <div class="result-row out-budget-primer-row" style="background:rgba(0,0,0,0.03); padding:12px; border-radius:8px; margin-bottom:8px; border:none; display:flex; justify-content:space-between;">
+                <span style="font-weight:700; color:var(--color-ink-black);">Primer Coverage</span> 
+                <span style="font-weight:800; font-size:16px; color:var(--color-ink-black);"><span class="out-budget-primer-cov"></span> <span style="font-size:13px;color:var(--color-ink-black);">sq.ft/L</span></span>
+              </div>
+              <div class="result-row" style="background:rgba(0,0,0,0.03); padding:12px; border-radius:8px; margin-bottom:16px; border:none; display:flex; justify-content:space-between;">
+                <span style="font-weight:700; color:var(--color-ink-black);">Emulsion Coverage</span> 
+                <span style="font-weight:800; font-size:16px; color:var(--color-ink-black);"><span class="out-budget-emulsion-cov"></span> <span style="font-size:13px;color:var(--color-ink-black);">sq.ft/L</span></span>
+              </div>
+              <div class="result-row" style="border-bottom:none; display:flex; justify-content:space-between;">
+                <span>Total Paintable Area</span> 
+                <span><span class="out-budget-area"></span> sq.ft</span>
+              </div>
             </div>
-            <div class="result-row"><span>Paintable Area</span> <span><span class="out-budget-area"></span> sq.ft</span></div>
-            <div class="result-row" style="border-bottom:none;"><span>Coverage</span> <span><span class="out-budget-coverage"></span> sq.ft/L</span></div>
-          </div>
 
           <div class="view-quotation hidden">
             <div class="result-title"><i class="fas fa-file-invoice-dollar"></i> Project Estimate</div>
@@ -1005,12 +986,25 @@
             </div>
           </div>
 
-          <div style="margin-top:32px; display:flex; flex-direction:column; gap:12px;">
-            <button class="btn-action" onclick="toggleModal('modal-lead', true)"><i class="fab fa-whatsapp"></i> Send to WhatsApp</button>
-            <button class="btn-action btn-action-ghost" onclick="toggleModal('modal-lead', true)">Book Free Site Visit</button>
-          </div>
-
         </div>
+        
+        <div class="result-panel view-budget" style="background:var(--color-maroon-plate);">
+          <div style="font-weight:800; font-size:16px; margin-bottom:16px; color:var(--color-white-plate); display:flex; align-items:center; gap:8px;"><i class="fas fa-boxes"></i> Recommended Packaging</div>
+          <div class="out-budget-primer-row" style="margin-bottom:16px;">
+            <div style="font-weight:700; font-size:12px; color:var(--color-white-plate); opacity:0.6; margin-bottom:8px; text-transform:uppercase;">Primer</div>
+            <div id="primer-buckets-container" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"></div>
+          </div>
+          <div>
+            <div style="font-weight:700; font-size:12px; color:var(--color-white-plate); opacity:0.6; margin-bottom:8px; text-transform:uppercase;">Emulsion</div>
+            <div id="emulsion-buckets-container" style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;"></div>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <button class="btn-action" onclick="toggleModal('modal-lead', true)"><i class="fab fa-whatsapp"></i> Send to WhatsApp</button>
+          <button class="btn-action btn-action-ghost" onclick="orderPaint()"><i class="fas fa-shopping-cart"></i> Order the paint</button>
+        </div>
+
       </div>
     </div>
   </main>
@@ -1020,7 +1014,7 @@
     <div class="footer-inner">
       <div>
         <div class="footer-brand-name">
-          <img src="../nanco/assets/dark-logo.png" alt="Nanco Paints">
+          <img data-asset="logos.dark" alt="Nanco Paints">
         </div>
         <p class="footer-tagline" id="footer-tagline" style="color:var(--color-white-plate);">Paints for Better Satisfaction.<br>ISO 9001-2015 Certified. Kerala, India.</p>
       </div>
@@ -1051,22 +1045,7 @@
   </div>
 
   <script>
-    // Mobile nav toggle
-    const btn = document.getElementById('mobile-menu-btn');
-    const nav = document.getElementById('mobile-nav');
-    if (btn && nav) {
-      btn.addEventListener('click', () => {
-        const isOpen = nav.classList.toggle('open');
-        btn.setAttribute('aria-expanded', isOpen);
-      });
-      // Close on outside click
-      document.addEventListener('click', (e) => {
-        if (!btn.contains(e.target) && !nav.contains(e.target)) {
-          nav.classList.remove('open');
-          btn.setAttribute('aria-expanded', false);
-        }
-      });
-    }
+
 
     const COVERAGE_NEW_WALL = 70;
     const COVERAGE_REPAINT = 120;
@@ -1087,14 +1066,14 @@
 
     const state = {
         activeTab: 'budget',
-        budget: { length: 12, width: 10, height: 10, includeCeiling: true, doors: 1, windows: 1, condition: 'repaint' },
+        budget: { rooms: [{ id: 1, length: 12, width: 10, height: 10, includeCeiling: true, doors: 1, windows: 1, condition: 'repaint', primer: [], emulsion: [{ id: 1, coverage: 100 }, { id: 2, coverage: 100 }] }], activeRoomId: 1 },
         quotation: { useCalculatedArea: true, manualArea: 500, tier: 'premium', includeLabor: true },
         wp: { area: 'terrace', severity: 'preventative', length: 15, width: 20 }
     };
 
     const calc = {
-        budget: { totalArea: 0, liters: 0, coverage: 0 },
-        quote: { area: 0, liters: 0, materialCost: 0, laborCost: 0, grandTotal: 0 },
+        budget: { totalArea: 0, primerLiters: 0, emulsionLiters: 0 },
+        quote: { area: 0, primerLiters: 0, emulsionLiters: 0, materialCost: 0, laborCost: 0, grandTotal: 0 },
         wp: { areaSqFt: 0, totalCost: 0, product: '', rate: 0 }
     };
 
@@ -1102,18 +1081,120 @@
         return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(value || 0);
     }
 
+    function getPaintBuckets(liters, availableSizes = null) {
+        const L = Math.ceil(parseFloat(liters));
+        if (isNaN(L) || L <= 0) return null;
+        
+        const defaultSizes = [20, 10, 4, 1];
+        const sizes = (availableSizes && availableSizes.length > 0) ? availableSizes : defaultSizes;
+        const costs = { 20: 1100, 10: 600, 4: 280, 1: 100 };
+        sizes.forEach(s => {
+            if (!costs[s]) costs[s] = s * 80;
+        });
+        
+        const maxVol = L + Math.max(...sizes);
+        const dp = Array(maxVol + 1).fill(Infinity);
+        const choice = Array(maxVol + 1).fill(0);
+        
+        dp[0] = 0;
+        for (let i = 0; i <= maxVol; i++) {
+            if (dp[i] === Infinity) continue;
+            for (let s of sizes) {
+                if (i + s <= maxVol) {
+                    if (dp[i] + costs[s] < dp[i + s]) {
+                        dp[i + s] = dp[i] + costs[s];
+                        choice[i + s] = s;
+                    }
+                }
+            }
+        }
+        
+        let minCost = Infinity;
+        let bestVol = L;
+        for (let i = L; i <= maxVol; i++) {
+            if (dp[i] < minCost) {
+                minCost = dp[i];
+                bestVol = i;
+            }
+        }
+        
+        let current = bestVol;
+        const result = { totalLiters: bestVol };
+        if (typeof sizes !== 'undefined') {
+            sizes.forEach(s => result[s] = 0);
+        } else {
+            [20, 10, 4, 1].forEach(s => result[s] = 0);
+        }
+        
+        while (current > 0) {
+            let s = choice[current];
+            if (!s) break;
+            result[s] = (result[s] || 0) + 1;
+            current -= s;
+        }
+        return result;
+    }
+
+    function renderBuckets(containerId, liters) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const buckets = getPaintBuckets(liters, calc?.budget?.availableSizes);
+        if (!buckets) {
+            container.innerHTML = '<span style="font-size:13px; font-weight:600; color:var(--color-sage-mute);">None needed</span>';
+            return;
+        }
+        
+        let html = '';
+        Object.keys(buckets).forEach(size => {
+            if (size !== 'totalLiters' && buckets[size] > 0) {
+                html += `<div style="background:var(--color-ink-black); color:var(--color-white-plate); padding:4px 10px; border-radius:8px; font-size:13px; font-weight:800; display:flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                            <span>${size}L</span> <i class="fas fa-times" style="font-size:10px; opacity:0.6;"></i> <span>${buckets[size]}</span>
+                         </div>`;
+            }
+        });
+        html += `<div style="padding-left:4px; font-size:12px; font-weight:700; color:var(--color-concrete-tile);">Total: ${buckets.totalLiters}L</div>`;
+        container.innerHTML = html;
+    }
+
+    function orderPaint() {
+        const emul = parseFloat(calc.budget.emulsionLiters) || 0;
+        const prim = parseFloat(calc.budget.primerLiters) || 0;
+        window.location.href = `products.html?orderMode=true&reqEmulsion=${emul}&reqPrimer=${prim}`;
+    }
+
     function updateCalculations() {
-        const wallArea = 2 * (state.budget.length + state.budget.width) * state.budget.height;
-        const ceilingArea = state.budget.includeCeiling ? (state.budget.length * state.budget.width) : 0;
-        const deductions = (state.budget.doors * DOOR_AREA) + (state.budget.windows * WINDOW_AREA);
-        calc.budget.totalArea = Math.max(0, wallArea + ceilingArea - deductions);
-        calc.budget.coverage = state.budget.condition === 'new' ? COVERAGE_NEW_WALL : COVERAGE_REPAINT;
-        calc.budget.liters = calc.budget.totalArea > 0 ? (calc.budget.totalArea / calc.budget.coverage).toFixed(1) : "0.0";
+        let totalRoomArea = 0;
+        let totalPrimerLiters = 0;
+        let totalEmulsionLiters = 0;
+
+        state.budget.rooms.forEach(room => {
+            const wallArea = 2 * (room.length + room.width) * room.height;
+            const ceilingArea = room.includeCeiling ? (room.length * room.width) : 0;
+            const deductions = (room.doors * DOOR_AREA) + (room.windows * WINDOW_AREA);
+            const area = Math.max(0, wallArea + ceilingArea - deductions);
+            totalRoomArea += area;
+
+            room.primer.forEach(coat => {
+                totalPrimerLiters += (area / coat.coverage);
+            });
+            room.emulsion.forEach(coat => {
+                totalEmulsionLiters += (area / coat.coverage);
+            });
+        });
+        calc.budget.totalArea = totalRoomArea;
+        calc.budget.primerLiters = totalPrimerLiters.toFixed(1);
+        calc.budget.emulsionLiters = totalEmulsionLiters.toFixed(1);
+        calc.budget.totalLiters = (totalPrimerLiters + totalEmulsionLiters).toFixed(1);
+        calc.budget.primerCovAvg = totalPrimerLiters > 0 ? Math.round(totalRoomArea / totalPrimerLiters) : 0;
+        calc.budget.emulsionCovAvg = totalEmulsionLiters > 0 ? Math.round(totalRoomArea / totalEmulsionLiters) : 0;
 
         calc.quote.area = state.quotation.useCalculatedArea ? calc.budget.totalArea : state.quotation.manualArea;
-        const qLiters = calc.quote.area > 0 ? (calc.quote.area / calc.budget.coverage) : 0;
-        calc.quote.liters = qLiters.toFixed(1);
-        calc.quote.materialCost = qLiters * PAINT_TIERS[state.quotation.tier].price;
+        const areaRatio = calc.budget.totalArea > 0 ? (calc.quote.area / calc.budget.totalArea) : 0;
+        calc.quote.primerLiters = (totalPrimerLiters * areaRatio).toFixed(1);
+        calc.quote.emulsionLiters = (totalEmulsionLiters * areaRatio).toFixed(1);
+
+        const primerPrice = 140; 
+        calc.quote.materialCost = (totalPrimerLiters * areaRatio * primerPrice) + (totalEmulsionLiters * areaRatio * PAINT_TIERS[state.quotation.tier].price);
         calc.quote.laborCost = state.quotation.includeLabor ? (calc.quote.area * LABOR_RATE) : 0;
         calc.quote.grandTotal = calc.quote.materialCost + calc.quote.laborCost;
 
@@ -1137,24 +1218,17 @@
         document.querySelectorAll('.view-quotation').forEach(el => state.activeTab === 'quotation' ? el.classList.remove('hidden') : el.classList.add('hidden'));
         document.querySelectorAll('.view-waterproofing').forEach(el => state.activeTab === 'waterproofing' ? el.classList.remove('hidden') : el.classList.add('hidden'));
 
-        document.getElementById('lbl-length').innerText = state.budget.length + ' ft';
-        document.getElementById('lbl-width').innerText = state.budget.width + ' ft';
-        document.getElementById('lbl-height').innerText = state.budget.height + ' ft';
-        document.getElementById('lbl-doors').innerText = state.budget.doors;
-        document.getElementById('lbl-windows').innerText = state.budget.windows;
-        
         document.querySelectorAll('.out-budget-area').forEach(el => el.innerText = calc.budget.totalArea);
-        document.querySelectorAll('.out-budget-liters').forEach(el => el.innerText = calc.budget.liters);
-        document.querySelectorAll('.out-budget-coverage').forEach(el => el.innerText = calc.budget.coverage);
+        
+        document.querySelectorAll('.out-budget-primer').forEach(el => el.innerText = calc.budget.primerLiters);
+        document.querySelectorAll('.out-budget-emulsion').forEach(el => el.innerText = calc.budget.emulsionLiters);
+        document.querySelectorAll('.out-budget-liters').forEach(el => el.innerText = calc.budget.totalLiters);
+        document.querySelectorAll('.out-budget-primer-cov').forEach(el => el.innerText = calc.budget.primerCovAvg);
+        document.querySelectorAll('.out-budget-emulsion-cov').forEach(el => el.innerText = calc.budget.emulsionCovAvg);
+        document.querySelectorAll('.out-budget-primer-row').forEach(el => parseFloat(calc.budget.primerLiters) > 0 ? el.classList.remove('hidden') : el.classList.add('hidden'));
 
-        const btnCeiling = document.getElementById('btn-ceiling');
-        if(state.budget.includeCeiling) btnCeiling.classList.add('active');
-        else btnCeiling.classList.remove('active');
-
-        document.getElementById('btn-cond-repaint').classList.toggle('active', state.budget.condition === 'repaint');
-        document.getElementById('btn-cond-new').classList.toggle('active', state.budget.condition === 'new');
-        document.getElementById('icon-cond-repaint').classList.toggle('hidden', state.budget.condition !== 'repaint');
-        document.getElementById('icon-cond-new').classList.toggle('hidden', state.budget.condition !== 'new');
+        renderBuckets('primer-buckets-container', calc.budget.primerLiters);
+        renderBuckets('emulsion-buckets-container', calc.budget.emulsionLiters);
 
         document.querySelectorAll('.out-quote-area').forEach(el => el.innerText = calc.quote.area);
         document.querySelectorAll('.out-quote-mat').forEach(el => el.innerText = formatINR(calc.quote.materialCost));
@@ -1205,11 +1279,201 @@
     }
 
     function setTab(tabId) { state.activeTab = tabId; render(); }
-    function updateBudget(key, val) { state.budget[key] = parseInt(val); updateCalculations(); render(); }
-    function toggleCeiling() { state.budget.includeCeiling = !state.budget.includeCeiling; updateCalculations(); render(); }
-    function changeDoors(delta) { state.budget.doors = Math.max(0, state.budget.doors + delta); updateCalculations(); render(); }
-    function changeWindows(delta) { state.budget.windows = Math.max(0, state.budget.windows + delta); updateCalculations(); render(); }
-    function setCondition(cond) { state.budget.condition = cond; updateCalculations(); render(); }
+    function setActiveRoom(id) {
+        state.budget.activeRoomId = id;
+        renderRoomsUI();
+        render();
+    }
+    function addRoom() {
+        const newId = state.budget.rooms.length ? Math.max(...state.budget.rooms.map(r => r.id)) + 1 : 1;
+        state.budget.rooms.push({ id: newId, length: 12, width: 10, height: 10, includeCeiling: true, doors: 1, windows: 1, condition: 'repaint', primer: [], emulsion: [{ id: 1, coverage: 100 }, { id: 2, coverage: 100 }] });
+        state.budget.activeRoomId = newId;
+        updateCalculations();
+        renderRoomsUI();
+        render();
+    }
+    function removeRoom(id) {
+        state.budget.rooms = state.budget.rooms.filter(r => r.id !== id);
+        if (state.budget.activeRoomId === id) {
+            state.budget.activeRoomId = state.budget.rooms.length ? state.budget.rooms[0].id : null;
+        }
+        updateCalculations();
+        renderRoomsUI();
+        render();
+    }
+    function updateBudget(id, key, val) { 
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) { room[key] = parseInt(val); updateCalculations(); renderRoomValues(); render(); }
+    }
+    
+    function setCondition(id, cond) { 
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) { 
+            room.condition = cond; 
+            if(cond === 'repaint') { 
+                room.primer = []; 
+                room.emulsion = [{ id: 1, coverage: 100 }, { id: 2, coverage: 100 }]; 
+            }
+            if(cond === 'new') { 
+                room.primer = [{ id: 1, coverage: 100 }]; 
+                room.emulsion = [{ id: 1, coverage: 100 }, { id: 2, coverage: 100 }, { id: 3, coverage: 130 }]; 
+            }
+            updateCalculations(); renderRoomsUI(); render(); 
+        }
+    }
+    function addCoat(id, type) {
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) {
+            const arr = room[type];
+            const newId = arr.length ? Math.max(...arr.map(c => c.id)) + 1 : 1;
+            let cov = 100;
+            if (type === 'emulsion' && newId >= 3) cov = 130;
+            arr.push({ id: newId, coverage: cov });
+            updateCalculations(); renderRoomsUI(); render();
+        }
+    }
+    function removeCoatLayer(id, type, coatId) {
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) {
+            room[type] = room[type].filter(c => c.id !== coatId);
+            updateCalculations(); renderRoomsUI(); render();
+        }
+    }
+    function updateCoatCoverage(id, type, coatId, val) {
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) {
+            const coat = room[type].find(c => c.id === coatId);
+            if(coat) { coat.coverage = parseInt(val) || 100; updateCalculations(); render(); }
+        }
+    }
+
+    function toggleCeiling(id) { 
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) { room.includeCeiling = !room.includeCeiling; updateCalculations(); renderRoomsUI(); render(); }
+    }
+    function changeDoors(id, delta) { 
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) { room.doors = Math.max(0, room.doors + delta); updateCalculations(); renderRoomValues(); render(); }
+    }
+    function changeWindows(id, delta) { 
+        const room = state.budget.rooms.find(r => r.id === id);
+        if(room) { room.windows = Math.max(0, room.windows + delta); updateCalculations(); renderRoomValues(); render(); }
+    }
+
+    function renderRoomValues() {
+        state.budget.rooms.forEach(room => {
+            const elL = document.getElementById('lbl-length-' + room.id); if(elL) elL.innerText = room.length + ' ft';
+            const elW = document.getElementById('lbl-width-' + room.id); if(elW) elW.innerText = room.width + ' ft';
+            const elH = document.getElementById('lbl-height-' + room.id); if(elH) elH.innerText = room.height + ' ft';
+            const elD = document.getElementById('lbl-doors-' + room.id); if(elD) elD.innerText = room.doors;
+            const elWin = document.getElementById('lbl-windows-' + room.id); if(elWin) elWin.innerText = room.windows;
+        });
+    }
+
+    function renderRoomsUI() {
+        const container = document.getElementById('rooms-container');
+        if(!container) return;
+        
+        let html = '<div class="room-tabs" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:12px; margin-bottom:16px;">';
+        state.budget.rooms.forEach((room, index) => {
+            const isActive = state.budget.activeRoomId === room.id;
+            html += `<button onclick="setActiveRoom(${room.id})" style="flex-shrink:0; padding:8px 16px; border-radius:20px; border:2px solid ${isActive ? 'var(--color-ink-black)' : 'rgba(0,0,0,0.1)'}; background:${isActive ? 'var(--color-ink-black)' : 'transparent'}; color:${isActive ? '#fff' : 'var(--color-ink-black)'}; font-weight:700; cursor:pointer; font-size:14px; transition:all 0.2s;">Room ${index + 1}</button>`;
+        });
+        html += `<button onclick="addRoom()" style="flex-shrink:0; padding:8px 16px; border-radius:20px; border:2px dashed rgba(0,0,0,0.2); background:transparent; color:var(--color-ink-black); font-weight:700; cursor:pointer; font-size:14px; transition:all 0.2s;"><i class="fas fa-plus"></i></button>`;
+        html += '</div>';
+
+        const activeRoom = state.budget.rooms.find(r => r.id === state.budget.activeRoomId);
+        if (activeRoom) {
+            const roomIndex = state.budget.rooms.findIndex(r => r.id === activeRoom.id);
+            html += `
+          <div class="calc-card" style="position:relative; margin-bottom:16px; animation: slideUp 0.3s ease;">
+            ${state.budget.rooms.length > 1 ? `<button onclick="removeRoom(${activeRoom.id})" style="position:absolute; top:24px; right:24px; background:rgba(255,0,0,0.1); border:none; color:var(--color-rust-red); cursor:pointer; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center;"><i class="fas fa-trash"></i></button>` : ''}
+            <h2>Room ${roomIndex + 1} Dimensions</h2>
+            <div class="range-wrap">
+              <div class="range-header"><span>Length</span> <span id="lbl-length-${activeRoom.id}">${activeRoom.length} ft</span></div>
+              <input type="range" min="1" max="50" value="${activeRoom.length}" oninput="updateBudget(${activeRoom.id}, 'length', this.value)">
+            </div>
+            <div class="range-wrap">
+              <div class="range-header"><span>Width</span> <span id="lbl-width-${activeRoom.id}">${activeRoom.width} ft</span></div>
+              <input type="range" min="1" max="50" value="${activeRoom.width}" oninput="updateBudget(${activeRoom.id}, 'width', this.value)">
+            </div>
+            <div class="range-wrap">
+              <div class="range-header"><span>Height</span> <span id="lbl-height-${activeRoom.id}">${activeRoom.height} ft</span></div>
+              <input type="range" min="1" max="20" value="${activeRoom.height}" oninput="updateBudget(${activeRoom.id}, 'height', this.value)">
+            </div>
+
+            <div class="pill-toggle" onclick="toggleCeiling(${activeRoom.id})">
+              <div>Include Ceiling</div>
+              <div class="toggle-switch ${activeRoom.includeCeiling ? 'active' : ''}"><div class="toggle-thumb"></div></div>
+            </div>
+
+            <div class="counter-row">
+              <div style="font-weight:700;">Doors <span style="display:block;font-size:12px;font-weight:500;color:var(--color-sage-mute)">Subtracts 21 sq.ft</span></div>
+              <div class="counter-wrap">
+                <button class="counter-btn" onclick="changeDoors(${activeRoom.id}, -1)">-</button>
+                <span class="counter-val" id="lbl-doors-${activeRoom.id}">${activeRoom.doors}</span>
+                <button class="counter-btn" onclick="changeDoors(${activeRoom.id}, 1)">+</button>
+              </div>
+            </div>
+            <div class="counter-row">
+              <div style="font-weight:700;">Windows <span style="display:block;font-size:12px;font-weight:500;color:var(--color-sage-mute)">Subtracts 15 sq.ft</span></div>
+              <div class="counter-wrap">
+                <button class="counter-btn" onclick="changeWindows(${activeRoom.id}, -1)">-</button>
+                <span class="counter-val" id="lbl-windows-${activeRoom.id}">${activeRoom.windows}</span>
+                <button class="counter-btn" onclick="changeWindows(${activeRoom.id}, 1)">+</button>
+              </div>
+            </div>
+            <h3 style="margin-top:24px; font-size:18px; font-weight:800;">Surface Condition</h3>
+            <div class="choice-grid" style="margin-top:8px;">
+              <div class="choice-btn ${activeRoom.condition === 'repaint' ? 'active' : ''}" onclick="setCondition(${activeRoom.id}, 'repaint')">
+                <div class="choice-title">Repainting <i class="fas fa-check-circle ${activeRoom.condition === 'repaint' ? '' : 'hidden'}"></i></div>
+                <div class="choice-desc">Already painted.</div>
+              </div>
+              <div class="choice-btn ${activeRoom.condition === 'new' ? 'active' : ''}" onclick="setCondition(${activeRoom.id}, 'new')">
+                <div class="choice-title">New Wall <i class="fas fa-check-circle ${activeRoom.condition === 'new' ? '' : 'hidden'}"></i></div>
+                <div class="choice-desc">Bare plaster.</div>
+              </div>
+            </div>            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:24px; margin-bottom:12px;">
+              <h3 style="font-size:18px; font-weight:800; margin:0;">Primer Coats</h3>
+              <button class="btn-ghost" onclick="addCoat(${activeRoom.id}, 'primer')" style="padding:4px 12px; font-size:12px;"><i class="fas fa-plus"></i> Add Coat</button>
+            </div>
+            ${activeRoom.primer.length === 0 ? '<div style="font-size:13px; color:var(--color-sage-mute); margin-bottom:16px;">No primer coats required.</div>' : ''}
+            <div style="display:flex; flex-wrap:wrap; gap:16px; padding-top:8px;">
+              ${activeRoom.primer.map((coat, i) => `
+                <div style="flex-shrink:0; padding:10px 16px; border-radius:16px; background:var(--color-ink-black); display:inline-flex; flex-direction:column; align-items:center; position:relative; min-width:80px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                  <button onclick="removeCoatLayer(${activeRoom.id}, 'primer', ${coat.id})" style="position:absolute; top:6px; right:8px; background:transparent; color:rgba(255,255,255,0.6); border:none; padding:0; cursor:pointer; width:16px; height:16px; display:flex; align-items:center; justify-content:center; transition:color 0.2s, transform 0.2s;" onmouseover="this.style.color='#fff'; this.style.transform='scale(1.15)';" onmouseout="this.style.color='rgba(255,255,255,0.6)'; this.style.transform='scale(1)';"><i class="fas fa-times" style="font-size:10px;"></i></button>
+                  <div style="font-weight:700; font-size:11px; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:4px;">Coat ${i+1}</div>
+                  <div style="display:flex; align-items:baseline;">
+                    <input type="number" value="${coat.coverage}" min="10" max="300" onchange="updateCoatCoverage(${activeRoom.id}, 'primer', ${coat.id}, this.value)" style="width:60px; border:none; border-bottom:1px solid rgba(255,255,255,0.3); background:transparent; font-weight:800; font-size:16px; text-align:center; padding:0; outline:none; color:var(--color-white-plate, #fff);">
+                    <span style="font-size:11px; font-weight:600; color:rgba(255,255,255,0.6); margin-left:4px;">cvrge</span>
+                  </div>
+                </div>
+              `).join('')}
+              </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:24px; margin-bottom:12px;">
+              <h3 style="font-size:18px; font-weight:800; margin:0;">Emulsion Coats</h3>
+              <button class="btn-ghost" onclick="addCoat(${activeRoom.id}, 'emulsion')" style="padding:4px 12px; font-size:12px;"><i class="fas fa-plus"></i> Add Coat</button>
+            </div>
+            ${activeRoom.emulsion.length === 0 ? '<div style="font-size:13px; color:var(--color-sage-mute); margin-bottom:16px;">No emulsion coats required.</div>' : ''}
+            <div style="display:flex; flex-wrap:wrap; gap:16px; padding-top:8px;">
+              ${activeRoom.emulsion.map((coat, i) => `
+                <div style="flex-shrink:0; padding:10px 16px; border-radius:16px; background:var(--color-ink-black); display:inline-flex; flex-direction:column; align-items:center; position:relative; min-width:80px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+                  <button onclick="removeCoatLayer(${activeRoom.id}, 'emulsion', ${coat.id})" style="position:absolute; top:6px; right:8px; background:transparent; color:rgba(255,255,255,0.6); border:none; padding:0; cursor:pointer; width:16px; height:16px; display:flex; align-items:center; justify-content:center; transition:color 0.2s, transform 0.2s;" onmouseover="this.style.color='#fff'; this.style.transform='scale(1.15)';" onmouseout="this.style.color='rgba(255,255,255,0.6)'; this.style.transform='scale(1)';"><i class="fas fa-times" style="font-size:10px;"></i></button>
+                  <div style="font-weight:700; font-size:11px; color:rgba(255,255,255,0.6); text-transform:uppercase; margin-bottom:4px;">Coat ${i+1}</div>
+                  <div style="display:flex; align-items:baseline;">
+                    <input type="number" value="${coat.coverage}" min="10" max="300" onchange="updateCoatCoverage(${activeRoom.id}, 'emulsion', ${coat.id}, this.value)" style="width:60px; border:none; border-bottom:1px solid rgba(255,255,255,0.3); background:transparent; font-weight:800; font-size:16px; text-align:center; padding:0; outline:none; color:var(--color-white-plate, #fff);">
+                    <span style="font-size:11px; font-weight:600; color:rgba(255,255,255,0.6); margin-left:4px;">cvrge</span>
+                  </div>
+                </div>
+              `).join('')}
+              </div>
+          </div>
+            `;
+        }
+        container.innerHTML = html;
+    }
+    
     function setAreaSource(useCalc) { state.quotation.useCalculatedArea = useCalc; updateCalculations(); render(); }
     function updateManualArea(val) { state.quotation.manualArea = parseInt(val) || 0; updateCalculations(); render(); }
     function setTier(t) { state.quotation.tier = t; updateCalculations(); render(); }
@@ -1225,9 +1489,122 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+        // PDP Integration Check
+        const calcCtxStr = sessionStorage.getItem('calculatorContext');
+        if (calcCtxStr) {
+            try {
+                const ctx = JSON.parse(calcCtxStr);
+                if (ctx.sizes) {
+                    if (!calc.budget) calc.budget = {};
+                    calc.budget.availableSizes = ctx.sizes;
+                }
+                // Force all emulsion coats in all rooms to use this coverage
+                state.budget.rooms.forEach(room => {
+                    room.emulsion.forEach(coat => {
+                        coat.coverage = ctx.coverage;
+                    });
+                });
+                
+                // Show the PDP integration popup
+                const popup = document.getElementById('pdp-integration-popup');
+                if (popup) {
+                    popup.style.display = 'block';
+                    document.getElementById('pdp-calc-product-name').innerText = ctx.name;
+                }
+            } catch(e) {}
+        }
+
+        renderRoomsUI();
         updateCalculations();
         render();
     });
+
+    // Override render slightly to update the PDP calc result dynamically
+    const originalRender = render;
+    let pdpIdleTimeout = null;
+    
+    function minimizePopup() {
+        document.getElementById('pdp-integration-popup').style.display = 'none';
+        document.getElementById('pdp-minimized-btn').style.display = 'flex';
+    }
+    
+    function maximizePopup() {
+        document.getElementById('pdp-minimized-btn').style.display = 'none';
+        document.getElementById('pdp-integration-popup').style.display = 'block';
+        resetPdpIdleTimeout();
+    }
+    
+    function resetPdpIdleTimeout() {
+        if (pdpIdleTimeout) clearTimeout(pdpIdleTimeout);
+        // Only auto-minimize if the popup is currently expanded
+        if (document.getElementById('pdp-integration-popup').style.display !== 'none') {
+            pdpIdleTimeout = setTimeout(minimizePopup, 5000); // 5 seconds idle
+        }
+    }
+
+    render = function() {
+        originalRender();
+        resetPdpIdleTimeout(); // Reset idle timer on any calculator change
+        
+        const pdpResult = document.getElementById('pdp-calc-result');
+        if (pdpResult && document.getElementById('pdp-integration-popup').style.display !== 'none') {
+            const liters = calc.budget.emulsionLiters || 0;
+            const buckets = getPaintBuckets(liters, calc?.budget?.availableSizes);
+            
+            if (buckets && buckets.totalLiters > 0) {
+                let breakdown = [];
+                Object.keys(buckets).forEach(size => {
+                    if (size !== 'totalLiters' && buckets[size] > 0) {
+                        breakdown.push(`${size}L x ${buckets[size]}`);
+                    }
+                });
+                pdpResult.innerHTML = `<span style="font-size:16px;">${breakdown.join('<br>')}</span>`;
+            } else {
+                pdpResult.innerText = '0 L';
+            }
+        }
+    };
+
+    function continueToPDP() {
+        const liters = calc.budget.emulsionLiters || 0;
+        const calcCtxStr = sessionStorage.getItem('calculatorContext');
+        if (calcCtxStr && liters > 0) {
+            try {
+                const buckets = getPaintBuckets(liters, calc?.budget?.availableSizes);
+                const ctx = JSON.parse(calcCtxStr);
+                sessionStorage.setItem('calculatedQuantity', JSON.stringify({
+                    productId: ctx.productId,
+                    buckets: buckets // Send the full bucket breakdown
+                }));
+            } catch(e) {}
+        }
+        window.location.href = 'products.html';
+    }
   </script>
+
+  <!-- Minimized Circular Button -->
+  <div id="pdp-minimized-btn" onclick="maximizePopup()" style="display: none; position: fixed; right: 32px; bottom: 32px; width: 56px; height: 56px; background: var(--color-ink-black); border-radius: 50%; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 1000; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; color: var(--color-lime-spark);" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+      <i class="fas fa-calculator" style="font-size: 20px;"></i>
+  </div>
+
+  <!-- PDP Integration Popup -->
+  <div id="pdp-integration-popup" style="display: none; position: fixed; right: 32px; bottom: 32px; width: 240px; background: var(--color-white-plate, #fff); border-radius: 20px; padding: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); z-index: 1000; border: 1px solid rgba(0,0,0,0.05); animation: slideUp 0.4s ease forwards;" onmouseenter="if(pdpIdleTimeout) clearTimeout(pdpIdleTimeout);" onmouseleave="resetPdpIdleTimeout();">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-sage-mute);">Calculating for</div>
+          <i class="fas fa-compress-alt" onclick="minimizePopup()" style="font-size: 14px; color: var(--color-sage-mute); cursor: pointer; padding: 4px; border-radius: 4px; background: rgba(0,0,0,0.05);" title="Minimize"></i>
+      </div>
+      
+      <div id="pdp-calc-product-name" style="font-size: 14px; font-weight: 800; color: var(--color-ink-black); margin-bottom: 12px; line-height: 1.2;"></div>
+      
+      <div style="background: var(--color-linen-canvas, #f7f6f3); padding: 12px; border-radius: 10px; margin-bottom: 12px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--color-sage-mute); margin-bottom: 4px;">Recommended</div>
+          <div style="font-size: 18px; font-weight: 900; color: var(--color-ink-black);" id="pdp-calc-result">0 L</div>
+      </div>
+      
+      <button onclick="continueToPDP()" style="width: 100%; padding: 12px; background: var(--color-cobalt-band, #2354c4); color: white; border: none; border-radius: 10px; font-size: 13px; font-weight: 800; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+          Continue <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>
+      </button>
+  </div>
 </body>
 </html>

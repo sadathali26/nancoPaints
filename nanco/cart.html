@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nanco Paints | Shopping Cart</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets.js"></script>
+
+    <style>
+        :root {
+            /* Colors */
+            --color-lime-spark: #d2e823;
+            --color-linen-canvas: #f3f3f1;
+            --color-white-plate: #ffffff;
+            --color-ink-black: #000000;
+            --color-silver-border: #e2e8f0;
+            
+            /* Border Radius */
+            --radius-cards: 24px;
+            --radius-buttons: 99px;
+            --radius-nav: 12px;
+        }
+
+        body {
+            background-color: var(--color-linen-canvas);
+            color: var(--color-ink-black);
+            font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+            margin: 0;
+        }
+        
+        .bento-card {
+            background: var(--color-white-plate);
+            border-radius: var(--radius-cards);
+            border: 1px solid var(--color-silver-border);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .bento-card:hover {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn-primary {
+            background: var(--color-lime-spark);
+            color: var(--color-ink-black);
+            border-radius: var(--radius-buttons);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+        
+        .cart-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .cart-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .cart-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen py-8 px-4 md:px-8">
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
+        
+        <!-- Left Side Cart Column -->
+        <div class="lg:col-span-8 flex flex-col h-[calc(100vh-4rem)]">
+            
+            <!-- Header Block -->
+            <div class="bento-card px-6 py-4 mb-4 flex justify-between items-center flex-shrink-0">
+                <a href="products.html" class="group relative flex items-center justify-start w-36 h-10 overflow-hidden cursor-pointer">
+                    <img src="../nanco/assets/light-logo.png" alt="Nanco Paints" class="h-8 absolute left-0 transition-all duration-300 group-hover:opacity-0 group-hover:-translate-x-4" id="cart-logo">
+                    <div class="absolute left-0 w-max px-4 h-10 bg-slate-100 rounded-full flex items-center justify-center gap-2 text-slate-700 font-bold transition-all duration-300 opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 hover:bg-slate-200">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </div>
+                </a>
+                <div class="text-right">
+                    <h1 class="text-lg font-bold leading-tight text-slate-800">Shopping Cart</h1>
+                    <p id="cart-count-subtitle" class="text-slate-500 font-medium text-xs mt-0.5">0 items</p>
+                </div>
+            </div>
+            
+            <!-- Items Container -->
+            <div id="cart-container" class="flex-grow overflow-y-auto cart-scroll pb-6 flex flex-col gap-4 pr-2">
+                <!-- Cart items will be injected here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Right Side Summary Column -->
+        <div class="lg:col-span-4 flex flex-col gap-6">
+            
+            <!-- Promo Code Block -->
+            <div class="bento-card p-6">
+                <h3 class="text-lg font-bold mb-3 flex items-center gap-2">
+                    <i class="fas fa-tag text-blue-500"></i> Promo Code
+                </h3>
+                <div class="flex gap-2">
+                    <input type="text" placeholder="Enter discount code" class="w-full bg-slate-50 border border-slate-200 rounded-[12px] px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-medium">
+                    <button class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-3 rounded-[12px] font-semibold transition-colors">Apply</button>
+                </div>
+            </div>
+
+            <!-- Order Summary Block -->
+            <div class="bento-card p-6 md:p-8 flex-grow flex flex-col">
+                <div>
+                    <h3 class="text-xl font-bold mb-6">Order Summary</h3>
+                    
+                    <div class="space-y-4 text-slate-600 font-medium">
+                        <div class="flex justify-between items-center">
+                            <span>Subtotal</span>
+                            <span id="summary-subtotal" class="text-slate-900">₹0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Tax (0%)</span>
+                            <span id="summary-tax" class="text-slate-900">₹0</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Discount</span>
+                            <span id="summary-discount" class="text-slate-900">₹0</span>
+                        </div>
+                        <div class="h-px bg-slate-200 my-4"></div>
+                        <div class="flex justify-between items-center text-xl font-extrabold text-slate-900 pt-2">
+                            <span>Total</span>
+                            <span id="summary-total">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-auto pt-8">
+                    <a href="address.html" class="btn-primary w-full text-lg font-extrabold py-4 flex justify-center items-center gap-2 shadow-sm">
+                        Checkout Now
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let cart = [];
+
+        function init() {
+            try {
+                const savedCart = localStorage.getItem('cart');
+                if (savedCart) cart = JSON.parse(savedCart);
+            } catch (e) {
+                console.error("Error loading cart", e);
+            }
+            renderCart();
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        function updateQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity < 1) {
+                cart[index].quantity = 1;
+            }
+            saveCart();
+        }
+
+        window.removeItem = function(index) {
+            cart.splice(index, 1);
+            saveCart();
+            renderCart();
+        }
+        
+        window.removeShade = function(index) {
+            if (cart[index]) {
+                cart[index].shade = null;
+                saveCart();
+                renderCart();
+            }
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-container');
+            const subtitle = document.getElementById('cart-count-subtitle');
+            
+            container.innerHTML = '';
+            
+            let totalItems = 0;
+            let totalCost = 0;
+            
+            cart.forEach(item => {
+                totalItems += item.quantity;
+                totalCost += (item.quantity * item.priceVal);
+            });
+            
+            subtitle.innerText = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full text-center p-8">
+                        <div class="w-24 h-24 bg-white rounded-[2rem] flex items-center justify-center mb-4 border border-slate-200 shadow-sm">
+                            <i class="fas fa-shopping-cart text-3xl text-slate-300"></i>
+                        </div>
+                        <h3 class="text-xl font-extrabold text-slate-800 mb-2">Your cart is empty</h3>
+                        <p class="text-slate-500 mb-6 font-medium">Looks like you haven't added anything to your cart yet.</p>
+                        <a href="products.html" class="btn-primary px-8 py-3 font-bold inline-block">Start Shopping</a>
+                    </div>
+                `;
+                document.getElementById('summary-subtotal').innerText = '₹0';
+                document.getElementById('summary-total').innerText = '₹0';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.quantity * item.priceVal;
+                
+                let shadeStr = '';
+                if (item.shade) {
+                    let estimatedPrice = "₹50 - ₹150";
+                    if (item.shade.hex) {
+                        let hex = item.shade.hex.replace('#', '');
+                        if (hex.length === 6) {
+                            let r = parseInt(hex.substring(0, 2), 16);
+                            let g = parseInt(hex.substring(2, 4), 16);
+                            let b = parseInt(hex.substring(4, 6), 16);
+                            let luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                            
+                            // Lighter colors (high luma) = cheaper stainer
+                            if (luma > 220) estimatedPrice = "₹10 - ₹50";
+                            else if (luma > 150) estimatedPrice = "₹50 - ₹120";
+                            else if (luma > 80) estimatedPrice = "₹120 - ₹250";
+                            else estimatedPrice = "₹250 - ₹450+";
+                        }
+                    }
+
+                    shadeStr = `
+                        <div class="mt-4 bg-slate-50 rounded-2xl p-4 border border-slate-200 relative shadow-sm">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-full border-2 border-white shadow-md flex-shrink-0" style="background-color: ${item.shade.hex}"></div>
+                                <div class="flex-grow">
+                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Selected Shade</div>
+                                    <div class="text-base font-bold text-slate-800">${item.shade.name} <span class="text-slate-500 font-semibold text-sm">(${item.shade.id})</span></div>
+                                    <div class="text-xs text-slate-600 mt-2 font-medium bg-white inline-block px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">
+                                        <i class="fas fa-magic text-indigo-400 mr-1.5"></i> Estimated Tinting: <span class="font-bold text-slate-800">${estimatedPrice}</span>
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 mt-2 italic">*Stainer cost varies by base & formulation. Finalized at checkout.</div>
+                                </div>
+                                <button onclick="removeShade(${index})" class="text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors w-8 h-8 flex items-center justify-center rounded-full" title="Remove Shade">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                }
+
+                const imgSrc = item.image || '../nanco/assets/bucket.png';
+                const catStr = item.category ? item.category : 'Paint';
+                
+                const itemEl = document.createElement('div');
+                itemEl.className = "flex flex-col sm:flex-row items-start sm:items-center p-5 bento-card gap-5";
+                
+                itemEl.innerHTML = `
+                    <div class="w-24 h-24 bg-slate-50 rounded-xl flex items-center justify-center flex-shrink-0 border border-slate-100 overflow-hidden p-2">
+                        <img src="${imgSrc}" class="w-full h-full object-contain mix-blend-multiply" onerror="this.src='../nanco/assets/bucket.png'" alt="${item.name}">
+                    </div>
+                    <div class="flex-grow w-full">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">${catStr}</div>
+                                <h3 class="text-lg font-bold text-slate-900 leading-tight">${item.name}</h3>
+                                <p class="text-slate-500 font-medium text-sm mt-1">${item.unitName}</p>
+                                ${shadeStr}
+                            </div>
+                            <div class="text-right ml-4">
+                                <span class="font-extrabold text-lg">₹${itemTotal}</span>
+                                <div class="text-xs text-slate-400 font-medium mt-1">₹${item.priceVal} each</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200">
+                                <button onclick="updateQuantity(${index}, -1)" class="w-8 h-8 rounded-full flex items-center justify-center bg-white text-slate-700 font-bold shadow-sm hover:bg-slate-50 transition-colors">-</button>
+                                <span class="w-10 text-center font-bold">${item.quantity}</span>
+                                <button onclick="updateQuantity(${index}, 1)" class="w-8 h-8 rounded-full flex items-center justify-center bg-white text-slate-700 font-bold shadow-sm hover:bg-slate-50 transition-colors">+</button>
+                            </div>
+                            
+                            <button onclick="removeItem(${index})" class="w-10 h-10 rounded-full bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors">
+                                <i class="fas fa-trash-alt text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(itemEl);
+            });
+
+            document.getElementById('summary-subtotal').innerText = '₹' + totalCost;
+            document.getElementById('summary-total').innerText = '₹' + totalCost;
+        }
+
+        window.onload = function() {
+            if (typeof NancoAssets !== 'undefined' && NancoAssets.logos.light) {
+                document.getElementById('cart-logo').src = NancoAssets.logos.light;
+            }
+            init();
+        };
+    </script>
+</body>
+</html>

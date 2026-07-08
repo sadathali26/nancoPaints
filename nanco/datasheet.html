@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nanco Paints | Technical Datasheet</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .a4-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            position: relative;
+        }
+
+        /* --- Header Section --- */
+        .top-band {
+            display: flex;
+            background-color: #b5d0e8;
+            height: 260px;
+            position: relative;
+        }
+
+        .top-band-left {
+            width: 65%;
+            padding: 60px 40px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-title {
+            font-size: 52px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: 2px;
+            color: #1a1a1a;
+            margin: 0 0 16px 0;
+        }
+
+        .sub-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: #333;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .top-band-right {
+            width: 35%;
+            position: relative;
+        }
+
+        .white-flag {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 280px; /* Overlaps into mid-band */
+            background: #ffffff;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 85%, 0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 60px;
+            z-index: 10;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            color: #333;
+            margin-bottom: 12px;
+        }
+
+        .logo-text {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #333;
+        }
+
+        /* --- Description & Image Section --- */
+        .mid-band {
+            display: flex;
+            min-height: 280px;
+        }
+
+        .mid-band-left {
+            width: 65%;
+            background-color: #f4f4f4;
+            padding: 60px 40px 40px 40px;
+            box-sizing: border-box;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #1a1a1a;
+            margin: 0 0 16px 0;
+            text-transform: uppercase;
+        }
+
+        .desc-text {
+            font-size: 14px;
+            line-height: 1.7;
+            color: #555;
+            margin: 0;
+        }
+
+        .mid-band-right {
+            width: 35%;
+            background-color: #cccccc;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        /* --- Main Content Section --- */
+        .bottom-band {
+            display: flex;
+            padding: 60px 0;
+        }
+
+        .bottom-left {
+            width: 65%;
+            padding: 0 40px;
+            box-sizing: border-box;
+        }
+
+        .bottom-right {
+            width: 35%;
+            padding: 0 40px 0 0;
+            box-sizing: border-box;
+        }
+
+        /* Table Styles */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 12px 8px;
+            font-weight: 700;
+            color: #333;
+            background-color: #eaeaea;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .data-table td {
+            padding: 12px 8px;
+            font-weight: 500;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: 2px solid #ccc;
+        }
+
+        /* List Styles */
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0 0 0;
+        }
+
+        .features-list li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .features-list li i {
+            position: absolute;
+            left: 0;
+            top: 3px;
+            color: #555;
+            background: #e0e0e0;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 10px;
+        }
+
+        .guide-list {
+            padding-left: 16px;
+            margin: 20px 0 0 0;
+        }
+
+        .guide-list li {
+            margin-bottom: 12px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* --- Footer Section --- */
+        .footer-band {
+            background-color: #333333;
+            color: #ffffff;
+            display: flex;
+            padding: 40px;
+            gap: 40px;
+        }
+
+        .footer-col {
+            flex: 1;
+            font-size: 12px;
+            line-height: 1.8;
+            color: #cccccc;
+        }
+
+        .footer-col strong {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .btn-print {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            background: #333;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        @media print {
+            .btn-print { display: none; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .a4-container { max-width: 100%; margin: 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="a4-container">
+        
+        <!-- Header Section -->
+        <div class="top-band">
+            <div class="top-band-left">
+                <h1 class="main-title">TECHNICAL<br>DATA SHEET</h1>
+                <p class="sub-title" id="ds-brand">LOADING PRODUCT...</p>
+            </div>
+            <div class="top-band-right">
+                <div class="white-flag">
+                    <i class="fas fa-paint-roller logo-icon"></i>
+                    <div class="logo-text">NANCO</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Section -->
+        <div class="mid-band">
+            <div class="mid-band-left">
+                <h2 class="section-title">DESCRIPTION</h2>
+                <p class="desc-text" id="ds-desc">Fetching technical description...</p>
+            </div>
+            <div class="mid-band-right" id="ds-image">
+                <!-- Image gets set as background via JS -->
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="bottom-band">
+            <div class="bottom-left">
+                <h2 class="section-title">TECHNICAL DATA</h2>
+                <table class="data-table">
+                    <thead>
+                        <tr id="table-headers">
+                            <th>Information</th>
+                            <!-- Dynamic Variant Columns -->
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bottom-right">
+                <h2 class="section-title">FEATURES</h2>
+                <ul class="features-list" id="ds-features">
+                    <li><i class="fas fa-spinner fa-spin"></i> Loading...</li>
+                </ul>
+
+                <h2 class="section-title" style="margin-top: 50px;">QUICK GUIDE</h2>
+                <ul class="guide-list" id="ds-guide">
+                    <li>Loading...</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="footer-band">
+            <div class="footer-col" style="flex: 2;">
+                <strong>Nanco Paints Factory Outlet</strong><br>
+                "TRK Marketing is a trusted paint and coatings supplier based in Thirunavaya, Kerala. We offer a wide range of high-quality decorative and industrial paints under our Nanco/Paints brand — from interior and exterior wall paints to primers, putties and allied painting supplies. Committed to quality and customer satisfaction, we serve both homeowners and contractors across Thirunavaya, Kuttippuram, Edappal, Valanchery and nearby regions. With expert guidance, timely supply and friendly service, we make painting projects hassle-free for our clients"
+            </div>
+            <div class="footer-col" style="flex: 1;">
+                <strong>Contact & Info</strong><br>
+                Phone: 081118 04398<br>
+                Hours: Open &middot; Closes 7:30 pm<br>
+                Rating: 5.01 Google review
+            </div>
+            <div class="footer-col" style="flex: 1;">
+                <strong>Location</strong><br>
+                Address: Tirur, Thirunavaya,<br>
+                Kerala 676301<br>
+                (Paint store in Tirunavaya, Kerala)
+            </div>
+        </div>
+
+    </div>
+
+    <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Document</button>
+
+    <script>
+        const SUPABASE_URL = 'https://sawbglsfqyayuysqcjto.supabase.co';
+        const ANON_KEY = 'sb_publishable_dT1pmAyJdFf1pbGn_yw7_g_E2UFN5l2';
+        let product = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const productData = localStorage.getItem('datasheetProduct');
+            if (!productData) {
+                document.getElementById('ds-brand').innerText = "PRODUCT NOT FOUND";
+                return;
+            }
+
+            try {
+                product = JSON.parse(productData);
+                
+                // Set Brand / Name
+                document.getElementById('ds-brand').innerText = product.name || 'Unknown Product';
+                
+                // Set Description
+                document.getElementById('ds-desc').innerText = product.desc || 'No detailed description available for this product.';
+
+                // Set Image
+                if (product.images && product.images.length > 0) {
+                    document.getElementById('ds-image').style.backgroundImage = `url('${product.images[0]}')`;
+                }
+
+                // Features
+                if (product.specs && product.specs.length > 0) {
+                    document.getElementById('ds-features').innerHTML = product.specs.map(s => `<li><i class="fas fa-check"></i> ${s}</li>`).join('');
+                } else {
+                    document.getElementById('ds-features').innerHTML = `<li><i class="fas fa-check"></i> Premium quality formulation.</li>`;
+                }
+
+                // Quick Guide
+                if (product.notes && product.notes.length > 0) {
+                    document.getElementById('ds-guide').innerHTML = product.notes.map(n => `<li>${n}</li>`).join('');
+                } else {
+                    document.getElementById('ds-guide').innerHTML = `<li>Standard preparation and application guidelines apply.</li>`;
+                }
+
+                // Fetch Single Selected Variant Datasheet
+                await fetchAndRenderData();
+
+            } catch (err) {
+                console.error(err);
+                document.getElementById('ds-brand').innerText = "ERROR LOADING DATA";
+            }
+        });
+
+        async function fetchAndRenderData() {
+            let targetVariantId = localStorage.getItem('datasheetVariantId');
+            if (!targetVariantId && product.pricing && product.pricing.length > 0) {
+                targetVariantId = product.pricing[0].variant_id;
+            }
+
+            if (!targetVariantId) {
+                document.getElementById('table-body').innerHTML = `<tr><td colspan="2">No technical data available.</td></tr>`;
+                return;
+            }
+
+            // Define Table Header for single variant
+            const selectedPricing = product.pricing.find(p => p.variant_id === targetVariantId) || { unit: 'Details' };
+            document.getElementById('table-headers').innerHTML = `<th>Information</th><th>${selectedPricing.unit}</th>`;
+
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/datasheets?item_id=eq.${targetVariantId}&select=*`, {
+                    headers: {
+                        'apikey': ANON_KEY,
+                        'Authorization': `Bearer ${ANON_KEY}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) throw new Error('Supabase fetch failed');
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    const ds = data[0];
+                    const excludeFields = ['id', 'item_id', 'created_at', 'images', 'name', 'category'];
+                    let tbodyHtml = '';
+
+                    for (const [key, value] of Object.entries(ds)) {
+                        if (!excludeFields.includes(key) && value) {
+                            // Format the key to look like a nice label (e.g., surface_dry -> Surface Dry)
+                            const label = key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                            tbodyHtml += `<tr><td>${label}</td><td>${value}</td></tr>`;
+                        }
+                    }
+
+                    if (tbodyHtml === '') {
+                        tbodyHtml = `<tr><td colspan="2">No detailed specifications found for this variant.</td></tr>`;
+                    }
+                    document.getElementById('table-body').innerHTML = tbodyHtml;
+                } else {
+                    document.getElementById('table-body').innerHTML = `<tr><td colspan="2">Datasheet for this specific variant not found in database.</td></tr>`;
+                }
+
+            } catch (err) {
+                console.error("Error fetching variant datasheets:", err);
+                document.getElementById('table-body').innerHTML = `<tr><td colspan="2">Failed to load technical parameters from server.</td></tr>`;
+            }
+        }
+    </script>
+</body>
+</html>

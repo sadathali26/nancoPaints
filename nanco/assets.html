@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nanco Assets Gallery</title>
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #f8f9fa;
+      color: #333;
+      margin: 0;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      margin-top: 50px;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .asset-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #eee;
+    }
+    .asset-media {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .asset-media.contain {
+      object-fit: contain;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .asset-info {
+      padding: 15px;
+      font-size: 0.9rem;
+      word-break: break-all;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+    .asset-info a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+    .asset-info a:hover {
+      text-decoration: underline;
+    }
+    .asset-type {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      color: #777;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Nanco Assets Gallery</h1>
+  <p style="text-align: center; color: #666; max-width: 600px; margin: 0 auto 40px auto; line-height: 1.5;">
+    This page aggregates all the image and video links used on the main Nanco index page for easy viewing and management.
+  </p>
+
+  <h2 class="section-title">Logos</h2>
+  <div class="gallery-grid">
+    <div class="asset-card">
+      <img class="asset-media contain" style="background:#111;" src="../nanco/assets/light-logo.png" alt="Light Logo" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/light-logo.png" target="_blank">../nanco/assets/light-logo.png</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media contain" src="../nanco/assets/dark-logo.png" alt="Dark Logo" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/dark-logo.png" target="_blank">../nanco/assets/dark-logo.png</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media contain" src="../nanco/assets/logo.png" alt="Logo" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/logo.png" target="_blank">../nanco/assets/logo.png</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Hero & Background Images</h2>
+  <div class="gallery-grid">
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/house-bg.png" alt="House BG" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/house-bg.png" target="_blank">../nanco/assets/house-bg.png</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/house-bg1.png" alt="House BG 1" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/house-bg1.png" target="_blank">../nanco/assets/house-bg1.png</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media contain" src="../nanco/assets/bucket.png" alt="Bucket" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/bucket.png" target="_blank">../nanco/assets/bucket.png</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media contain" src="../nanco/assets/HERO-PAINT.png" alt="Hero Paint" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/HERO-PAINT.png" target="_blank">../nanco/assets/HERO-PAINT.png</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Color of the Year (Palettes)</h2>
+  <div class="gallery-grid">
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/pallette-bg/1.jpg" alt="Palette 1" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/pallette-bg/1.jpg" target="_blank">../nanco/assets/pallette-bg/1.jpg</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/pallette-bg/2.jpg" alt="Palette 2" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/pallette-bg/2.jpg" target="_blank">../nanco/assets/pallette-bg/2.jpg</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/pallette-bg/3.jpg" alt="Palette 3" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/pallette-bg/3.jpg" target="_blank">../nanco/assets/pallette-bg/3.jpg</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/pallette-bg/4.jpg" alt="Palette 4" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/pallette-bg/4.jpg" target="_blank">../nanco/assets/pallette-bg/4.jpg</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/pallette-bg/5.jpg" alt="Palette 5" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/pallette-bg/5.jpg" target="_blank">../nanco/assets/pallette-bg/5.jpg</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/pallette-bg/6.jpg" alt="Palette 6" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/pallette-bg/6.jpg" target="_blank">../nanco/assets/pallette-bg/6.jpg</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="../nanco/assets/pallette-bg/8.jpg" alt="Palette 8" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image</div>
+        <a href="../nanco/assets/pallette-bg/8.jpg" target="_blank">../nanco/assets/pallette-bg/8.jpg</a>
+      </div>
+    </div>
+    
+    <!-- Asian Paints external links -->
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/moonlit-silk-updated-desktop.webp" alt="Moonlit Silk" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/moonlit-silk-updated-desktop.webp" target="_blank">moonlit-silk-updated-desktop.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/cardinal-room-desktop.webp" alt="Cardinal" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/cardinal-room-desktop.webp" target="_blank">cardinal-room-desktop.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/terra-room-desktop.webp" alt="Dessert Love" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/terra-room-desktop.webp" target="_blank">terra-room-desktop.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/silver-escapade-room-desktop.webp" alt="Silverfish" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/silver-escapade-room-desktop.webp" target="_blank">silver-escapade-room-desktop.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/transcendent-pink-room-desktop.webp" alt="Clematis Pink" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/transcendent-pink-room-desktop.webp" target="_blank">transcendent-pink-room-desktop.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/cherish-room-desktop.webp" alt="Ivy League" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/cherish-room-desktop.webp" target="_blank">cherish-room-desktop.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/curiosity-room-desktop.webp" alt="Retro Blue" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/colour-of-the-year/desktop/curiosity-room-desktop.webp" target="_blank">curiosity-room-desktop.webp</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Featured Products</h2>
+  <div class="gallery-grid">
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/featured-product-royale-glitz-desk-updated.webp" alt="Royale Glitz Desk" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/featured-product-royale-glitz-desk-updated.webp" target="_blank">royale-glitz-desk-updated.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/royale-glitz-mobile-updated.webp" alt="Royale Glitz Mobile" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/royale-glitz-mobile-updated.webp" target="_blank">royale-glitz-mobile-updated.webp</a>
+      </div>
+    </div>
+    
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/all-protek-desktop-updated.webp" alt="All Protek Desk" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/all-protek-desktop-updated.webp" target="_blank">all-protek-desktop-updated.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/all-protek-mobile-updated.webp" alt="All Protek Mobile" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/all-protek-mobile-updated.webp" target="_blank">all-protek-mobile-updated.webp</a>
+      </div>
+    </div>
+
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/ultima-protek-desktop-updated.webp" alt="Ultima Protek Desk" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/ultima-protek-desktop-updated.webp" target="_blank">ultima-protek-desktop-updated.webp</a>
+      </div>
+    </div>
+    <div class="asset-card">
+      <img class="asset-media" src="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/ultima-protek-mobile-updated.webp" alt="Ultima Protek Mobile" loading="lazy">
+      <div class="asset-info">
+        <div class="asset-type">Image (External)</div>
+        <a href="https://static.asianpaints.com/content/dam/asian_paints/home-ph2/featured-products/ultima-protek-mobile-updated.webp" target="_blank">ultima-protek-mobile-updated.webp</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Videos</h2>
+  <div class="gallery-grid">
+    <script>
+      for (let i = 1; i <= 9; i++) {
+        document.write(`
+          <div class="asset-card">
+            <video class="asset-media" controls muted preload="metadata">
+              <source src="../nanco/videos/${i}.mp4" type="video/mp4">
+            </video>
+            <div class="asset-info">
+              <div class="asset-type">Video (MP4)</div>
+              <a href="../nanco/videos/${i}.mp4" target="_blank">../nanco/videos/${i}.mp4</a>
+            </div>
+          </div>
+        `);
+      }
+    </script>
+  </div>
+
+</body>
+</html>

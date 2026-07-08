@@ -447,22 +447,10 @@ a, button, [role="button"], label {
 #card-paint-workers {
   position: relative;
   overflow: hidden;
-  background: var(--color-lime-spark);
-  color: #fff !important;
-}
-#card-paint-workers::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('assets/Paint Workers Portal.jpg');
   background-size: cover;
   background-position: center;
-  border-radius: calc(var(--radius-cards) - 5px);
-  z-index: 0;
-  pointer-events: none;
+  color: #fff !important;
 }
 #card-paint-workers > * {
   position: relative;
@@ -476,30 +464,14 @@ a, button, [role="button"], label {
   color: #fff !important;
   border: 1px solid rgba(255, 255, 255, 0.4);
 }
-@media (max-width: 600px) {
-  #card-paint-workers::before {
-    border-radius: calc(var(--radius-cards) - 5px);
-  }
-}
+
 #card-factory-outlets {
   position: relative;
   overflow: hidden;
-  background: var(--color-white-plate);
-  color: #fff;
-}
-#card-factory-outlets::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('assets/outlet.png');
   background-size: cover;
   background-position: center;
-  border-radius: calc(var(--radius-cards) - 5px);
-  z-index: 0;
-  pointer-events: none;
+  color: #fff;
 }
 #card-factory-outlets > * {
   position: relative;
@@ -524,22 +496,10 @@ a, button, [role="button"], label {
 #card-products {
   position: relative;
   overflow: hidden;
-  background: var(--color-cobalt-deep);
-  color: #fff;
-}
-#card-products::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('assets/products.jpg');
   background-size: cover;
   background-position: center;
-  border-radius: calc(var(--radius-cards) - 5px);
-  z-index: 0;
-  pointer-events: none;
+  color: #fff;
 }
 #card-products > * {
   position: relative;
@@ -556,22 +516,10 @@ a, button, [role="button"], label {
 #card-color-studio {
   position: relative;
   overflow: hidden;
-  background: var(--color-forest-ink);
-  color: #fff;
-}
-#card-color-studio::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('assets/colors.jpg');
   background-size: cover;
   background-position: center;
-  border-radius: calc(var(--radius-cards) - 5px);
-  z-index: 0;
-  pointer-events: none;
+  color: #fff;
 }
 #card-color-studio > * {
   position: relative;
@@ -588,22 +536,10 @@ a, button, [role="button"], label {
 #card-catalogs {
   position: relative;
   overflow: hidden;
-  background: var(--color-lavender-mist);
-  color: #fff;
-}
-#card-catalogs::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('assets/catelog.jpg');
   background-size: cover;
   background-position: center;
-  border-radius: calc(var(--radius-cards) - 5px);
-  z-index: 0;
-  pointer-events: none;
+  color: #fff;
 }
 #card-catalogs > * {
   position: relative;
@@ -620,22 +556,10 @@ a, button, [role="button"], label {
 #card-calculator {
   position: relative;
   overflow: hidden;
-  background: var(--color-mustard-pop);
-  color: #fff;
-}
-#card-calculator::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('assets/paint calculator.jpg');
   background-size: cover;
   background-position: center;
-  border-radius: calc(var(--radius-cards) - 5px);
-  z-index: 0;
-  pointer-events: none;
+  color: #fff;
 }
 #card-calculator > * {
   position: relative;
@@ -652,22 +576,10 @@ a, button, [role="button"], label {
 #card-visualizer {
   position: relative;
   overflow: hidden;
-  background: var(--color-maroon-plate);
-  color: #fff;
-}
-#card-visualizer::before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url('assets/paint visualizer.jpg');
   background-size: cover;
   background-position: center;
-  border-radius: calc(var(--radius-cards) - 5px);
-  z-index: 0;
-  pointer-events: none;
+  color: #fff;
 }
 #card-visualizer > * {
   position: relative;

@@ -28,10 +28,28 @@ mobile_nav_js = re.search(r'(// Mobile nav toggle.*?// Close on outside click.*?
 lang_toggle_js = re.search(r'(// Language switcher toggle.*?\}\n    \})', index_content, re.DOTALL)
 
 js_to_append = ""
-if mobile_nav_js:
-    js_to_append += "\n" + mobile_nav_js.group(1) + "\n"
-if lang_toggle_js:
-    js_to_append += "\n" + lang_toggle_js.group(1) + "\n"
+if mobile_nav_js or lang_toggle_js:
+    js_to_append = "\n    document.addEventListener('DOMContentLoaded', () => {\n"
+    if mobile_nav_js:
+        wrapped_mobile_nav = """        const btn = document.getElementById('mobile-menu-btn');
+        const nav = document.getElementById('mobile-nav');
+        if (btn && nav) {
+          btn.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('open');
+            btn.setAttribute('aria-expanded', isOpen);
+          });
+          document.addEventListener('click', (e) => {
+            if (!btn.contains(e.target) && !nav.contains(e.target)) {
+              nav.classList.remove('open');
+              btn.setAttribute('aria-expanded', false);
+            }
+          });
+        }"""
+        js_to_append += "        // Mobile nav toggle\n" + wrapped_mobile_nav + "\n"
+    if lang_toggle_js:
+        indented_lang = "\n".join("      " + line for line in lang_toggle_js.group(1).splitlines())
+        js_to_append += "\n" + indented_lang + "\n"
+    js_to_append += "    });\n"
 
 # 3. Inject JS into the <script> block of nav_tail_replacement
 if js_to_append:

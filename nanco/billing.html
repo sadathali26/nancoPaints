@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nanco Paints | Invoice</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            background-color: #d17a59; 
+            color: #333333;
+            font-family: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+            position: relative;
+            padding-bottom: 40px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        .header-logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #000;
+            padding-left: 40px;
+            letter-spacing: -1px;
+        }
+
+        .header-pill {
+            background: #ea580c;
+            padding: 24px 40px 24px 60px;
+            border-radius: 50px 0 0 50px;
+            color: white;
+            text-align: right;
+            min-width: 250px;
+        }
+
+        .header-pill h1 {
+            margin: 0 0 12px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        
+        .header-pill p {
+            margin: 4px 0;
+            font-size: 11px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .invoice-to {
+            padding: 0 40px;
+            margin-bottom: 40px;
+        }
+
+        .invoice-to h4 {
+            font-size: 12px;
+            color: #666;
+            margin: 0 0 8px 0;
+            font-weight: 600;
+        }
+
+        .invoice-to h2 {
+            font-size: 20px;
+            color: #000;
+            margin: 0 0 8px 0;
+            font-weight: 800;
+        }
+
+        .invoice-to p {
+            font-size: 12px;
+            color: #666;
+            margin: 4px 0;
+            line-height: 1.5;
+            max-width: 250px;
+            font-weight: 500;
+        }
+
+        .table-wrapper {
+            padding: 0 40px;
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #ea580c;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 12px 20px;
+            text-align: left;
+        }
+
+        td {
+            padding: 24px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+
+        td.desc-cell {
+            width: 45%;
+        }
+
+        .item-name {
+            font-weight: 800;
+            color: #000;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+        
+        .item-desc {
+            color: #888;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .td-center { text-align: center; }
+        .td-right { text-align: right; }
+
+        /* Bottom Section */
+        .bottom-section {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 40px;
+            margin-bottom: 40px;
+        }
+
+        .payment-info {
+            width: 50%;
+        }
+        
+        .payment-info h4 {
+            color: #ea580c;
+            font-size: 12px;
+            margin: 0 0 16px 0;
+            font-weight: 700;
+        }
+        
+        .payment-grid {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 12px 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .payment-grid .label {
+            color: #888;
+        }
+
+        .totals-block {
+            width: 40%;
+        }
+        
+        .totals-grid {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+        
+        .totals-grid div:nth-child(even) {
+            text-align: right;
+            color: #000;
+        }
+        
+        .totals-grid div.label {
+            color: #666;
+        }
+
+        .grand-total-pill {
+            background: #ea580c;
+            border-radius: 50px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 16px 24px;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        /* Footer */
+        .footer-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 40px;
+        }
+        
+        .terms {
+            width: 50%;
+            padding: 0 40px;
+        }
+        
+        .terms h4 {
+            color: #ea580c;
+            font-size: 12px;
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+        
+        .terms p {
+            font-size: 10px;
+            color: #888;
+            line-height: 1.6;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .signature {
+            width: 30%;
+            text-align: center;
+            padding-right: 40px;
+        }
+        
+        .signature-line {
+            border-top: 1px solid #ccc;
+            padding-top: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #000;
+        }
+
+        .thanks-pill {
+            background: #fef3c7;
+            color: #ea580c;
+            font-weight: 800;
+            font-size: 18px;
+            padding: 24px 40px;
+            border-radius: 0 50px 50px 0;
+            display: inline-block;
+            margin-top: 60px;
+            width: 45%;
+            box-sizing: border-box;
+        }
+
+        /* Actions Bar */
+        .actions-bar {
+            background: #ffffff;
+            padding: 24px 40px 0;
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+            border-top: 1px dashed #cccccc;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-download {
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .btn-whatsapp {
+            background: #ea580c;
+            color: #ffffff;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background-color: #ffffff;
+            }
+            .invoice-container {
+                box-shadow: none;
+                border-radius: 0;
+                padding-bottom: 0;
+            }
+            .actions-bar {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="invoice-container">
+        
+        <div class="header-top">
+            <div class="header-logo">NANCO PAINTS</div>
+            <div class="header-pill">
+                <h1>INVOICE</h1>
+                <p>Invoice # <span id="invoice-number">--</span></p>
+                <p>Invoice Date : <span id="invoice-date">--</span></p>
+                <p>Account : N/A</p>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; padding: 0 40px; margin-bottom: 40px;">
+            <div class="invoice-to" style="padding: 0; margin: 0; width: 45%;">
+                <h4>Billed From,</h4>
+                <h2>Nanco Paints Factory Outlet</h2>
+                <p>Tirur, Thirunavaya, Kerala 676301<br>Phone: 081118 04398</p>
+            </div>
+            <div class="invoice-to" style="padding: 0; margin: 0; width: 45%; text-align: right;" id="billed-to-section">
+                <h4>Billed To,</h4>
+                <h2 id="bill-name">Customer Name</h2>
+                <p style="margin-left: auto; max-width: 250px;" id="bill-address">
+                    Customer Address<br>
+                    City, State, Pincode<br>
+                    Phone: --
+                </p>
+            </div>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="border-radius: 20px 0 0 20px; padding-left: 30px;">Item Descriptions</th>
+                        <th class="td-center">Qty</th>
+                        <th class="td-center">Unit Price</th>
+                        <th class="td-right" style="border-radius: 0 20px 20px 0; padding-right: 30px;">Total</th>
+                    </tr>
+                </thead>
+                <tbody id="invoice-items">
+                    <!-- Items -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bottom-section">
+            <div class="payment-info">
+                <h4>Payment Info</h4>
+                <div class="payment-grid">
+                    <div class="label">Account no</div><div>: 1234567890</div>
+                    <div class="label">A/C Name</div><div>: Nanco Paints</div>
+                    <div class="label">Bank Details</div><div>: State Bank of India</div>
+                </div>
+            </div>
+            
+            <div class="totals-block">
+                <div class="totals-grid">
+                    <div class="label">Sub Total</div><div id="invoice-subtotal">₹0</div>
+                    <div class="label">Tax 0%</div><div>₹0</div>
+                    <div class="label">Discount</div><div>₹0</div>
+                </div>
+                <div class="grand-total-pill">
+                    <span>Grand Total:</span>
+                    <span id="invoice-total">₹0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+            <div class="terms">
+                <h4>Term & Conditions</h4>
+                <p>Goods once sold will not be taken back or exchanged. Subject to Tirur jurisdiction only. All payments should be made in favor of Nanco Paints.</p>
+            </div>
+            <div class="signature">
+                <div class="signature-line">Nanco Paints Outlet</div>
+            </div>
+        </div>
+
+        <div class="thanks-pill">
+            Thanks Your Business!
+        </div>
+
+        <div class="actions-bar">
+            <button class="btn btn-download" onclick="window.print()">
+                <i class="fas fa-download"></i> Download / Print
+            </button>
+            <button class="btn btn-whatsapp" onclick="payViaWhatsApp()">
+                <i class="fab fa-whatsapp" style="font-size: 18px;"></i> Pay via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+
+        function loadInvoice() {
+            try {
+                const savedCart = localStorage.getItem('cart');
+                if (savedCart) cart = JSON.parse(savedCart);
+            } catch (e) {
+                console.error("Error loading cart", e);
+            }
+
+            // Set Date and Invoice No
+            const date = new Date();
+            const dateStr = date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '/');
+            document.getElementById('invoice-date').innerText = dateStr;
+            document.getElementById('invoice-number').innerText = Math.floor(Math.random() * 1000000);
+
+            // Load User Address
+            try {
+                const userAddressStr = localStorage.getItem('userAddress');
+                if (userAddressStr) {
+                    const addr = JSON.parse(userAddressStr);
+                    document.getElementById('bill-name').innerText = addr.fullname || 'Customer Name';
+                    document.getElementById('bill-address').innerHTML = `
+                        ${addr.door ? addr.door + ', ' : ''}${addr.street || ''}<br>
+                        ${addr.city || ''}, ${addr.state || ''} ${addr.pincode || ''}<br>
+                        Phone: ${addr.phone || '--'}
+                    `;
+                }
+            } catch (e) {
+                console.error("Error loading address", e);
+            }
+
+            const tbody = document.getElementById('invoice-items');
+            
+            if (cart.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color:#888;">No items in cart.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.quantity * item.priceVal;
+                total += itemTotal;
+
+                html += `
+                    <tr>
+                        <td class="desc-cell" style="padding-left: 30px;">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-desc">${item.unitName} - ${item.color}</div>
+                        </td>
+                        <td class="td-center">${item.quantity}</td>
+                        <td class="td-center">₹${item.priceVal}</td>
+                        <td class="td-right" style="padding-right: 30px;">₹${itemTotal}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            document.getElementById('invoice-subtotal').innerText = '₹' + total;
+            document.getElementById('invoice-total').innerText = '₹' + total;
+        }
+
+        async function payViaWhatsApp() {
+            if (cart.length === 0) {
+                alert("Your invoice is empty.");
+                return;
+            }
+
+            const phone = "918111804398"; // Factory outlet phone number
+            let message = "*New Order from Invoice*\n\n";
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                const itemTotal = item.quantity * item.priceVal;
+                total += itemTotal;
+                message += `${index + 1}. *${item.name}* (${item.unitName})\n`;
+                message += `   Qty: ${item.quantity} x ₹${item.priceVal} = ₹${itemTotal}\n`;
+            });
+
+            message += `\n*Grand Total: ₹${total}*\n\n`;
+            
+            try {
+                const userAddressStr = localStorage.getItem('userAddress');
+                if (userAddressStr) {
+                    const addr = JSON.parse(userAddressStr);
+                    message += `*Delivery Details:*\n`;
+                    message += `Name: ${addr.fullname || 'N/A'}\n`;
+                    message += `Phone: ${addr.phone || 'N/A'}\n`;
+                    message += `Address: ${addr.door ? addr.door + ', ' : ''}${addr.street || ''}, ${addr.city || ''}, ${addr.state || ''} ${addr.pincode || ''}\n`;
+                    if (addr.lat && addr.lng) {
+                        message += `Location: https://maps.google.com/?q=${addr.lat},${addr.lng}\n`;
+                    }
+                    message += `\n`;
+                }
+            } catch (e) {}
+
+            message += "Please let me know how to proceed with the payment.";
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+
+            try {
+                // Temporarily hide the action buttons so they don't appear in the bill image
+                const actionsBar = document.querySelector('.actions-bar');
+                actionsBar.style.display = 'none';
+                
+                const canvas = await html2canvas(document.querySelector('.invoice-container'), {
+                    scale: 2,
+                    useCORS: true
+                });
+                
+                actionsBar.style.display = 'flex'; // Restore buttons
+                
+                canvas.toBlob(async (blob) => {
+                    try {
+                        // Try copying to clipboard for easy pasting
+                        await navigator.clipboard.write([
+                            new ClipboardItem({ [blob.type]: blob })
+                        ]);
+                        alert("Invoice copied to clipboard! \n\nOnce WhatsApp opens, just PASTE the image into the chat.");
+                    } catch (err) {
+                        // Fallback: Download the file if clipboard fails
+                        alert("Invoice image will be downloaded. \n\nOnce WhatsApp opens, please ATTACH the downloaded image.");
+                        const file = new File([blob], 'nanco-invoice.png', { type: 'image/png' });
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(file);
+                        link.download = 'nanco-invoice.png';
+                        link.click();
+                    }
+                    
+                    // Open WhatsApp
+                    setTimeout(() => {
+                        window.open(whatsappUrl, '_blank');
+                    }, 500);
+
+                }, 'image/png');
+
+            } catch (error) {
+                console.error("Screenshot failed:", error);
+                // If screenshot fails, just open WhatsApp with text
+                window.open(whatsappUrl, '_blank');
+            }
+        }
+
+        // Initialize
+        loadInvoice();
+    </script>
+</body>
+</html>

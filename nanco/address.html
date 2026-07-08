@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nanco Paints | Delivery Address</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link rel="stylesheet" href="../nanco/style.css">
+  <link rel="icon" type="image/png" data-asset-href="logos.main">
+  
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    body {
+        background-color: var(--color-linen-canvas, #f3f3f1);
+        padding-top: 100px; /* space for floating nav */
+    }
+
+    .address-section {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    .address-card {
+        background: var(--color-white-plate, #ffffff);
+        border-radius: var(--radius-cards, 24px);
+        padding: 40px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+    }
+    
+    .address-header {
+        margin-bottom: 32px;
+    }
+
+    .address-header h1 {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+    
+    .address-header p {
+        color: var(--color-sage-mute, #6b7280);
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 12px;
+        font-family: inherit;
+        font-size: 15px;
+        background: #f9f9f9;
+        transition: border-color 0.3s;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--color-ink-black, #000);
+        background: #fff;
+    }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    @media (max-width: 600px) {
+        .grid-2 {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    #map {
+        height: 300px;
+        width: 100%;
+        border-radius: 16px;
+        margin-bottom: 24px;
+        border: 1px solid rgba(0,0,0,0.1);
+        z-index: 1; /* Keep map below nav */
+    }
+
+    .btn-submit {
+        background: var(--color-lime-spark, #d2e823);
+        color: var(--color-ink-black, #000);
+        border: none;
+        padding: 16px 32px;
+        border-radius: 99px;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition: transform 0.2s;
+    }
+
+    .btn-submit:hover {
+        transform: scale(0.98);
+    }
+
+    .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(0,0,0,0.1);
+        border-top-color: #000;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-left: 10px;
+        vertical-align: middle;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- FLOATING NAV (Simplified) -->
+  <nav class="nav-float" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="nav-logo" href="index.html" id="nav-home-logo">
+        <img src="assets/logos/light-logo.png" alt="Nanco Paints" style="height: 30px;">
+      </a>
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="cart.html">Cart</a></li>
+      </ul>
+      <div class="nav-right">
+        <a class="nav-cta" href="cart.html" style="background: transparent; color: #000;"><i class="fas fa-arrow-left"></i> Back to Cart</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="address-section">
+      <div class="address-card">
+        <div class="address-header">
+            <h1>Delivery Details</h1>
+            <p>Please enter your details and drop a pin for accurate delivery.</p>
+        </div>
+
+        <form id="address-form">
+            <h3 style="margin-bottom: 16px; font-size: 18px;"><i class="fas fa-user"></i> Personal Details</h3>
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="fullname" class="form-control" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="phone" class="form-control" required placeholder="+91 9876543210">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="email" class="form-control" placeholder="john@example.com">
+            </div>
+
+            <hr style="border: none; border-top: 1px dashed #ccc; margin: 32px 0;">
+
+            <h3 style="margin-bottom: 16px; font-size: 18px;"><i class="fas fa-map-marker-alt"></i> Location Tracker</h3>
+            <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Drag the marker or click on the map to pinpoint your exact delivery location. This will auto-fill your address.</p>
+            
+            <div id="map"></div>
+
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Pincode * <span class="loading-spinner" id="pincode-spinner"></span></label>
+                    <input type="text" id="pincode" class="form-control" required placeholder="676301" maxlength="6">
+                </div>
+                <div class="form-group">
+                    <label>City / District *</label>
+                    <input type="text" id="city" class="form-control" required placeholder="Tirur">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>State *</label>
+                <input type="text" id="state" class="form-control" required placeholder="Kerala">
+            </div>
+
+            <div class="form-group">
+                <label>Door No. / Building / Flat *</label>
+                <input type="text" id="door" class="form-control" required placeholder="Door No. 123">
+            </div>
+
+            <div class="form-group">
+                <label>Street / Area / Locality *</label>
+                <input type="text" id="street" class="form-control" required placeholder="Main Road">
+            </div>
+
+            <!-- Hidden field for map coordinates -->
+            <input type="hidden" id="lat">
+            <input type="hidden" id="lng">
+
+            <button type="submit" class="btn-submit" style="margin-top: 24px;">Proceed to Billing <i class="fas fa-arrow-right" style="margin-left: 8px;"></i></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Initialize Map
+        const defaultLat = 10.9156; // Malappuram approximate
+        const defaultLng = 75.9238;
+        
+        const map = L.map('map').setView([defaultLat, defaultLng], 12);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
+
+        // Try to get user's actual location
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+                map.setView([lat, lng], 15);
+                marker.setLatLng([lat, lng]);
+                updateCoords(lat, lng);
+                fetchAddressFromCoords(lat, lng);
+            });
+        }
+
+        // Map events
+        map.on('click', function(e) {
+            marker.setLatLng(e.latlng);
+            updateCoords(e.latlng.lat, e.latlng.lng);
+            fetchAddressFromCoords(e.latlng.lat, e.latlng.lng);
+        });
+
+        marker.on('dragend', function(e) {
+            const position = marker.getLatLng();
+            updateCoords(position.lat, position.lng);
+            fetchAddressFromCoords(position.lat, position.lng);
+        });
+
+        function updateCoords(lat, lng) {
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+        }
+
+        // Reverse Geocoding (Coordinates to Address)
+        async function fetchAddressFromCoords(lat, lng) {
+            try {
+                const response = await fetch(\`https://nominatim.openstreetmap.org/reverse?format=json&lat=\${lat}&lon=\${lng}&zoom=18&addressdetails=1\`);
+                const data = await response.json();
+                
+                if (data && data.address) {
+                    const addr = data.address;
+                    
+                    if (addr.postcode) document.getElementById('pincode').value = addr.postcode;
+                    if (addr.state) document.getElementById('state').value = addr.state;
+                    
+                    const city = addr.city || addr.town || addr.village || addr.county;
+                    if (city) document.getElementById('city').value = city;
+                    
+                    const street = addr.road || addr.suburb || addr.neighbourhood;
+                    if (street) document.getElementById('street').value = street;
+                }
+            } catch (error) {
+                console.error("Error fetching address:", error);
+            }
+        }
+
+        // Pincode Lookup API
+        const pincodeInput = document.getElementById('pincode');
+        const spinner = document.getElementById('pincode-spinner');
+        
+        pincodeInput.addEventListener('input', async function() {
+            const pin = this.value;
+            if (pin.length === 6) {
+                spinner.style.display = 'inline-block';
+                try {
+                    const res = await fetch(\`https://api.postalpincode.in/pincode/\${pin}\`);
+                    const data = await res.json();
+                    
+                    if (data && data[0] && data[0].Status === "Success") {
+                        const postOffice = data[0].PostOffice[0];
+                        document.getElementById('city').value = postOffice.District;
+                        document.getElementById('state').value = postOffice.State;
+                    }
+                } catch (error) {
+                    console.error("Pincode lookup failed", error);
+                } finally {
+                    spinner.style.display = 'none';
+                }
+            }
+        });
+
+        // Form Submission
+        const form = document.getElementById('address-form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const addressData = {
+                fullname: document.getElementById('fullname').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                door: document.getElementById('door').value,
+                street: document.getElementById('street').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                pincode: document.getElementById('pincode').value,
+                lat: document.getElementById('lat').value,
+                lng: document.getElementById('lng').value
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('userAddress', JSON.stringify(addressData));
+            
+            // Redirect to billing
+            window.location.href = 'billing.html';
+        });
+    });
+  </script>
+</body>
+</html>
