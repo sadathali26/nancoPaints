@@ -1416,6 +1416,11 @@
                             <select id="pdp-unit-select" onchange="updatePdpPrice()" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px;">
                             </select>
                         </div>
+                        <div style="flex: 1;">
+                            <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Color Code</label>
+                            <input type="text" id="pdp-color-input" placeholder="#HEX or Name" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px;">
+                            <div id="pdp-color-error" style="color: var(--color-coral-red, #ef4444); font-size: 11px; margin-top: 4px; display: none; font-weight: 800; padding-left: 12px;">Color not found in studio</div>
+                        </div>
                         <div style="width: 130px;">
                             <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Quantity</label>
                             <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.05); border-radius: 99px; padding: 6px; border: 1px solid rgba(0,0,0,0.1); box-sizing: border-box; height: 54px;">
@@ -2154,6 +2159,11 @@
             currentPdpProduct = products.find(p => p.id === id);
             if (!currentPdpProduct) return;
 
+            const colorInput = document.getElementById('pdp-color-input');
+            if (colorInput) colorInput.value = '';
+            const colorError = document.getElementById('pdp-color-error');
+            if (colorError) colorError.style.display = 'none';
+
             const pdpBucketContainer = document.getElementById('pdp-bucket-container');
             pdpBucketContainer.innerHTML = generateProductVisualHTML(currentPdpProduct);
             if (currentPdpProduct.images && currentPdpProduct.images.length > 0) {
@@ -2468,6 +2478,59 @@
             currentSelectedShade = null;
             sessionStorage.removeItem('selectedShade');
             document.getElementById('pdp-selected-shade').style.display = 'none';
+        }
+
+        let globalPaletteData = null;
+        async function fetchPaletteData() {
+            if (globalPaletteData) return globalPaletteData;
+            try {
+                const response = await fetch('multi_category_palette.json');
+                globalPaletteData = await response.json();
+                return globalPaletteData;
+            } catch (e) {
+                console.error('Error loading palette', e);
+                return null;
+            }
+        }
+
+        async function checkColorCode(val) {
+            const errorEl = document.getElementById('pdp-color-error');
+            if(errorEl) errorEl.style.display = 'none';
+            if (!val || val.trim() === '') {
+                clearSelectedShade();
+                return;
+            }
+            
+            const query = val.trim().toLowerCase();
+            const palette = await fetchPaletteData();
+            if (!palette) return;
+            
+            let foundColor = null;
+            for (const cat in palette) {
+                if(cat === 'Temperature: Neutral') continue;
+                for (const c of palette[cat]) {
+                    if (c.id.toLowerCase() === query || c.hex.toLowerCase() === query || c.name.toLowerCase() === query) {
+                        foundColor = c;
+                        break;
+                    }
+                }
+                if (foundColor) break;
+            }
+            
+            if (foundColor) {
+                currentSelectedShade = foundColor;
+                const pdpSelectedShadeContainer = document.getElementById('pdp-selected-shade');
+                const pdpSelectedShadeColor = document.getElementById('pdp-selected-shade-color');
+                const pdpSelectedShadeName = document.getElementById('pdp-selected-shade-name');
+                if (pdpSelectedShadeContainer) {
+                    pdpSelectedShadeColor.style.background = foundColor.hex;
+                    pdpSelectedShadeName.textContent = foundColor.name;
+                    pdpSelectedShadeContainer.style.display = 'flex';
+                }
+            } else {
+                if(errorEl) errorEl.style.display = 'block';
+                clearSelectedShade();
+            }
         }
 
         // --- 5. CART & INVOICE LOGIC ---
