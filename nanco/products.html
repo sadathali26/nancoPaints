@@ -18,16 +18,19 @@
             100% { transform: scale(1); opacity: 1; }
         }
         .offer-pill-badge {
-            background: radial-gradient(circle at 30% 30%, #cd9bff 0%, #a265ec 50%, #7636c7 100%);
+            background: radial-gradient(circle at 30% 30%, #ff9b9b 0%, #cd3434 50%, #741616 100%);
             box-shadow: 
-                0 6px 12px rgba(118,54,199,0.4), 
+                0 6px 12px rgba(205,52,52,0.4), 
                 inset -3px -5px 10px rgba(0,0,0,0.2), 
                 inset 3px 5px 10px rgba(255,255,255,0.5);
             color: #ffffff;
-            padding: 8px 16px;
-            border-radius: 99px;
-            display: inline-block;
-            text-align: center;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             animation: badge-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
             position: relative;
             z-index: 10;
