@@ -503,7 +503,7 @@
             background: var(--color-white-plate);
             border-radius: var(--radius-cards);
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             max-height: 90vh;
             display: flex;
             flex-direction: column;
@@ -1393,19 +1393,9 @@
                         </div>
                     </div>
                     
-                    <!-- Datasheet and Color Input -->
-                    <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 24px;">
-                        <button onclick="openDatasheetModal()" id="btn-pdp-details" style="background:var(--color-linen-canvas); border:1px solid rgba(0,0,0,0.05); color:var(--color-ink-black); border-radius:99px; padding:16px 24px; font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content: center; gap:8px; height: 54px; flex: 1;">
-                            <i class="fas fa-file-pdf"></i> <span>Datasheet</span> <i class="fas fa-chevron-down" id="icon-pdp-details"></i>
-                        </button>
-                        
-                        <!-- Inline Color Code -->
-                        <div style="flex: 1.5; position: relative;">
-                            <div id="pdp-color-swatch-inline" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; background: #ddd; display: none; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 2;"></div>
-                            <input type="text" id="pdp-color-input" placeholder="Color Code" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px 16px 16px 48px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px; transition: all 0.2s;">
-                            <div id="pdp-color-error" style="position: absolute; color: var(--color-coral-red, #ef4444); font-size: 11px; bottom: -18px; left: 24px; display: none; font-weight: 800;">Color not found</div>
-                        </div>
-                    </div>
+                    <button onclick="openDatasheetModal()" id="btn-pdp-details" style="background:var(--color-linen-canvas); border:1px solid rgba(0,0,0,0.05); color:var(--color-ink-black); border-radius:99px; padding:8px 16px; font-size:12px; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:8px; margin-bottom:16px; width:fit-content;">
+                        <i class="fas fa-file-pdf"></i> <span>View Datasheet</span> <i class="fas fa-chevron-down" id="icon-pdp-details"></i>
+                    </button>
                     <div id="pdp-more-details" style="display:none; gap:24px; margin-bottom:24px; border: 1px solid rgba(0,0,0,0.05); border-radius:12px; padding: 16px; background:var(--color-linen-canvas);">
                         <div style="flex:1;">
                             <h4 style="font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom:8px;">Specifications</h4>
@@ -1444,6 +1434,14 @@
                             <style>
                                 #pdp-quantity::-webkit-inner-spin-button, #pdp-quantity::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
                             </style>
+                        </div>
+                        <div style="flex: 1.2;">
+                            <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Color Code</label>
+                            <div style="position: relative;">
+                                <div id="pdp-color-swatch-inline" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; background: #ddd; display: none; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 2;"></div>
+                                <input type="text" id="pdp-color-input" placeholder="Color Code" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px 16px 16px 48px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px; transition: all 0.2s;">
+                                <div id="pdp-color-error" style="position: absolute; color: var(--color-coral-red, #ef4444); font-size: 11px; bottom: -18px; left: 24px; display: none; font-weight: 800;">Color not found</div>
+                            </div>
                         </div>
                     </div>
                     
