@@ -2013,11 +2013,6 @@
                     const imgBgStyle = (p.images && p.images.length > 0)
                         ? `background-color:${p.color}20;`
                         : `background: linear-gradient(160deg, ${p.color}dd 0%, ${p.color}88 100%);`;
-                    // Tags: finish + spec
-                    const tagArr = [];
-                    if (p.finish) tagArr.push(p.finish);
-                    p.specs.slice(0, 2).forEach(s => tagArr.push(s));
-                    const tagsHtml = tagArr.slice(0,3).map(t => `<span class="pc2-tag">${t}</span>`).join('');
                     const displayPrice = offerPrice > 0 ? offerPrice : p.priceVal;
                     const catName = p.category ? p.category.charAt(0).toUpperCase() + p.category.slice(1) : 'Premium';
                     return `
@@ -2027,7 +2022,7 @@
                                 <div style="position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 40%); z-index:3; pointer-events:none;"></div>
                                 ${badgeHtml ? `<div style="position:absolute;top:12px;right:12px;z-index:5;">${badgeHtml}</div>` : ''}
                                 <div style="position:absolute; bottom:12px; left:12px; right:12px; z-index:5; display:flex; flex-direction:column; gap:4px;">
-                                    ${p.range ? `<span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 4px rgba(0,0,0,0.8);">${p.range}</span>` : ''}
+                                    ${p.finish ? `<span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 4px rgba(0,0,0,0.8);">${p.finish}</span>` : ''}
                                     <h3 class="pc2-name" style="margin:0; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.8); font-size:24px; font-weight:900; line-height:1.1;">${p.name}</h3>
                                 </div>
                             </div>
@@ -2036,7 +2031,7 @@
                                     <div style="font-size: 18px; font-weight: 900; color: #1e2330; letter-spacing: -0.5px;">${catName} Paint</div>
                                     ${p.coverage ? `<div style="margin-top: 2px; font-size: 13px;">Coverage: ${p.coverage} sq.m/L</div>` : ''}
                                 </div>
-                                ${tagsHtml ? `<div class="pc2-tags" style="margin-bottom: 12px;">${tagsHtml}</div>` : ''}
+                                ${p.range ? `<div style="font-size: 13px; font-weight: 800; color: var(--color-sage-mute); margin-bottom: 12px; display: inline-block; background: var(--color-moss-tint); padding: 4px 10px; border-radius: 99px;">${p.range} Range</div>` : ''}
                                 <div style="flex: 1;"></div>
                                 <div style="display: flex; justify-content: space-between; align-items: center; background: #c8d90f; padding: 14px 18px; border-radius: 36px;">
                                     <div>
