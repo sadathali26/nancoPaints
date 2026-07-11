@@ -2013,11 +2013,10 @@
                     const imgBgStyle = (p.images && p.images.length > 0)
                         ? `background-color:${p.color}20;`
                         : `background: linear-gradient(160deg, ${p.color}dd 0%, ${p.color}88 100%);`;
-                    // Tags: unit + finish + spec
+                    // Tags: finish + spec
                     const tagArr = [];
-                    if (selectedUnitLabel) tagArr.push(selectedUnitLabel);
                     if (p.finish) tagArr.push(p.finish);
-                    p.specs.slice(0, 1).forEach(s => tagArr.push(s));
+                    p.specs.slice(0, 2).forEach(s => tagArr.push(s));
                     const tagsHtml = tagArr.slice(0,3).map(t => `<span class="pc2-tag">${t}</span>`).join('');
                     const displayPrice = offerPrice > 0 ? offerPrice : p.priceVal;
                     const catName = p.category ? p.category.charAt(0).toUpperCase() + p.category.slice(1) : 'Premium';
