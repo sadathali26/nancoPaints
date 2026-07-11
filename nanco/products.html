@@ -1706,22 +1706,24 @@
             container.setAttribute('data-idx', idx);
             
             const img = container.querySelector('.carousel-img');
-            
-            // Smooth crossfade transition
+            // True blend transition: wait for new image load, then fade old image over it
             const oldImg = img.cloneNode(true);
             oldImg.style.position = 'absolute';
-            oldImg.style.zIndex = '1';
-            oldImg.style.transition = 'opacity 0.5s ease';
+            oldImg.style.zIndex = '2';
+            oldImg.style.transition = 'opacity 0.6s ease';
+            oldImg.style.mixBlendMode = 'multiply'; // authentic blend effect
             container.insertBefore(oldImg, img);
             
-            img.style.opacity = '0';
-            img.src = images[idx];
+            img.style.zIndex = '1';
             
-            setTimeout(() => {
+            img.onload = function() {
+                extractBottomColor(this);
                 oldImg.style.opacity = '0';
-                img.style.opacity = '1';
-                setTimeout(() => oldImg.remove(), 500);
-            }, 10);
+                setTimeout(() => oldImg.remove(), 600);
+                img.onload = function() { extractBottomColor(this); };
+            };
+            
+            img.src = images[idx];
             
             const dots = container.querySelectorAll('.carousel-dots div');
             dots.forEach((dot, i) => {
