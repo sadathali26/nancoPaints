@@ -2036,9 +2036,9 @@
                                 </div>
                                 ${tagsHtml ? `<div class="pc2-tags" style="margin-bottom: 12px;">${tagsHtml}</div>` : ''}
                                 <div style="flex: 1;"></div>
-                                <div style="display: flex; justify-content: space-between; align-items: center; background: #c8d90f; padding: 14px 18px; border-radius: 16px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; background: #c8d90f; padding: 14px 18px; border-radius: 36px;">
                                     <div>
-                                        ${retailPrice > 0 && retailPrice !== displayPrice ? `<div style="font-size: 13px; font-weight: 800; color: rgba(0,0,0,0.6); text-decoration: line-through; margin-bottom: 2px;">MRP ₹${retailPrice}</div>` : ''}
+                                        ${retailPrice > 0 && retailPrice !== displayPrice ? `<div style="font-size: 13px; font-weight: 800; color: rgba(0,0,0,0.6); text-decoration: line-through; margin-bottom: 2px;">Shop Price ₹${retailPrice}</div>` : ''}
                                         <div style="font-size: 26px; font-weight: 900; color: #000; line-height: 1;">₹${displayPrice}</div>
                                     </div>
                                     <button class="pc2-arrow-btn" style="background: #000; color: #c8d90f;" onclick="event.stopPropagation(); openPDP('${p.id}')">
