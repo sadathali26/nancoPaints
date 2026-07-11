@@ -8,7 +8,7 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-  <link rel="stylesheet" href="../nanco/style.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" data-asset-href="logos.main">
   
   <!-- Leaflet CSS for Map -->
@@ -17,34 +17,78 @@
   <style>
     body {
         background-color: var(--color-linen-canvas, #f3f3f1);
-        padding-top: 100px; /* space for floating nav */
+        margin: 0;
     }
 
-    .address-section {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
-
-    .address-card {
-        background: var(--color-white-plate, #ffffff);
-        border-radius: var(--radius-cards, 24px);
-        padding: 40px;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.03);
+    .hero-address {
+        position: relative;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #fff;
+        overflow: hidden;
     }
     
-    .address-header {
-        margin-bottom: 32px;
+    .hero-bg-img {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        object-fit: cover;
+        z-index: 0;
     }
-
-    .address-header h1 {
-        font-size: 32px;
+    
+    .hero-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+    
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding-top: 90px; /* offset for nav */
+    }
+    
+    .hero-content h1 {
+        font-size: 42px;
         font-weight: 800;
         margin-bottom: 8px;
     }
     
-    .address-header p {
-        color: var(--color-sage-mute, #6b7280);
+    .hero-content p {
+        font-size: 16px;
+        opacity: 0.9;
+    }
+
+    .nav-inner {
+        max-width: 900px !important;
+        margin: 0 auto !important;
+        padding: 16px 20px !important;
+    }
+
+    .nav-logo {
+        display: flex; 
+        align-items: center; 
+        text-decoration: none; 
+        color: inherit;
+    }
+
+    .address-section {
+        max-width: 900px;
+        margin: -80px auto 40px;
+        padding: 0 20px;
+        position: relative;
+        z-index: 10;
+    }
+
+    .address-card {
+        background: var(--color-white-plate, #ffffff);
+        border-radius: 32px;
+        padding: 40px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0,0,0,0.04);
     }
 
     .form-group {
@@ -60,20 +104,35 @@
 
     .form-control {
         width: 100%;
-        padding: 12px 16px;
-        border: 1px solid rgba(0,0,0,0.1);
-        border-radius: 12px;
+        padding: 16px 20px;
+        border: 2px solid transparent;
+        border-radius: 16px;
         font-family: inherit;
         font-size: 15px;
-        background: #f9f9f9;
-        transition: border-color 0.3s;
+        background: #f4f4f5;
+        transition: all 0.3s ease;
         box-sizing: border-box;
+    }
+
+    .form-control:hover {
+        background: #eaeaea;
     }
 
     .form-control:focus {
         outline: none;
-        border-color: var(--color-ink-black, #000);
+        border-color: #000;
         background: #fff;
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+    }
+
+    select.form-control {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 20px center;
+        background-size: 16px;
+        cursor: pointer;
     }
 
     .grid-2 {
@@ -89,11 +148,12 @@
     }
 
     #map {
-        height: 300px;
+        height: 350px;
         width: 100%;
-        border-radius: 16px;
+        border-radius: 24px;
         margin-bottom: 24px;
-        border: 1px solid rgba(0,0,0,0.1);
+        border: 1px solid rgba(0,0,0,0.05);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         z-index: 1; /* Keep map below nav */
     }
 
@@ -101,17 +161,54 @@
         background: var(--color-lime-spark, #d2e823);
         color: var(--color-ink-black, #000);
         border: none;
-        padding: 16px 32px;
+        padding: 18px 32px;
         border-radius: 99px;
         font-weight: 700;
         font-size: 16px;
         cursor: pointer;
         width: 100%;
-        transition: transform 0.2s;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 24px rgba(210, 232, 35, 0.4);
     }
 
     .btn-submit:hover {
-        transform: scale(0.98);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(210, 232, 35, 0.6);
+    }
+
+    #map-search {
+        border-radius: 99px;
+        padding-right: 60px;
+        background: #fff;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    #map-search:focus {
+        border-color: #000;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    
+    #btn-map-search {
+        position: absolute; 
+        right: 8px; 
+        top: 50%; 
+        transform: translateY(-50%); 
+        background: var(--color-lime-spark, #d2e823); 
+        border: none; 
+        cursor: pointer; 
+        color: #000; 
+        width: 40px; 
+        height: 40px; 
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s;
+    }
+    
+    #btn-map-search:hover {
+        transform: translateY(-50%) scale(1.05);
     }
 
     .loading-spinner {
@@ -129,6 +226,109 @@
     @keyframes spin {
         to { transform: rotate(360deg); }
     }
+
+    /* Custom Leaflet Map Controls Styling */
+    .leaflet-control-layers {
+        border-radius: 12px !important;
+        border: none !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+        font-family: inherit !important;
+        padding: 4px !important;
+        background: rgba(255, 255, 255, 0.95) !important;
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+    }
+
+    .leaflet-control-layers-toggle {
+        width: 28px !important;
+        height: 28px !important;
+        background-position: center !important;
+        background-size: 16px 16px !important;
+    }
+    
+    .leaflet-control-layers-expanded {
+        padding: 12px !important;
+    }
+    
+    .leaflet-control-layers-base label {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        color: #333;
+    }
+    
+    .leaflet-control-layers-base label:last-child {
+        margin-bottom: 0;
+    }
+
+    .leaflet-control-layers-base input[type="radio"] {
+        accent-color: #000;
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+    }
+    
+    .leaflet-bar {
+        border: none !important;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+        border-radius: 12px !important;
+        overflow: hidden;
+    }
+    
+    .leaflet-bar a {
+        background: rgba(255, 255, 255, 0.95) !important;
+        color: #000 !important;
+        width: 28px !important;
+        height: 28px !important;
+        line-height: 28px !important;
+        font-size: 13px !important;
+        font-weight: bold;
+        transition: background 0.2s;
+    }
+    
+    .leaflet-bar a:hover {
+        background: #f4f4f5 !important;
+    }
+
+    .suggestions-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        margin-top: 8px;
+        z-index: 1000;
+        overflow: hidden;
+        display: none;
+        list-style: none;
+        padding: 0;
+        border: 1px solid #eaeaea;
+    }
+    
+    .suggestions-dropdown li {
+        padding: 12px 20px;
+        cursor: pointer;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        text-align: left;
+    }
+    
+    .suggestions-dropdown li:last-child {
+        border-bottom: none;
+    }
+    
+    .suggestions-dropdown li:hover {
+        background: #f8f9fa;
+    }
   </style>
 </head>
 
@@ -137,8 +337,8 @@
   <!-- FLOATING NAV (Simplified) -->
   <nav class="nav-float" aria-label="Main navigation">
     <div class="nav-inner">
-      <a class="nav-logo" href="index.html" id="nav-home-logo">
-        <img src="assets/logos/light-logo.png" alt="Nanco Paints" style="height: 30px;">
+      <a class="nav-logo" href="javascript:history.back()" id="nav-home-logo" title="Go back">
+        <img data-asset="logos.light" alt="Nanco Paints" style="height: 36px;">
       </a>
       <ul class="nav-links" role="list">
         <li><a href="index.html">Home</a></li>
@@ -146,19 +346,22 @@
         <li><a href="cart.html">Cart</a></li>
       </ul>
       <div class="nav-right">
-        <a class="nav-cta" href="cart.html" style="background: transparent; color: #000;"><i class="fas fa-arrow-left"></i> Back to Cart</a>
       </div>
     </div>
   </nav>
 
+  <header class="hero-address">
+      <img data-asset="misc.addressBg" class="hero-bg-img" alt="Background">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+          <h1>Delivery Details</h1>
+          <p>Please enter your details and drop a pin for accurate delivery.</p>
+      </div>
+  </header>
+
   <main>
     <section class="address-section">
       <div class="address-card">
-        <div class="address-header">
-            <h1>Delivery Details</h1>
-            <p>Please enter your details and drop a pin for accurate delivery.</p>
-        </div>
-
         <form id="address-form">
             <h3 style="margin-bottom: 16px; font-size: 18px;"><i class="fas fa-user"></i> Personal Details</h3>
             <div class="grid-2">
@@ -181,6 +384,19 @@
             <h3 style="margin-bottom: 16px; font-size: 18px;"><i class="fas fa-map-marker-alt"></i> Location Tracker</h3>
             <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Drag the marker or click on the map to pinpoint your exact delivery location. This will auto-fill your address.</p>
             
+            <div class="form-group" style="display: flex; gap: 12px; align-items: stretch;">
+                <div style="position: relative; flex: 1;">
+                    <input type="text" id="map-search" class="form-control" placeholder="Search for a place (e.g. Kozhikode, Tirur)" style="height: 100%;" autocomplete="off">
+                    <button type="button" id="btn-map-search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <ul id="search-suggestions" class="suggestions-dropdown"></ul>
+                </div>
+                <button type="button" id="btn-live-location" onmouseover="this.style.borderColor='#000'" onmouseout="this.style.borderColor='transparent'" style="background: #fff; color: #000; border: 2px solid transparent; border-radius: 16px; padding: 0 16px; cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; transition: 0.3s; box-shadow: 0 4px 12px rgba(0,0,0,0.05); white-space: nowrap;">
+                    <i class="fas fa-crosshairs" style="color: #b5c71b; font-size: 16px;"></i> Live
+                </button>
+            </div>
+
             <div id="map"></div>
 
             <div class="grid-2">
@@ -194,9 +410,26 @@
                 </div>
             </div>
 
+            <div class="grid-2">
+                <div class="form-group">
+                    <label>Taluk *</label>
+                    <input type="text" id="taluk" class="form-control" required placeholder="Tirur">
+                </div>
+                <div class="form-group">
+                    <label>State *</label>
+                    <input type="text" id="state" class="form-control" required placeholder="Kerala">
+                </div>
+            </div>
+
             <div class="form-group">
-                <label>State *</label>
-                <input type="text" id="state" class="form-control" required placeholder="Kerala">
+                <label>Select Outlet *</label>
+                <select id="outlet" class="form-control" required>
+                    <option value="" disabled selected>Select an outlet nearby</option>
+                    <option value="Tirur">Tirur</option>
+                    <option value="Malappuram">Malappuram</option>
+                    <option value="Kozhikode">Kozhikode</option>
+                    <option value="Kochi">Kochi</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -219,6 +452,7 @@
     </section>
   </main>
 
+  <script src="assets.js"></script>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   
@@ -227,12 +461,27 @@
         // Initialize Map
         const defaultLat = 10.9156; // Malappuram approximate
         const defaultLng = 75.9238;
+        const map = L.map('map', {
+            attributionControl: false
+        }).setView([defaultLat, defaultLng], 12);
         
-        const map = L.map('map').setView([defaultLat, defaultLng], 12);
-        
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
+        });
+
+        const satelliteLayer = L.tileLayer('https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains:['mt0','mt1','mt2','mt3'],
+            attribution: '© Google'
+        });
+
+        const baseMaps = {
+            "Satellite": satelliteLayer,
+            "Street Map": streetLayer
+        };
+
+        satelliteLayer.addTo(map);
+        L.control.layers(baseMaps).addTo(map);
 
         let marker = L.marker([defaultLat, defaultLng], {draggable: true}).addTo(map);
 
@@ -266,23 +515,167 @@
             document.getElementById('lng').value = lng;
         }
 
+        // Search Place - Enhanced with Photon API for typos & autocomplete
+        const searchInput = document.getElementById('map-search');
+        const suggestionsList = document.getElementById('search-suggestions');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            const query = e.target.value.trim();
+            if (query.length < 3) {
+                suggestionsList.style.display = 'none';
+                return;
+            }
+            
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5`);
+                    if (!res.ok) throw new Error();
+                    const data = await res.json();
+                    
+                    if (data.features && data.features.length > 0) {
+                        suggestionsList.innerHTML = '';
+                        data.features.forEach(f => {
+                            const props = f.properties;
+                            let nameParts = [props.name, props.city, props.state, props.country].filter(Boolean);
+                            nameParts = [...new Set(nameParts)]; // Remove duplicates
+                            const displayName = nameParts.join(', ');
+                            
+                            const li = document.createElement('li');
+                            li.innerHTML = `<i class="fas fa-map-marker-alt" style="color: #ccc; margin-right: 8px;"></i> ${displayName}`;
+                            
+                            li.addEventListener('click', () => {
+                                searchInput.value = displayName;
+                                suggestionsList.style.display = 'none';
+                                
+                                const lng = f.geometry.coordinates[0];
+                                const lat = f.geometry.coordinates[1];
+                                
+                                map.setView([lat, lng], 15);
+                                marker.setLatLng([lat, lng]);
+                                updateCoords(lat, lng);
+                                fetchAddressFromCoords(lat, lng);
+                            });
+                            
+                            suggestionsList.appendChild(li);
+                        });
+                        suggestionsList.style.display = 'block';
+                    } else {
+                        suggestionsList.style.display = 'none';
+                    }
+                } catch (err) {
+                    console.error("Autocomplete failed:", err);
+                }
+            }, 300);
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !suggestionsList.contains(e.target)) {
+                suggestionsList.style.display = 'none';
+            }
+        });
+
+        document.getElementById('btn-map-search').addEventListener('click', async () => {
+            const query = searchInput.value;
+            if (!query) return;
+            try {
+                const response = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=1`);
+                if (!response.ok) throw new Error("Search service unavailable");
+                const data = await response.json();
+                if (data.features && data.features.length > 0) {
+                    const lng = data.features[0].geometry.coordinates[0];
+                    const lat = data.features[0].geometry.coordinates[1];
+                    map.setView([lat, lng], 15);
+                    marker.setLatLng([lat, lng]);
+                    updateCoords(lat, lng);
+                    fetchAddressFromCoords(lat, lng);
+                    suggestionsList.style.display = 'none';
+                } else {
+                    alert("Place not found. Please try another search.");
+                }
+            } catch (error) {
+                console.error("Search failed:", error);
+                alert("Map search is temporarily unavailable. Please drag the pin on the map instead.");
+            }
+        });
+
+        document.getElementById('map-search').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                document.getElementById('btn-map-search').click();
+            }
+        });
+
+        function autoSelectOutlet(cityStr) {
+            if (!cityStr) return;
+            const outletSelect = document.getElementById('outlet');
+            const options = Array.from(outletSelect.options);
+            const match = options.find(opt => opt.value !== "" && cityStr.toLowerCase().includes(opt.value.toLowerCase()));
+            if (match) {
+                outletSelect.value = match.value;
+            }
+        }
+
         // Reverse Geocoding (Coordinates to Address)
         async function fetchAddressFromCoords(lat, lng) {
             try {
-                const response = await fetch(\`https://nominatim.openstreetmap.org/reverse?format=json&lat=\${lat}&lon=\${lng}&zoom=18&addressdetails=1\`);
+                // Try Nominatim first for highly granular data (Door No, Street)
+                const nomRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&email=contact@nancopaints.com`);
+                if (nomRes.ok) {
+                    const data = await nomRes.json();
+                    if (data && data.address) {
+                        const addr = data.address;
+                        
+                        if (addr.postcode) {
+                            const pinInput = document.getElementById('pincode');
+                            pinInput.value = addr.postcode;
+                            pinInput.dispatchEvent(new Event('input'));
+                        }
+                        if (addr.state) document.getElementById('state').value = addr.state;
+                        
+                        const city = addr.city || addr.town || addr.village || addr.state_district || addr.county;
+                        if (city) {
+                            document.getElementById('city').value = city;
+                            autoSelectOutlet(city);
+                        }
+
+                        const taluk = addr.county || addr.suburb || addr.city_district;
+                        if (taluk) document.getElementById('taluk').value = taluk;
+                        
+                        const street = addr.road || addr.neighbourhood || addr.suburb || "";
+                        if (street) document.getElementById('street').value = street;
+                        
+                        const door = addr.house_number || addr.building || "";
+                        if (door) document.getElementById('door').value = door;
+                        
+                        return; // Success, exit function
+                    }
+                }
+            } catch (error) {
+                console.log("Nominatim reverse geocoding failed, falling back to BigDataCloud...");
+            }
+            
+            try {
+                // Fallback to BigDataCloud if Nominatim blocks us
+                const response = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
+                if (!response.ok) throw new Error("Reverse geocoding failed");
                 const data = await response.json();
                 
-                if (data && data.address) {
-                    const addr = data.address;
-                    
-                    if (addr.postcode) document.getElementById('pincode').value = addr.postcode;
-                    if (addr.state) document.getElementById('state').value = addr.state;
-                    
-                    const city = addr.city || addr.town || addr.village || addr.county;
-                    if (city) document.getElementById('city').value = city;
-                    
-                    const street = addr.road || addr.suburb || addr.neighbourhood;
-                    if (street) document.getElementById('street').value = street;
+                if (data) {
+                    if (data.postcode) {
+                        const pinInput = document.getElementById('pincode');
+                        pinInput.value = data.postcode;
+                        pinInput.dispatchEvent(new Event('input'));
+                    }
+                    if (data.principalSubdivision) document.getElementById('state').value = data.principalSubdivision;
+                    if (data.city) {
+                        document.getElementById('city').value = data.city;
+                        autoSelectOutlet(data.city);
+                    }
+                    if (data.locality) {
+                        document.getElementById('street').value = data.locality;
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching address:", error);
@@ -293,18 +686,25 @@
         const pincodeInput = document.getElementById('pincode');
         const spinner = document.getElementById('pincode-spinner');
         
-        pincodeInput.addEventListener('input', async function() {
+        pincodeInput.addEventListener('input', async function(e) {
             const pin = this.value;
             if (pin.length === 6) {
                 spinner.style.display = 'inline-block';
                 try {
-                    const res = await fetch(\`https://api.postalpincode.in/pincode/\${pin}\`);
+                    const res = await fetch(`https://api.postalpincode.in/pincode/${pin}`);
                     const data = await res.json();
                     
                     if (data && data[0] && data[0].Status === "Success") {
                         const postOffice = data[0].PostOffice[0];
                         document.getElementById('city').value = postOffice.District;
                         document.getElementById('state').value = postOffice.State;
+                        if (postOffice.Taluk && postOffice.Taluk !== "NA") {
+                            document.getElementById('taluk').value = postOffice.Taluk;
+                        }
+                        // Update map dynamically when pincode auto-fills, ONLY if the user typed it (not programmatic)
+                        if (e.isTrusted && typeof updateMapFromAddressFields === 'function') {
+                            updateMapFromAddressFields();
+                        }
                     }
                 } catch (error) {
                     console.error("Pincode lookup failed", error);
@@ -312,6 +712,67 @@
                     spinner.style.display = 'none';
                 }
             }
+        });
+
+        // Live Location Button Logic
+        document.getElementById('btn-live-location').addEventListener('click', () => {
+            if ("geolocation" in navigator) {
+                const btn = document.getElementById('btn-live-location');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Locating...';
+                
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    map.setView([lat, lng], 16);
+                    marker.setLatLng([lat, lng]);
+                    updateCoords(lat, lng);
+                    fetchAddressFromCoords(lat, lng);
+                    btn.innerHTML = originalText;
+                }, error => {
+                    alert("Could not get your location. Please check browser permissions.");
+                    btn.innerHTML = originalText;
+                }, { timeout: 10000 });
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        });
+
+        // Update Map from Address Fields
+        async function updateMapFromAddressFields() {
+            const pin = document.getElementById('pincode').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const street = document.getElementById('street').value;
+            
+            let queryParts = [];
+            if (street) queryParts.push(street);
+            if (city) queryParts.push(city);
+            if (state) queryParts.push(state);
+            if (pin) queryParts.push(pin);
+            
+            const query = queryParts.join(", ");
+            if (!query) return;
+            
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1&email=contact@nancopaints.com`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lng = parseFloat(data[0].lon);
+                        map.setView([lat, lng], 15);
+                        marker.setLatLng([lat, lng]);
+                        updateCoords(lat, lng);
+                    }
+                }
+            } catch (e) {
+                console.error("Map update from address failed", e);
+            }
+        }
+
+        ['pincode', 'city', 'state', 'street'].forEach(id => {
+            document.getElementById(id).addEventListener('change', updateMapFromAddressFields);
         });
 
         // Form Submission
@@ -326,8 +787,10 @@
                 door: document.getElementById('door').value,
                 street: document.getElementById('street').value,
                 city: document.getElementById('city').value,
+                taluk: document.getElementById('taluk').value,
                 state: document.getElementById('state').value,
                 pincode: document.getElementById('pincode').value,
+                outlet: document.getElementById('outlet').value,
                 lat: document.getElementById('lat').value,
                 lng: document.getElementById('lng').value
             };

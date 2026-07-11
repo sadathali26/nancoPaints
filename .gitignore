@@ -2,3 +2,20 @@ node_modules/
 .env
 *.env
 *.zip
+
+# IDEs and Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary and log files
+*.log
+diff.txt
+full_diff.txt
+temp_*.html
+temp_*.js
+
+# OS generated files
+.DS_Store
+Thumbs.db

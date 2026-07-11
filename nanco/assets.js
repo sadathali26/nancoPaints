@@ -50,7 +50,8 @@ const NancoAssets = {
     servicesHero: "../nanco/assets/sa.png",
     visualizerBg: "../nanco/assets/visualizer bg.jpg",
     calcBg: "../nanco/assets/calcbg.jpg",
-    aboutBg: "../nanco/assets/outlet.png"
+    aboutBg: "../nanco/assets/outlet.png",
+    addressBg: "../nanco/assets/Why Humidity Matters.jpg"
   }
 };
 
