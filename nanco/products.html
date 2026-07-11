@@ -1944,7 +1944,9 @@
                             pricing: pricing,
                             specs: specs,
                             notes: Array.isArray(notes) ? notes : [],
-                            images: images
+                            images: images,
+                            features: p.features,
+                            warranty: p.warranty
                         };
                     } else {
                         if (pricing.length > 0) {
