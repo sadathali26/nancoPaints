@@ -1367,7 +1367,6 @@
                         style="font-size: 15px; color: var(--color-ink-black); line-height: 1.5; margin-bottom: 24px; font-weight: 500;">
                         Description goes here.</p>
                         
-                    <div id="pdp-feature-icons" style="display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; margin-bottom: 24px; padding-bottom: 8px;"></div>
 
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px;">
                         <div style="display: flex; align-items: center; gap: 8px; background: var(--color-linen-canvas); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05);">
@@ -1413,7 +1412,7 @@
                     <div style="display: flex; gap: 16px; margin-bottom: 24px;">
                         <div style="flex: 1;">
                             <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Select Unit</label>
-                            <select id="pdp-unit-select" onchange="updatePdpPrice()" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px;">
+                            <select id="pdp-unit-select" onchange="updatePdpPrice()" style="width: 100%; padding: 16px 40px 16px 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23000000\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/><path d=\'M0 0h24v24H0z\' fill=\'none\'/></svg>'); background-repeat: no-repeat; background-position-x: calc(100% - 16px); background-position-y: center;">
                             </select>
                         </div>
                         <div style="width: 130px;">
@@ -1438,6 +1437,7 @@
                         <div>
                             <div style="font-size: 12px; color: var(--color-sage-mute); font-weight: 700; text-decoration: line-through;" id="pdp-mrp">MRP: ₹0</div>
                             <div style="font-size: 28px; font-weight: 900; color: var(--color-ink-black); letter-spacing: -0.5px;" id="pdp-price-val">₹0</div>
+                            <div style="font-size: 12px; color: var(--color-sage-mute); font-weight: 700; margin-top: 2px;" id="pdp-per-unit-price"></div>
                         </div>
                         <div style="text-align:right;">
                             <div style="font-size: 12px; font-weight: 800; color: #16a34a;" id="pdp-save">Save ₹0</div>
@@ -2308,6 +2308,15 @@
             document.getElementById('pdp-mrp').innerText = 'MRP: ₹' + (tier.mrp * qty);
             document.getElementById('pdp-save').innerText = 'Save ₹' + (tier.save_amount * qty);
             document.getElementById('pdp-code').innerText = `Item Code: ${tier.item_code}`;
+            
+            const perUnitEl = document.getElementById('pdp-per-unit-price');
+            if (perUnitEl) {
+                if (qty > 1) {
+                    perUnitEl.innerText = `(₹${tier.offer_price} each)`;
+                } else {
+                    perUnitEl.innerText = '';
+                }
+            }
         }
 
         function togglePdpDetails() {
