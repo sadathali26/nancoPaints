@@ -18,9 +18,9 @@
             100% { transform: scale(1); opacity: 1; }
         }
         .offer-pill-badge {
-            background: rgba(120, 0, 22, 0.9);
+            background: #780016;
             backdrop-filter: blur(4px);
-            color: #fff;
+            color: #ffffff;
             padding: 6px 14px;
             border-radius: 99px;
             display: inline-block;
@@ -2036,13 +2036,13 @@
                                 </div>
                                 ${tagsHtml ? `<div class="pc2-tags" style="margin-bottom: 12px;">${tagsHtml}</div>` : ''}
                                 <div style="flex: 1;"></div>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 12px; border-top: 1px solid var(--c-tag-border);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; background: #c8d90f; padding: 14px 18px; border-radius: 16px;">
                                     <div>
-                                        ${retailPrice > 0 && retailPrice !== displayPrice ? `<div class="mrp-text" style="font-size: 12px; text-decoration: line-through; margin-bottom: 2px;">MRP ₹${retailPrice}</div>` : ''}
-                                        <div class="offer-text" style="font-size: 24px; font-weight: 900; line-height: 1;">₹${displayPrice}</div>
+                                        ${retailPrice > 0 && retailPrice !== displayPrice ? `<div style="font-size: 13px; font-weight: 800; color: rgba(0,0,0,0.6); text-decoration: line-through; margin-bottom: 2px;">MRP ₹${retailPrice}</div>` : ''}
+                                        <div style="font-size: 26px; font-weight: 900; color: #000; line-height: 1;">₹${displayPrice}</div>
                                     </div>
-                                    <button class="pc2-arrow-btn" onclick="event.stopPropagation(); openPDP('${p.id}')">
-                                        <i class="fas fa-arrow-right"></i>
+                                    <button class="pc2-arrow-btn" style="background: #000; color: #c8d90f;" onclick="event.stopPropagation(); openPDP('${p.id}')">
+                                        <i class="fas fa-arrow-right" style="font-weight: 900;"></i>
                                     </button>
                                 </div>
                             </div>
