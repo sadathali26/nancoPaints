@@ -35,6 +35,127 @@
             position: relative;
             z-index: 1;
         }
+
+        /* ---- Redesigned Product Card (pc2) ---- */
+        .pc2 {
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            cursor: pointer;
+            transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease;
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+        .pc2:hover {
+            transform: translateY(-5px) scale(1.015);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.13);
+        }
+        .pc2-img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            border-radius: 0;
+        }
+        .pc2-body {
+            padding: 16px 18px 18px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 10px;
+        }
+        .pc2-name {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--color-ink-black);
+            line-height: 1.25;
+            margin: 0;
+        }
+        .pc2-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .pc2-tag {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--color-sage-mute, #7a8a7a);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 99px;
+            padding: 3px 10px;
+            background: rgba(0,0,0,0.03);
+            white-space: nowrap;
+        }
+        .pc2-coverage {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--color-ink-black);
+            background: var(--color-linen-canvas, #f8f6f1);
+            border-radius: 10px;
+            padding: 7px 11px;
+        }
+        .pc2-coverage i {
+            color: var(--color-cobalt-band, #1e3a8a);
+            font-size: 13px;
+        }
+        .pc2-price-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+        }
+        .pc2-price-block {}
+        .pc2-unit {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--color-sage-mute, #7a8a7a);
+            letter-spacing: 0.05em;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .pc2-mrp {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--color-sage-mute, #7a8a7a);
+            text-decoration: line-through;
+            display: block;
+            line-height: 1;
+        }
+        .pc2-offer {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--color-cobalt-band, #1e3a8a);
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+        .pc2-add-btn {
+            background: var(--color-cobalt-band, #1e3a8a);
+            color: #fff;
+            border: none;
+            border-radius: 99px;
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s, transform 0.15s;
+            white-space: nowrap;
+        }
+        .pc2-add-btn:hover {
+            background: #162d6b;
+            transform: scale(1.04);
+        }
         body {
             background-color: var(--color-linen-canvas);
             overflow: hidden;
@@ -1876,22 +1997,42 @@
 
                 if (currentView === 'grid') {
                     const visualHtml = generateProductVisualHTML(p);
-                    const bgStyle = (p.images && p.images.length > 0) ? "" : `background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('assets/pattern.jpg'); background-color: ${p.color}; background-blend-mode: multiply; background-size: cover; background-position: center;`;
+                    const imgBgStyle = (p.images && p.images.length > 0)
+                        ? `background-color:${p.color}20;`
+                        : `background: linear-gradient(160deg, ${p.color}dd 0%, ${p.color}88 100%);`;
+                    // Tags: finish + category (capitalised)
+                    const tagArr = [];
+                    if (p.finish) tagArr.push(p.finish);
+                    if (p.category) tagArr.push(p.category.charAt(0).toUpperCase() + p.category.slice(1));
+                    p.specs.slice(0, 1).forEach(s => tagArr.push(s));
+                    const tagsHtml = tagArr.slice(0,3).map(t => `<span class="pc2-tag">${t}</span>`).join('');
+                    // Coverage chip
+                    const covHtml = p.coverage
+                        ? `<div class="pc2-coverage"><i class="fas fa-ruler-combined"></i><span><b>${p.coverage}</b> coverage / L</span></div>` : '';
+                    const displayPrice = offerPrice > 0 ? offerPrice : p.priceVal;
+                    const mrpHtml = (retailPrice > 0 && retailPrice !== displayPrice)
+                        ? `<span class="pc2-mrp">MRP ₹${retailPrice}</span>` : '';
+                    const unitSpanHtml = selectedUnitLabel
+                        ? `<span class="pc2-unit">${selectedUnitLabel}</span>` : '';
                     return `
-                        <div class="bento-card product-card" onclick="openPDP('${p.id}')" style="padding:0; display:flex; flex-direction:column; overflow:hidden;">
-                            <div class="bucket-wrapper" style="aspect-ratio:1/1; width:100%; position:relative; overflow:hidden; ${bgStyle} flex-shrink:0;">
+                        <div class="pc2" onclick="openPDP('${p.id}')">
+                            <div class="pc2-img" style="${imgBgStyle}">
                                 ${visualHtml}
+                                ${badgeHtml ? `<div style="position:absolute;top:12px;left:12px;z-index:5;">${badgeHtml}</div>` : ''}
                             </div>
-                            <div class="product-info" style="padding:14px 16px 16px; display:flex; flex-direction:column; flex:1;">
-                                <h3 style="font-size:15px; font-weight:800; color:var(--color-ink-black); margin-bottom:8px; line-height:1.2;">${p.name}</h3>
-                                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(0,0,0,0.06); padding-top:12px;">
-                                    <div style="position:relative;">
-                                        ${unitLabelHtml}
-                                        ${badgeHtml}
-                                        ${retailHtml}
-                                        <span style="font-size:22px; font-weight:900; color:var(--color-cobalt-band); letter-spacing:-0.5px; line-height:1;">₹${offerPrice > 0 ? offerPrice : p.priceVal}<span style="font-size:10px; font-weight:500; color:var(--color-sage-mute);"> / can</span></span>
+                            <div class="pc2-body">
+                                <h3 class="pc2-name">${p.name}</h3>
+                                ${tagsHtml ? `<div class="pc2-tags">${tagsHtml}</div>` : ''}
+                                ${covHtml}
+                                <div class="pc2-price-row">
+                                    <div class="pc2-price-block">
+                                        ${unitSpanHtml}
+                                        ${mrpHtml}
+                                        <span class="pc2-offer">₹${displayPrice}</span>
                                     </div>
-                                    <div style="width:30px; height:30px; border-radius:50%; background:var(--color-linen-canvas); display:flex; align-items:center; justify-content:center; color:var(--color-ink-black); flex-shrink:0;"><i class="fas fa-arrow-right" style="transform:rotate(-45deg); font-size:12px;"></i></div>
+                                    <button class="pc2-add-btn" onclick="event.stopPropagation(); openPDP('${p.id}')">
+                                        <i class="fas fa-cart-plus"></i> Add
+                                    </button>
                                 </div>
                             </div>
                         </div>
