@@ -94,26 +94,26 @@
         }
         .mrp-text { color: var(--c-desc); }
         .offer-text { color: var(--c-price); }
+        .pc2-desc-text {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--c-desc);
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
         .pc2-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
         }
         .pc2-tag {
-            font-size: 11px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 800;
             color: var(--c-tag);
-            border: 1px solid var(--c-tag-border);
-            border-radius: 99px;
-            padding: 3px 10px;
+            border: none;
+            padding: 0;
             background: transparent;
             white-space: nowrap;
-        }
-        .pc2-desc-text {
-            font-size: 12px;
-            color: var(--c-desc);
-            line-height: 1.4;
-            margin-bottom: 6px;
         }
         .pc2-arrow-btn {
             width: 44px;
@@ -1704,27 +1704,7 @@
             let idx = parseInt(container.getAttribute('data-idx'));
             idx = (idx + dir + images.length) % images.length;
             container.setAttribute('data-idx', idx);
-            
-            const img = container.querySelector('.carousel-img');
-            // True blend transition: wait for new image load, then fade old image over it
-            const oldImg = img.cloneNode(true);
-            oldImg.style.position = 'absolute';
-            oldImg.style.zIndex = '2';
-            oldImg.style.transition = 'opacity 0.6s ease';
-            oldImg.style.mixBlendMode = 'multiply'; // authentic blend effect
-            container.insertBefore(oldImg, img);
-            
-            img.style.zIndex = '1';
-            
-            img.onload = function() {
-                extractBottomColor(this);
-                oldImg.style.opacity = '0';
-                setTimeout(() => oldImg.remove(), 600);
-                img.onload = function() { extractBottomColor(this); };
-            };
-            
-            img.src = images[idx];
-            
+            container.querySelector('.carousel-img').src = images[idx];
             const dots = container.querySelectorAll('.carousel-dots div');
             dots.forEach((dot, i) => {
                 dot.style.background = (i === idx) ? 'var(--color-cobalt-band)' : 'rgba(255,255,255,0.8)';
@@ -1773,7 +1753,7 @@
                 } else {
                     return `
                         <div style="position:absolute; inset:0; border-radius:inherit; overflow:hidden;" class="prod-carousel" data-images='${JSON.stringify(product.images)}' data-idx="0">
-                            <img src="${product.images[0]}" crossorigin="anonymous" onload="extractBottomColor(this)" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.5s ease;" class="carousel-img">
+                            <img src="${product.images[0]}" crossorigin="anonymous" onload="extractBottomColor(this)" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.3s;" class="carousel-img">
                             <button class="carousel-btn prev-btn" onclick="event.stopPropagation(); changeCarousel(this, -1)" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-left"></i></button>
                             <button class="carousel-btn next-btn" onclick="event.stopPropagation(); changeCarousel(this, 1)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-right"></i></button>
                             <div style="position:absolute; bottom:10px; width:100%; display:flex; justify-content:center; gap:6px; z-index:10;" class="carousel-dots">
