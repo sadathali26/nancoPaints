@@ -12,48 +12,33 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
-        /* ---- Offer Icon Badge (FA certificate) ---- */
+        /* ---- Offer Pill Badge ---- */
         @keyframes badge-pop {
-            0%   { transform: scale(0.5) rotate(-15deg); opacity: 0; }
-            60%  { transform: scale(1.18) rotate(5deg);  opacity: 1; }
-            80%  { transform: scale(0.93) rotate(-2deg); }
-            100% { transform: scale(1)    rotate(0deg);  opacity: 1; }
+            0%   { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
-        .offer-icon-badge {
-            position: relative;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: badge-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-            animation-delay: 0.08s;
-            flex-shrink: 0;
-        }
-        .offer-icon-badge > i {
-            position: absolute;
-            font-size: 48px;
-            color: #780016;
-            line-height: 1;
-        }
-        .offer-icon-badge .badge-label {
-            position: relative;
-            z-index: 2;
-            text-align: center;
+        .offer-pill-badge {
+            background: rgba(120, 0, 22, 0.9);
+            backdrop-filter: blur(4px);
             color: #fff;
-            font-size: 9.5px;
-            font-weight: 900;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: 0.01em;
-            pointer-events: none;
+            padding: 6px 14px;
+            border-radius: 99px;
+            display: inline-block;
+            text-align: center;
+            animation: badge-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
-        .offer-icon-badge .badge-label b {
+        .offer-pill-badge .badge-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+        .offer-pill-badge .badge-label b {
             display: block;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 900;
-            letter-spacing: -0.5px;
-            line-height: 1;
         }
 
         /* ---- Redesigned Product Card (pc2) ---- */
@@ -109,39 +94,30 @@
             background: rgba(0,0,0,0.03);
             white-space: nowrap;
         }
-        .pc2-price-pill {
-            background: #483933;
-            color: #fff;
-            border-radius: 99px;
-            padding: 4px 10px;
-            font-size: 14px;
-            font-weight: 800;
-            display: inline-flex;
-            align-items: center;
-            flex-shrink: 0;
-        }
         .pc2-desc-text {
             font-size: 12px;
             color: var(--color-sage-mute, #7a8a7a);
             line-height: 1.4;
             margin-bottom: 6px;
         }
-        .pc2-add-full {
-            width: 100%;
+        .pc2-arrow-btn {
+            width: 44px;
+            height: 44px;
             background: #483933;
             color: #fff;
             border: none;
-            border-radius: 99px;
-            padding: 12px;
-            font-size: 14px;
-            font-weight: 800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
             cursor: pointer;
-            text-align: center;
             transition: background 0.2s, transform 0.15s;
+            flex-shrink: 0;
         }
-        .pc2-add-full:hover {
+        .pc2-arrow-btn:hover {
             background: #362924;
-            transform: scale(1.02);
+            transform: scale(1.05);
         }
         body {
             background-color: var(--color-linen-canvas);
@@ -1977,7 +1953,7 @@
                 const retailHtml  = (retailPrice > 0 && retailPrice !== offerPrice)
                     ? `<span style="font-size:11px; color:var(--color-sage-mute); text-decoration:line-through; font-weight:600; display:block; margin-bottom:1px;">MRP ₹${retailPrice}</span>` : '';
                 const badgeHtml   = discountPct > 0
-                    ? `<div class="offer-icon-badge"><i class="fas fa-certificate"></i><div class="badge-label"><b>${discountPct}%</b>OFF</div></div>` : '';
+                    ? `<div class="offer-pill-badge"><div class="badge-label"><b>${discountPct}%</b>OFF</div></div>` : '';
                 const unitLabelHtml = selectedUnitLabel
                     ? `<span style="font-size:9px; color:var(--color-sage-mute); font-weight:800; text-transform:uppercase; display:block; margin-bottom:2px; letter-spacing:0.04em;">${selectedUnitLabel}</span>` : '';
 
@@ -1999,25 +1975,25 @@
                         <div class="pc2" onclick="openPDP('${p.id}')">
                             <div class="pc2-img" style="${imgBgStyle}">
                                 ${visualHtml}
-                                ${badgeHtml ? `<div style="position:absolute;top:12px;left:12px;z-index:5;">${badgeHtml}</div>` : ''}
+                                ${badgeHtml ? `<div style="position:absolute;top:12px;right:12px;z-index:5;">${badgeHtml}</div>` : ''}
                             </div>
                             <div class="pc2-body">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
-                                    <h3 class="pc2-name" style="padding-right: 8px;">${p.name}</h3>
-                                    <div class="pc2-price-pill">
-                                        <span style="font-size: 10px; margin-right: 2px;">₹</span>${displayPrice}
-                                    </div>
-                                </div>
+                                <h3 class="pc2-name" style="margin-bottom: 6px;">${p.name}</h3>
                                 <div class="pc2-desc-text">
-                                    ${catName} Paint 
-                                    ${retailPrice > 0 && retailPrice !== displayPrice ? ` &middot; <span style="text-decoration: line-through;">MRP ₹${retailPrice}</span>` : ''}<br>
+                                    ${catName} Paint<br>
                                     ${p.coverage ? `Coverage: ${p.coverage} sq.m/L` : ''}
                                 </div>
                                 ${tagsHtml ? `<div class="pc2-tags" style="margin-bottom: 12px;">${tagsHtml}</div>` : ''}
                                 <div style="flex: 1;"></div>
-                                <button class="pc2-add-full" onclick="event.stopPropagation(); openPDP('${p.id}')">
-                                    Add to cart
-                                </button>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 12px; border-top: 1px solid rgba(0,0,0,0.06);">
+                                    <div>
+                                        ${retailPrice > 0 && retailPrice !== displayPrice ? `<div style="font-size: 12px; color: var(--color-sage-mute); text-decoration: line-through; margin-bottom: 2px;">MRP ₹${retailPrice}</div>` : ''}
+                                        <div style="font-size: 24px; font-weight: 900; color: #780016; line-height: 1;">₹${displayPrice}</div>
+                                    </div>
+                                    <button class="pc2-arrow-btn" onclick="event.stopPropagation(); openPDP('${p.id}')">
+                                        <i class="fas fa-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     `;
