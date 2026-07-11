@@ -12,28 +12,57 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
-        /* ---- Offer Popup Badge ---- */
+        /* ---- Offer Flower / Starburst Badge ---- */
         @keyframes badge-pop {
-            0%   { transform: scale(0.6) rotate(-8deg); opacity: 0; }
-            60%  { transform: scale(1.15) rotate(3deg); opacity: 1; }
-            80%  { transform: scale(0.95) rotate(-1deg); }
+            0%   { transform: scale(0.6) rotate(-20deg); opacity: 0; }
+            60%  { transform: scale(1.18) rotate(6deg); opacity: 1; }
+            80%  { transform: scale(0.94) rotate(-2deg); }
             100% { transform: scale(1) rotate(0deg); opacity: 1; }
         }
-        .offer-popup-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ea580c, #f97316);
+        @keyframes badge-spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .offer-flower-badge {
+            width: 62px;
+            height: 62px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: badge-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            animation-delay: 0.08s;
+            flex-shrink: 0;
+        }
+        .offer-flower-badge .flower-bg {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #dc2626, #ef4444);
+            clip-path: polygon(
+                50% 0%,   61% 15%,  79%  9%,  76% 28%,
+                93% 36%,  81% 50%,  93% 64%,  76% 72%,
+                79% 91%,  61% 85%,  50% 100%, 39% 85%,
+                21% 91%,  24% 72%,   7% 64%,  19% 50%,
+                 7% 36%,  24% 28%,  21%  9%,  39% 15%
+            );
+            filter: drop-shadow(0 3px 10px rgba(220,38,38,0.55));
+        }
+        .offer-flower-badge .flower-text {
+            position: relative;
+            z-index: 2;
+            text-align: center;
             color: #fff;
             font-size: 10px;
             font-weight: 900;
-            padding: 3px 8px;
-            border-radius: 99px;
-            letter-spacing: 0.04em;
+            line-height: 1.15;
             text-transform: uppercase;
-            margin-bottom: 4px;
-            animation: badge-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-            animation-delay: 0.1s;
-            position: relative;
-            z-index: 1;
+            letter-spacing: 0.02em;
+            pointer-events: none;
+        }
+        .offer-flower-badge .flower-text b {
+            display: block;
+            font-size: 13px;
+            letter-spacing: -0.5px;
         }
 
         /* ---- Redesigned Product Card (pc2) ---- */
@@ -1990,7 +2019,7 @@
                 const retailHtml  = (retailPrice > 0 && retailPrice !== offerPrice)
                     ? `<span style="font-size:11px; color:var(--color-sage-mute); text-decoration:line-through; font-weight:600; display:block; margin-bottom:1px;">MRP ₹${retailPrice}</span>` : '';
                 const badgeHtml   = discountPct > 0
-                    ? `<span class="offer-popup-badge">${discountPct}% OFF</span>` : '';
+                    ? `<div class="offer-flower-badge"><div class="flower-bg"></div><div class="flower-text"><b>${discountPct}%</b>OFF</div></div>` : '';
                 const unitLabelHtml = selectedUnitLabel
                     ? `<span style="font-size:9px; color:var(--color-sage-mute); font-weight:800; text-transform:uppercase; display:block; margin-bottom:2px; letter-spacing:0.04em;">${selectedUnitLabel}</span>` : '';
 
@@ -2023,7 +2052,6 @@
                             <div class="pc2-body">
                                 <h3 class="pc2-name">${p.name}</h3>
                                 ${tagsHtml ? `<div class="pc2-tags">${tagsHtml}</div>` : ''}
-                                ${covHtml}
                                 <div class="pc2-price-row">
                                     <div class="pc2-price-block">
                                         ${unitSpanHtml}
