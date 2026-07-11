@@ -12,6 +12,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
+        /* ---- Offer Popup Badge ---- */
+        @keyframes badge-pop {
+            0%   { transform: scale(0.6) rotate(-8deg); opacity: 0; }
+            60%  { transform: scale(1.15) rotate(3deg); opacity: 1; }
+            80%  { transform: scale(0.95) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .offer-popup-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ea580c, #f97316);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 3px 8px;
+            border-radius: 99px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            box-shadow: 0 3px 10px rgba(234, 88, 12, 0.45);
+            margin-bottom: 4px;
+            animation: badge-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            animation-delay: 0.1s;
+            position: relative;
+            z-index: 1;
+        }
         body {
             background-color: var(--color-linen-canvas);
             overflow: hidden;
@@ -1822,6 +1846,17 @@
             grid.innerHTML = filtered.map(p => {
                 const featuresHtml = p.specs.slice(0, 2).map(f => `<span class="feature-badge" style="display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden;"><i class="fas fa-check" style="color:var(--color-cobalt-band); margin-right:4px;"></i>${f}</span>`).join('');
 
+                // Compute retail price and offer price from first pricing entry
+                const firstPricing = (p.pricing && p.pricing.length > 0) ? p.pricing[0] : null;
+                const retailPrice = firstPricing ? Number(firstPricing.retail_price || firstPricing.mrp || 0) : 0;
+                const offerPrice  = firstPricing ? Number(firstPricing.offer_price || p.priceVal || 0) : p.priceVal;
+                const discountPct = (retailPrice > 0 && offerPrice > 0 && retailPrice > offerPrice)
+                    ? Math.round(((retailPrice - offerPrice) / retailPrice) * 100) : 0;
+                const retailHtml  = (retailPrice > 0 && retailPrice !== offerPrice)
+                    ? `<span style="font-size:11px; color:var(--color-sage-mute); text-decoration:line-through; font-weight:600; display:block; margin-bottom:1px;">MRP ₹${retailPrice}</span>` : '';
+                const badgeHtml   = discountPct > 0
+                    ? `<span class="offer-popup-badge">${discountPct}% OFF</span>` : '';
+
                 if (currentView === 'grid') {
                     const visualHtml = generateProductVisualHTML(p);
                     const bgStyle = (p.images && p.images.length > 0) ? "" : `background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('assets/pattern.jpg'); background-color: ${p.color}; background-blend-mode: multiply; background-size: cover; background-position: center;`;
@@ -1833,15 +1868,17 @@
                             <div class="product-info" style="padding:14px 16px 16px; display:flex; flex-direction:column; flex:1;">
                                 <h3 style="font-size:15px; font-weight:800; color:var(--color-ink-black); margin-bottom:8px; line-height:1.2;">${p.name}</h3>
                                 <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(0,0,0,0.06); padding-top:12px;">
-                                    <div>
-                                        <span style="font-size:10px; color:var(--color-sage-mute); text-transform:uppercase; font-weight:800; display:block; margin-bottom:2px;">${p.finish}</span>
-                                        <span style="font-size:16px; font-weight:800; color:var(--color-ink-black);">₹${p.priceVal}<span style="font-size:11px; font-weight:400; color:var(--color-sage-mute);"> / Starting</span></span>
+                                    <div style="position:relative;">
+                                        ${badgeHtml}
+                                        ${retailHtml}
+                                        <span style="font-size:22px; font-weight:900; color:var(--color-cobalt-band); letter-spacing:-0.5px; line-height:1;">₹${offerPrice > 0 ? offerPrice : p.priceVal}<span style="font-size:10px; font-weight:500; color:var(--color-sage-mute);"> / Starting</span></span>
                                     </div>
                                     <div style="width:30px; height:30px; border-radius:50%; background:var(--color-linen-canvas); display:flex; align-items:center; justify-content:center; color:var(--color-ink-black); flex-shrink:0;"><i class="fas fa-arrow-right" style="transform:rotate(-45deg); font-size:12px;"></i></div>
                                 </div>
                             </div>
                         </div>
                     `;
+
                 } else {
                     const visualHtml = generateProductVisualHTML(p);
                     const bgStyle = (p.images && p.images.length > 0) ? "" : `background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('assets/pattern.jpg'); background-color: ${p.color}; background-blend-mode: multiply; background-size: cover; background-position: center;`;
