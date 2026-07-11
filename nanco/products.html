@@ -12,21 +12,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
-        /* ---- Offer Flower / Starburst Badge ---- */
+        /* ---- Offer Icon Badge (FA certificate) ---- */
         @keyframes badge-pop {
-            0%   { transform: scale(0.6) rotate(-20deg); opacity: 0; }
-            60%  { transform: scale(1.18) rotate(6deg); opacity: 1; }
-            80%  { transform: scale(0.94) rotate(-2deg); }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            0%   { transform: scale(0.5) rotate(-15deg); opacity: 0; }
+            60%  { transform: scale(1.18) rotate(5deg);  opacity: 1; }
+            80%  { transform: scale(0.93) rotate(-2deg); }
+            100% { transform: scale(1)    rotate(0deg);  opacity: 1; }
         }
-        @keyframes badge-spin {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
-        .offer-flower-badge {
-            width: 62px;
-            height: 62px;
+        .offer-icon-badge {
             position: relative;
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -34,35 +30,34 @@
             animation-delay: 0.08s;
             flex-shrink: 0;
         }
-        .offer-flower-badge .flower-bg {
+        .offer-icon-badge > i {
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #dc2626, #ef4444);
-            clip-path: polygon(
-                50% 0%,   61% 15%,  79%  9%,  76% 28%,
-                93% 36%,  81% 50%,  93% 64%,  76% 72%,
-                79% 91%,  61% 85%,  50% 100%, 39% 85%,
-                21% 91%,  24% 72%,   7% 64%,  19% 50%,
-                 7% 36%,  24% 28%,  21%  9%,  39% 15%
-            );
-            filter: drop-shadow(0 3px 10px rgba(220,38,38,0.55));
+            font-size: 64px;
+            background: linear-gradient(145deg, #e11d48, #f43f5e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 3px 10px rgba(225,29,72,0.45));
+            line-height: 1;
         }
-        .offer-flower-badge .flower-text {
+        .offer-icon-badge .badge-label {
             position: relative;
             z-index: 2;
             text-align: center;
             color: #fff;
-            font-size: 10px;
+            font-size: 9.5px;
             font-weight: 900;
-            line-height: 1.15;
+            line-height: 1.2;
             text-transform: uppercase;
-            letter-spacing: 0.02em;
+            letter-spacing: 0.01em;
             pointer-events: none;
         }
-        .offer-flower-badge .flower-text b {
+        .offer-icon-badge .badge-label b {
             display: block;
-            font-size: 13px;
+            font-size: 14px;
+            font-weight: 900;
             letter-spacing: -0.5px;
+            line-height: 1;
         }
 
         /* ---- Redesigned Product Card (pc2) ---- */
@@ -2019,7 +2014,7 @@
                 const retailHtml  = (retailPrice > 0 && retailPrice !== offerPrice)
                     ? `<span style="font-size:11px; color:var(--color-sage-mute); text-decoration:line-through; font-weight:600; display:block; margin-bottom:1px;">MRP ₹${retailPrice}</span>` : '';
                 const badgeHtml   = discountPct > 0
-                    ? `<div class="offer-flower-badge"><div class="flower-bg"></div><div class="flower-text"><b>${discountPct}%</b>OFF</div></div>` : '';
+                    ? `<div class="offer-icon-badge"><i class="fas fa-certificate"></i><div class="badge-label"><b>${discountPct}%</b>OFF</div></div>` : '';
                 const unitLabelHtml = selectedUnitLabel
                     ? `<span style="font-size:9px; color:var(--color-sage-mute); font-weight:800; text-transform:uppercase; display:block; margin-bottom:2px; letter-spacing:0.04em;">${selectedUnitLabel}</span>` : '';
 
