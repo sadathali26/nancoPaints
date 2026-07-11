@@ -1416,21 +1416,16 @@
                             <select id="pdp-unit-select" onchange="updatePdpPrice()" style="width: 100%; padding: 16px 40px 16px 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background-color: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; -webkit-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 16px center; background-size: 12px auto;">
                             </select>
                         </div>
-                        <div style="width: 130px;">
+                        <div style="width: 150px;">
                             <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Quantity</label>
                             <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.05); border-radius: 99px; padding: 6px; border: 1px solid rgba(0,0,0,0.1); box-sizing: border-box; height: 54px;">
                                 <button onclick="let q=document.getElementById('pdp-quantity'); q.value=Math.max(1, parseInt(q.value||1)-1); updatePdpPrice()" style="width: 40px; height: 40px; border-radius: 99px; border: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: bold; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: var(--color-ink-black);">-</button>
-                                <input type="number" id="pdp-quantity" value="1" min="1" oninput="updatePdpPrice()" style="width: 30px; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: 800; outline: none; -moz-appearance: textfield; color: var(--color-ink-black); padding: 0;">
+                                <input type="number" id="pdp-quantity" value="1" min="1" oninput="updatePdpPrice()" style="width: 40px; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: 800; outline: none; -moz-appearance: textfield; color: var(--color-ink-black); padding: 0;">
                                 <button onclick="let q=document.getElementById('pdp-quantity'); q.value=parseInt(q.value||1)+1; updatePdpPrice()" style="width: 40px; height: 40px; border-radius: 99px; border: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: bold; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: var(--color-ink-black);">+</button>
                             </div>
                             <style>
                                 #pdp-quantity::-webkit-inner-spin-button, #pdp-quantity::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
                             </style>
-                        </div>
-                        <div style="flex: 1;">
-                            <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Color Code</label>
-                            <input type="text" id="pdp-color-input" placeholder="#HEX or Name" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px;">
-                            <div id="pdp-color-error" style="color: var(--color-coral-red, #ef4444); font-size: 11px; margin-top: 4px; display: none; font-weight: 800; padding-left: 12px;">Color not found in studio</div>
                         </div>
                     </div>
                     
@@ -1446,14 +1441,21 @@
                     </div>
 
                     <!-- Bottom Actions -->
-                    <div style="display: flex; gap: 12px; margin-top: auto;">
+                    <div style="display: flex; gap: 12px; margin-top: auto; align-items: center; position: relative;">
+                        <!-- Inline Color Code -->
+                        <div style="flex: 1.2; position: relative;">
+                            <div id="pdp-color-swatch-inline" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; background: #ddd; display: none; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 2;"></div>
+                            <input type="text" id="pdp-color-input" placeholder="Color Code" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px 16px 16px 48px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px; transition: all 0.2s;">
+                            <div id="pdp-color-error" style="position: absolute; color: var(--color-coral-red, #ef4444); font-size: 11px; bottom: -18px; left: 24px; display: none; font-weight: 800;">Color not found</div>
+                        </div>
+
                         <button onclick="addToCart(false)" class="btn-primary"
-                            style="flex: 1; background: var(--color-white-plate); border: 1px solid rgba(0,0,0,0.1); color: var(--color-ink-black); border-radius: 99px; padding: 16px 24px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: none;">
-                            <i class="fas fa-cart-plus" style="margin-right: 8px;"></i> Add to Cart
+                            style="flex: 1; background: var(--color-white-plate); border: 1px solid rgba(0,0,0,0.1); color: var(--color-ink-black); border-radius: 99px; padding: 16px 12px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: none; height: 54px;">
+                            <i class="fas fa-cart-plus" style="margin-right: 4px;"></i> Add to Cart
                         </button>
                         <button onclick="addToCart('buy_now')" class="btn-primary"
-                            style="flex: 1; background: var(--color-cobalt-band); border: none; color: #fff; border-radius: 99px; padding: 16px 24px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: none;">
-                            <i class="fas fa-bolt" style="margin-right: 8px;"></i> Buy Now
+                            style="flex: 1; background: var(--color-cobalt-band); border: none; color: #fff; border-radius: 99px; padding: 16px 12px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: none; height: 54px;">
+                            <i class="fas fa-bolt" style="margin-right: 4px;"></i> Buy Now
                         </button>
                     </div>
                 </div>
@@ -2477,7 +2479,10 @@
         function clearSelectedShade() {
             currentSelectedShade = null;
             sessionStorage.removeItem('selectedShade');
-            document.getElementById('pdp-selected-shade').style.display = 'none';
+            const shadeBadge = document.getElementById('pdp-selected-shade');
+            if (shadeBadge) shadeBadge.style.display = 'none';
+            const inlineSwatch = document.getElementById('pdp-color-swatch-inline');
+            if (inlineSwatch) inlineSwatch.style.display = 'none';
         }
 
         let globalPaletteData = null;
@@ -2519,6 +2524,14 @@
             
             if (foundColor) {
                 currentSelectedShade = foundColor;
+                
+                // Show in the new inline input swatch
+                const inlineSwatch = document.getElementById('pdp-color-swatch-inline');
+                if (inlineSwatch) {
+                    inlineSwatch.style.background = foundColor.hex;
+                    inlineSwatch.style.display = 'block';
+                }
+
                 const pdpSelectedShadeContainer = document.getElementById('pdp-selected-shade');
                 const pdpSelectedShadeColor = document.getElementById('pdp-selected-shade-color');
                 const pdpSelectedShadeName = document.getElementById('pdp-selected-shade-name');
