@@ -18,13 +18,15 @@
             100% { transform: scale(1); opacity: 1; }
         }
         .offer-pill-badge {
-            background: transparent;
-            color: #780016;
+            background: rgba(120, 0, 22, 0.9);
+            backdrop-filter: blur(4px);
+            color: #fff;
             padding: 6px 14px;
             border-radius: 99px;
             display: inline-block;
             text-align: center;
             animation: badge-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         .offer-pill-badge .badge-label {
             font-size: 11px;
@@ -1703,12 +1705,23 @@
             idx = (idx + dir + images.length) % images.length;
             container.setAttribute('data-idx', idx);
             
-            const imgEl = container.querySelector('.carousel-img');
-            imgEl.style.opacity = 0; // fade out
+            const img = container.querySelector('.carousel-img');
+            
+            // Smooth crossfade transition
+            const oldImg = img.cloneNode(true);
+            oldImg.style.position = 'absolute';
+            oldImg.style.zIndex = '1';
+            oldImg.style.transition = 'opacity 0.5s ease';
+            container.insertBefore(oldImg, img);
+            
+            img.style.opacity = '0';
+            img.src = images[idx];
             
             setTimeout(() => {
-                imgEl.src = images[idx];
-            }, 300);
+                oldImg.style.opacity = '0';
+                img.style.opacity = '1';
+                setTimeout(() => oldImg.remove(), 500);
+            }, 10);
             
             const dots = container.querySelectorAll('.carousel-dots div');
             dots.forEach((dot, i) => {
@@ -1717,7 +1730,6 @@
         }
 
         function extractBottomColor(imgEl) {
-            imgEl.style.opacity = 1; // fade in after load
             try {
                 const canvas = document.createElement('canvas');
                 canvas.width = 1;
@@ -1759,7 +1771,7 @@
                 } else {
                     return `
                         <div style="position:absolute; inset:0; border-radius:inherit; overflow:hidden;" class="prod-carousel" data-images='${JSON.stringify(product.images)}' data-idx="0">
-                            <img src="${product.images[0]}" crossorigin="anonymous" onload="extractBottomColor(this)" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.3s; opacity: 1;" class="carousel-img">
+                            <img src="${product.images[0]}" crossorigin="anonymous" onload="extractBottomColor(this)" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.5s ease;" class="carousel-img">
                             <button class="carousel-btn prev-btn" onclick="event.stopPropagation(); changeCarousel(this, -1)" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-left"></i></button>
                             <button class="carousel-btn next-btn" onclick="event.stopPropagation(); changeCarousel(this, 1)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-right"></i></button>
                             <div style="position:absolute; bottom:10px; width:100%; display:flex; justify-content:center; gap:6px; z-index:10;" class="carousel-dots">
