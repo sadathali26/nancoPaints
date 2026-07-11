@@ -2027,7 +2027,10 @@
                                 ${visualHtml}
                                 <div style="position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 40%); z-index:3; pointer-events:none;"></div>
                                 ${badgeHtml ? `<div style="position:absolute;top:12px;right:12px;z-index:5;">${badgeHtml}</div>` : ''}
-                                <h3 class="pc2-name" style="position:absolute; bottom:12px; left:12px; right:12px; z-index:5; margin:0; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.8); font-size:24px; font-weight:900; line-height:1.1;">${p.name}</h3>
+                                <div style="position:absolute; bottom:12px; left:12px; right:12px; z-index:5; display:flex; flex-direction:column; gap:4px;">
+                                    ${p.range ? `<span style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: rgba(255,255,255,0.9); text-shadow: 0 1px 4px rgba(0,0,0,0.8);">${p.range}</span>` : ''}
+                                    <h3 class="pc2-name" style="margin:0; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.8); font-size:24px; font-weight:900; line-height:1.1;">${p.name}</h3>
+                                </div>
                             </div>
                             <div class="pc2-body">
                                 <div class="pc2-desc-text">
