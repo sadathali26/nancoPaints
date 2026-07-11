@@ -109,72 +109,39 @@
             background: rgba(0,0,0,0.03);
             white-space: nowrap;
         }
-        .pc2-coverage {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--color-ink-black);
-            background: var(--color-linen-canvas, #f8f6f1);
-            border-radius: 10px;
-            padding: 7px 11px;
-        }
-        .pc2-coverage i {
-            color: var(--color-cobalt-band, #1e3a8a);
-            font-size: 13px;
-        }
-        .pc2-price-row {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            margin-top: auto;
-            padding-top: 10px;
-            border-top: 1px solid rgba(0,0,0,0.06);
-        }
-        .pc2-price-block {}
-        .pc2-unit {
-            font-size: 10px;
+        .pc2-price-pill {
+            background: #483933;
+            color: #fff;
+            border-radius: 99px;
+            padding: 4px 10px;
+            font-size: 14px;
             font-weight: 800;
-            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .pc2-desc-text {
+            font-size: 12px;
             color: var(--color-sage-mute, #7a8a7a);
-            letter-spacing: 0.05em;
-            display: block;
-            margin-bottom: 2px;
+            line-height: 1.4;
+            margin-bottom: 6px;
         }
-        .pc2-mrp {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--color-sage-mute, #7a8a7a);
-            text-decoration: line-through;
-            display: block;
-            line-height: 1;
-        }
-        .pc2-offer {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--color-cobalt-band, #1e3a8a);
-            letter-spacing: -0.5px;
-            line-height: 1;
-        }
-        .pc2-add-btn {
-            background: var(--color-cobalt-band, #1e3a8a);
+        .pc2-add-full {
+            width: 100%;
+            background: #483933;
             color: #fff;
             border: none;
             border-radius: 99px;
-            padding: 10px 18px;
-            font-size: 13px;
+            padding: 12px;
+            font-size: 14px;
             font-weight: 800;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            text-align: center;
             transition: background 0.2s, transform 0.15s;
-            white-space: nowrap;
         }
-        .pc2-add-btn:hover {
-            background: #162d6b;
-            transform: scale(1.04);
+        .pc2-add-full:hover {
+            background: #362924;
+            transform: scale(1.02);
         }
         body {
             background-color: var(--color-linen-canvas);
@@ -2020,20 +1987,14 @@
                     const imgBgStyle = (p.images && p.images.length > 0)
                         ? `background-color:${p.color}20;`
                         : `background: linear-gradient(160deg, ${p.color}dd 0%, ${p.color}88 100%);`;
-                    // Tags: finish + category (capitalised)
+                    // Tags: unit + finish + spec
                     const tagArr = [];
+                    if (selectedUnitLabel) tagArr.push(selectedUnitLabel);
                     if (p.finish) tagArr.push(p.finish);
-                    if (p.category) tagArr.push(p.category.charAt(0).toUpperCase() + p.category.slice(1));
                     p.specs.slice(0, 1).forEach(s => tagArr.push(s));
                     const tagsHtml = tagArr.slice(0,3).map(t => `<span class="pc2-tag">${t}</span>`).join('');
-                    // Coverage chip
-                    const covHtml = p.coverage
-                        ? `<div class="pc2-coverage"><i class="fas fa-ruler-combined"></i><span><b>${p.coverage}</b> coverage / L</span></div>` : '';
                     const displayPrice = offerPrice > 0 ? offerPrice : p.priceVal;
-                    const mrpHtml = (retailPrice > 0 && retailPrice !== displayPrice)
-                        ? `<span class="pc2-mrp">MRP ₹${retailPrice}</span>` : '';
-                    const unitSpanHtml = selectedUnitLabel
-                        ? `<span class="pc2-unit">${selectedUnitLabel}</span>` : '';
+                    const catName = p.category ? p.category.charAt(0).toUpperCase() + p.category.slice(1) : 'Premium';
                     return `
                         <div class="pc2" onclick="openPDP('${p.id}')">
                             <div class="pc2-img" style="${imgBgStyle}">
@@ -2041,18 +2002,22 @@
                                 ${badgeHtml ? `<div style="position:absolute;top:12px;left:12px;z-index:5;">${badgeHtml}</div>` : ''}
                             </div>
                             <div class="pc2-body">
-                                <h3 class="pc2-name">${p.name}</h3>
-                                ${tagsHtml ? `<div class="pc2-tags">${tagsHtml}</div>` : ''}
-                                <div class="pc2-price-row">
-                                    <div class="pc2-price-block">
-                                        ${unitSpanHtml}
-                                        ${mrpHtml}
-                                        <span class="pc2-offer">₹${displayPrice}</span>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                                    <h3 class="pc2-name" style="padding-right: 8px;">${p.name}</h3>
+                                    <div class="pc2-price-pill">
+                                        <span style="font-size: 10px; margin-right: 2px;">₹</span>${displayPrice}
                                     </div>
-                                    <button class="pc2-add-btn" onclick="event.stopPropagation(); openPDP('${p.id}')">
-                                        <i class="fas fa-cart-plus"></i> Add
-                                    </button>
                                 </div>
+                                <div class="pc2-desc-text">
+                                    ${catName} Paint 
+                                    ${retailPrice > 0 && retailPrice !== displayPrice ? ` &middot; <span style="text-decoration: line-through;">MRP ₹${retailPrice}</span>` : ''}<br>
+                                    ${p.coverage ? `Coverage: ${p.coverage} sq.m/L` : ''}
+                                </div>
+                                ${tagsHtml ? `<div class="pc2-tags" style="margin-bottom: 12px;">${tagsHtml}</div>` : ''}
+                                <div style="flex: 1;"></div>
+                                <button class="pc2-add-full" onclick="event.stopPropagation(); openPDP('${p.id}')">
+                                    Add to cart
+                                </button>
                             </div>
                         </div>
                     `;
