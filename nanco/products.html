@@ -1421,10 +1421,18 @@
 
                     <!-- Unit and Quantity Selectors -->
                     <div style="display: flex; gap: 16px; margin-bottom: 24px;">
-                        <div style="flex: 1;">
+                        <div style="flex: 1; position: relative;" id="custom-unit-dropdown-wrapper">
                             <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Select Unit</label>
-                            <select id="pdp-unit-select" onchange="updatePdpPrice()" style="width: 100%; padding: 16px 40px 16px 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background-color: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; -webkit-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; background-position: right 16px center; background-size: 12px auto;">
-                            </select>
+                            <input type="hidden" id="pdp-unit-select" value="0">
+                            
+                            <div id="custom-unit-display" onclick="toggleUnitDropdown()" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background-color: var(--color-white-plate); font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+                                <span id="custom-unit-text">Select</span>
+                                <i class="fas fa-chevron-down" style="font-size: 12px; color: var(--color-sage-mute);"></i>
+                            </div>
+                            
+                            <div id="custom-unit-options" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-white-plate); border-radius: 16px; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: 8px; z-index: 10; overflow: hidden; max-height: 200px; overflow-y: auto;">
+                                <!-- Options populated by JS -->
+                            </div>
                         </div>
                         <div style="width: 150px;">
                             <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Quantity</label>
@@ -1441,8 +1449,11 @@
                     
                     <div id="pdp-price-details" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding: 16px; background: rgba(0,0,0,0.02); border-radius:12px;">
                         <div>
-                            <div style="font-size: 12px; color: var(--color-sage-mute); font-weight: 700; text-decoration: line-through;" id="pdp-mrp">MRP: ₹0</div>
-                            <div style="font-size: 28px; font-weight: 900; color: var(--color-ink-black); letter-spacing: -0.5px;" id="pdp-price-val">₹0</div>
+                            <div style="font-size: 12px; color: var(--color-sage-mute); font-weight: 700; text-decoration: line-through;" id="pdp-mrp">Shop Price: ₹0</div>
+                            <div style="display: flex; align-items: baseline; gap: 8px;">
+                                <div style="font-size: 28px; font-weight: 900; color: var(--color-ink-black); letter-spacing: -0.5px;" id="pdp-price-val">₹0</div>
+                                <div style="font-size: 14px; font-weight: 700; color: var(--color-sage-mute); display: none;" id="pdp-per-unit-val"></div>
+                            </div>
                         </div>
                         <div style="text-align:right;">
                             <div style="font-size: 12px; font-weight: 800; color: #16a34a;" id="pdp-save">Save ₹0</div>
@@ -2244,10 +2255,12 @@
                 icon.className = 'fas fa-chevron-down';
             }
 
-            const unitSelect = document.getElementById('pdp-unit-select');
-            unitSelect.innerHTML = currentPdpProduct.pricing.map((tier, idx) => `<option value="${idx}">${tier.unit}</option>`).join('');
-            
-            updatePdpPrice();
+            const unitOptionsContainer = document.getElementById('custom-unit-options');
+            let optionsHTML = '';
+            currentPdpProduct.pricing.forEach((tier, idx) => {
+                optionsHTML += `<div class="custom-unit-option" onclick="selectUnitOption(${idx}, '${tier.unit}')" style="padding: 12px 16px; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--color-ink-black);" onmouseover="this.style.background='rgba(0,0,0,0.03)'" onmouseout="this.style.background='transparent'">${tier.unit}</div>`;
+            });
+            unitOptionsContainer.innerHTML = optionsHTML;
 
             document.getElementById('pdp-badges').innerHTML = `<span class="feature-badge">${currentPdpProduct.category}</span>`;
             
@@ -2310,7 +2323,18 @@
             if (isNaN(qty) || qty < 1) qty = 1;
 
             document.getElementById('pdp-price-val').innerText = '₹' + (tier.offer_price * qty);
-            document.getElementById('pdp-mrp').innerText = 'MRP: ₹' + (tier.mrp * qty);
+            
+            const perUnitEl = document.getElementById('pdp-per-unit-val');
+            if (perUnitEl) {
+                if (qty > 1) {
+                    perUnitEl.innerText = '(₹' + tier.offer_price + ' / unit)';
+                    perUnitEl.style.display = 'block';
+                } else {
+                    perUnitEl.style.display = 'none';
+                }
+            }
+
+            document.getElementById('pdp-mrp').innerText = 'Shop Price: ₹' + (tier.mrp * qty);
             document.getElementById('pdp-save').innerText = 'Save ₹' + (tier.save_amount * qty);
             document.getElementById('pdp-code').innerText = `Item Code: ${tier.item_code}`;
         }
@@ -2548,6 +2572,26 @@
                 clearSelectedShade();
             }
         }
+
+        function toggleUnitDropdown() {
+            const opts = document.getElementById('custom-unit-options');
+            opts.style.display = opts.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function selectUnitOption(idx, unitText) {
+            document.getElementById('pdp-unit-select').value = idx;
+            document.getElementById('custom-unit-text').innerText = unitText;
+            document.getElementById('custom-unit-options').style.display = 'none';
+            updatePdpPrice();
+        }
+        
+        document.addEventListener('click', function(e) {
+            const wrapper = document.getElementById('custom-unit-dropdown-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                const opts = document.getElementById('custom-unit-options');
+                if(opts) opts.style.display = 'none';
+            }
+        });
 
         // --- 5. CART & INVOICE LOGIC ---
         function updateCartBadge() {
