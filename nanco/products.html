@@ -2284,7 +2284,7 @@
             
             updatePdpPrice();
 
-            document.getElementById('pdp-badges').innerHTML = `<span class="feature-badge">${currentPdpProduct.category}</span>`;
+            document.getElementById('pdp-badges').innerHTML = `<span style="font-size: 14px; font-weight: 800; color: var(--color-ink-black); text-transform: uppercase; letter-spacing: 1px;">${currentPdpProduct.category}</span>`;
             
             // Check if there is a pending calculated quantity for this product from the calculator
             const calcQtyStr = sessionStorage.getItem('calculatedQuantity');
