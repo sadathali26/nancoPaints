@@ -1696,53 +1696,14 @@
             });
         }
 
-        function applyImageColor(img) {
-            try {
-                if (img.naturalWidth === 0 || img.naturalHeight === 0) return;
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d', { willReadFrequently: true });
-                canvas.width = img.naturalWidth;
-                canvas.height = img.naturalHeight;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                
-                const x = Math.floor(canvas.width / 2);
-                const y = canvas.height - 1;
-                const p = ctx.getImageData(x, y, 1, 1).data;
-                
-                if (p[3] === 0) return; // Skip if transparent
-                
-                const card = img.closest('.pc2');
-                if (card) {
-                    const body = card.querySelector('.pc2-body');
-                    const imgContainer = card.querySelector('.pc2-img');
-                    const bgCol = `rgb(${p[0]}, ${p[1]}, ${p[2]})`;
-                    if (body) {
-                        body.style.background = bgCol;
-                        // Calculate brightness to adjust text color if needed
-                        const brightness = Math.round(((parseInt(p[0]) * 299) + (parseInt(p[1]) * 587) + (parseInt(p[2]) * 114)) / 1000);
-                        if (brightness < 128) {
-                            body.style.color = '#fff';
-                            const title = body.querySelector('.pc2-name');
-                            if (title) title.style.color = '#fff';
-                            const desc = body.querySelector('.pc2-desc-text');
-                            if (desc) desc.style.color = 'rgba(255,255,255,0.85)';
-                        }
-                    }
-                    if (imgContainer) imgContainer.style.background = bgCol;
-                }
-            } catch (e) {
-                // Ignore CORS errors
-            }
-        }
-
         function generateProductVisualHTML(product) {
             if (product.images && product.images.length > 0) {
                 if (product.images.length === 1) {
-                    return `<img crossorigin="anonymous" onload="applyImageColor(this)" src="${product.images[0]}" alt="${product.name}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
+                    return `<img src="${product.images[0]}" alt="${product.name}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
                 } else {
                     return `
                         <div style="position:absolute; inset:0; border-radius:inherit; overflow:hidden;" class="prod-carousel" data-images='${JSON.stringify(product.images)}' data-idx="0">
-                            <img crossorigin="anonymous" onload="applyImageColor(this)" src="${product.images[0]}" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.3s;" class="carousel-img">
+                            <img src="${product.images[0]}" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.3s;" class="carousel-img">
                             <button class="carousel-btn prev-btn" onclick="event.stopPropagation(); changeCarousel(this, -1)" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-left"></i></button>
                             <button class="carousel-btn next-btn" onclick="event.stopPropagation(); changeCarousel(this, 1)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-right"></i></button>
                             <div style="position:absolute; bottom:10px; width:100%; display:flex; justify-content:center; gap:6px; z-index:10;" class="carousel-dots">
@@ -2016,7 +1977,7 @@
                                 ${visualHtml}
                                 ${badgeHtml ? `<div style="position:absolute;top:12px;right:12px;z-index:5;">${badgeHtml}</div>` : ''}
                             </div>
-                            <div class="pc2-body">
+                            <div class="pc2-body" style="background: linear-gradient(to bottom, ${p.color}20 0%, #ffffff 60%);">
                                 <h3 class="pc2-name" style="margin-bottom: 6px;">${p.name}</h3>
                                 <div class="pc2-desc-text">
                                     ${catName} Paint<br>
