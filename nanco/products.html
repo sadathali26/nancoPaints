@@ -503,7 +503,7 @@
             background: var(--color-white-plate);
             border-radius: var(--radius-cards);
             width: 100%;
-            max-width: 1100px;
+            max-width: 1000px;
             max-height: 90vh;
             display: flex;
             flex-direction: column;
@@ -1393,9 +1393,19 @@
                         </div>
                     </div>
                     
-                    <button onclick="openDatasheetModal()" id="btn-pdp-details" style="background:var(--color-linen-canvas); border:1px solid rgba(0,0,0,0.05); color:var(--color-ink-black); border-radius:99px; padding:8px 16px; font-size:12px; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:8px; margin-bottom:16px; width:fit-content;">
-                        <i class="fas fa-file-pdf"></i> <span>View Datasheet</span> <i class="fas fa-chevron-down" id="icon-pdp-details"></i>
-                    </button>
+                    <!-- Datasheet and Color Input -->
+                    <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 24px;">
+                        <button onclick="openDatasheetModal()" id="btn-pdp-details" style="background:var(--color-linen-canvas); border:1px solid rgba(0,0,0,0.05); color:var(--color-ink-black); border-radius:99px; padding:16px 24px; font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content: center; gap:8px; height: 54px; flex: 1;">
+                            <i class="fas fa-file-pdf"></i> <span>Datasheet</span> <i class="fas fa-chevron-down" id="icon-pdp-details"></i>
+                        </button>
+                        
+                        <!-- Inline Color Code -->
+                        <div style="flex: 1.5; position: relative;">
+                            <div id="pdp-color-swatch-inline" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; background: #ddd; display: none; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 2;"></div>
+                            <input type="text" id="pdp-color-input" placeholder="Color Code" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px 16px 16px 48px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px; transition: all 0.2s;">
+                            <div id="pdp-color-error" style="position: absolute; color: var(--color-coral-red, #ef4444); font-size: 11px; bottom: -18px; left: 24px; display: none; font-weight: 800;">Color not found</div>
+                        </div>
+                    </div>
                     <div id="pdp-more-details" style="display:none; gap:24px; margin-bottom:24px; border: 1px solid rgba(0,0,0,0.05); border-radius:12px; padding: 16px; background:var(--color-linen-canvas);">
                         <div style="flex:1;">
                             <h4 style="font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom:8px;">Specifications</h4>
@@ -1415,12 +1425,12 @@
                             <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Select Unit</label>
                             <input type="hidden" id="pdp-unit-select" value="0">
                             
-                            <div id="custom-unit-display" onclick="toggleUnitDropdown()" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background-color: var(--color-white-plate); font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; display: flex; justify-content: space-between; align-items: center; user-select: none;">
+                            <div id="custom-unit-display" onclick="toggleUnitDropdown()" style="width: 100%; padding: 16px 20px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background-color: var(--color-white-plate); font-family:var(--font-primary); font-size: 15px; font-weight: 700; cursor: pointer; box-sizing: border-box; height: 54px; display: flex; justify-content: space-between; align-items: center; user-select: none; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.02);" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.05)'; this.style.borderColor='rgba(0,0,0,0.2)'" onmouseout="this.style.boxShadow='0 2px 8px rgba(0,0,0,0.02)'; this.style.borderColor='rgba(0,0,0,0.1)'">
                                 <span id="custom-unit-text">Select</span>
-                                <i class="fas fa-chevron-down" style="font-size: 12px; color: var(--color-sage-mute);"></i>
+                                <i id="custom-unit-chevron" class="fas fa-chevron-down" style="font-size: 13px; color: var(--color-ink-black); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);"></i>
                             </div>
                             
-                            <div id="custom-unit-options" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--color-white-plate); border-radius: 16px; border: 1px solid rgba(0,0,0,0.1); box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-top: 8px; z-index: 10; overflow: hidden; max-height: 200px; overflow-y: auto;">
+                            <div id="custom-unit-options" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 12px 32px rgba(0,0,0,0.12); z-index: 10; overflow: hidden; max-height: 240px; overflow-y: auto; padding: 8px; opacity: 0; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);">
                                 <!-- Options populated by JS -->
                             </div>
                         </div>
@@ -1434,14 +1444,6 @@
                             <style>
                                 #pdp-quantity::-webkit-inner-spin-button, #pdp-quantity::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
                             </style>
-                        </div>
-                        <div style="flex: 1.2;">
-                            <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Color Code</label>
-                            <div style="position: relative;">
-                                <div id="pdp-color-swatch-inline" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; background: #ddd; display: none; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); z-index: 2;"></div>
-                                <input type="text" id="pdp-color-input" placeholder="Color Code" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px 16px 16px 48px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px; transition: all 0.2s;">
-                                <div id="pdp-color-error" style="position: absolute; color: var(--color-coral-red, #ef4444); font-size: 11px; bottom: -18px; left: 24px; display: none; font-weight: 800;">Color not found</div>
-                            </div>
                         </div>
                     </div>
                     
@@ -2256,7 +2258,7 @@
             const unitOptionsContainer = document.getElementById('custom-unit-options');
             let optionsHTML = '';
             currentPdpProduct.pricing.forEach((tier, idx) => {
-                optionsHTML += `<div class="custom-unit-option" onclick="selectUnitOption(${idx}, '${tier.unit}')" style="padding: 12px 16px; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.05); color: var(--color-ink-black);" onmouseover="this.style.background='rgba(0,0,0,0.03)'" onmouseout="this.style.background='transparent'">${tier.unit}</div>`;
+                optionsHTML += `<div class="custom-unit-option" onclick="selectUnitOption(${idx}, '${tier.unit}')" style="padding: 14px 16px; font-size: 14px; font-weight: 700; cursor: pointer; border-radius: 12px; margin-bottom: 2px; color: var(--color-ink-black); transition: all 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'; this.style.transform='scale(0.98)'" onmouseout="this.style.background='transparent'; this.style.transform='scale(1)'">${tier.unit}</div>`;
             });
             unitOptionsContainer.innerHTML = optionsHTML;
 
@@ -2573,13 +2575,31 @@
 
         function toggleUnitDropdown() {
             const opts = document.getElementById('custom-unit-options');
-            opts.style.display = opts.style.display === 'none' ? 'block' : 'none';
+            const chev = document.getElementById('custom-unit-chevron');
+            if (opts.style.display === 'none' || opts.style.opacity === '0') {
+                opts.style.display = 'block';
+                // Trigger reflow for animation
+                opts.offsetHeight;
+                opts.style.opacity = '1';
+                opts.style.transform = 'translateY(0)';
+                if (chev) chev.style.transform = 'rotate(180deg)';
+            } else {
+                opts.style.opacity = '0';
+                opts.style.transform = 'translateY(-10px)';
+                if (chev) chev.style.transform = 'rotate(0deg)';
+                setTimeout(() => { if(opts.style.opacity === '0') opts.style.display = 'none'; }, 300);
+            }
         }
 
         function selectUnitOption(idx, unitText) {
             document.getElementById('pdp-unit-select').value = idx;
             document.getElementById('custom-unit-text').innerText = unitText;
-            document.getElementById('custom-unit-options').style.display = 'none';
+            const opts = document.getElementById('custom-unit-options');
+            const chev = document.getElementById('custom-unit-chevron');
+            opts.style.opacity = '0';
+            opts.style.transform = 'translateY(-10px)';
+            if (chev) chev.style.transform = 'rotate(0deg)';
+            setTimeout(() => { if(opts.style.opacity === '0') opts.style.display = 'none'; }, 300);
             updatePdpPrice();
         }
         
@@ -2587,7 +2607,13 @@
             const wrapper = document.getElementById('custom-unit-dropdown-wrapper');
             if (wrapper && !wrapper.contains(e.target)) {
                 const opts = document.getElementById('custom-unit-options');
-                if(opts) opts.style.display = 'none';
+                const chev = document.getElementById('custom-unit-chevron');
+                if(opts && opts.style.display === 'block') {
+                    opts.style.opacity = '0';
+                    opts.style.transform = 'translateY(-10px)';
+                    if (chev) chev.style.transform = 'rotate(0deg)';
+                    setTimeout(() => { if(opts.style.opacity === '0') opts.style.display = 'none'; }, 300);
+                }
             }
         });
 
