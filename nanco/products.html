@@ -1756,7 +1756,7 @@
                             <img src="${product.images[0]}" crossorigin="anonymous" onload="extractBottomColor(this)" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.3s;" class="carousel-img">
                             <button class="carousel-btn prev-btn" onclick="event.stopPropagation(); changeCarousel(this, -1)" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-left"></i></button>
                             <button class="carousel-btn next-btn" onclick="event.stopPropagation(); changeCarousel(this, 1)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-right"></i></button>
-                            <div style="position:absolute; bottom:10px; width:100%; display:flex; justify-content:center; gap:6px; z-index:10;" class="carousel-dots">
+                            <div style="position:absolute; top:16px; width:100%; display:flex; justify-content:center; gap:6px; z-index:10;" class="carousel-dots">
                                 ${product.images.map((_, i) => `<div style="width:8px; height:8px; border-radius:50%; background:${i===0?'var(--color-cobalt-band)':'rgba(255,255,255,0.8)'}; box-shadow:0 1px 2px rgba(0,0,0,0.2);"></div>`).join('')}
                             </div>
                         </div>
@@ -2025,8 +2025,9 @@
                         <div class="pc2" onclick="openPDP('${p.id}')">
                             <div class="pc2-img" style="${imgBgStyle}">
                                 ${visualHtml}
+                                <div style="position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 40%); z-index:3; pointer-events:none;"></div>
                                 ${badgeHtml ? `<div style="position:absolute;top:12px;right:12px;z-index:5;">${badgeHtml}</div>` : ''}
-                                <h3 class="pc2-name" style="position:absolute; top:12px; left:12px; right:60px; z-index:5; margin:0; color:#fff; text-shadow:0 1px 6px rgba(0,0,0,0.6);">${p.name}</h3>
+                                <h3 class="pc2-name" style="position:absolute; bottom:12px; left:12px; right:12px; z-index:5; margin:0; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.8); font-size:24px; font-weight:900; line-height:1.1;">${p.name}</h3>
                             </div>
                             <div class="pc2-body">
                                 <div class="pc2-desc-text">
