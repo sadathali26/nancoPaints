@@ -1443,14 +1443,14 @@
                         </div>
 
                         <!-- Unit and Quantity Selectors -->
-                        <div style="display: flex; gap: 16px;">
+                        <div style="display: flex; gap: 16px; margin-top: 8px;">
                             <div style="flex: 1;">
-                                <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Select Unit</label>
+                                <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block; letter-spacing: 0.5px;">Select Unit</label>
                                 <select id="pdp-unit-select" onchange="updatePdpPrice()" style="width: 100%; padding: 16px 40px 16px 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23000000\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/><path d=\'M0 0h24v24H0z\' fill=\'none\'/></svg>'); background-repeat: no-repeat; background-position-x: calc(100% - 16px); background-position-y: center;">
                                 </select>
                             </div>
                             <div style="width: 130px;">
-                                <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Quantity</label>
+                                <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block; letter-spacing: 0.5px;">Quantity</label>
                                 <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.05); border-radius: 99px; padding: 6px; border: 1px solid rgba(0,0,0,0.1); box-sizing: border-box; height: 54px;">
                                     <button onclick="let q=document.getElementById('pdp-quantity'); q.value=Math.max(1, parseInt(q.value||1)-1); updatePdpPrice()" style="width: 40px; height: 40px; border-radius: 99px; border: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: bold; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; color: var(--color-ink-black);">-</button>
                                     <input type="number" id="pdp-quantity" value="1" min="1" oninput="updatePdpPrice()" style="width: 30px; text-align: center; border: none; background: transparent; font-size: 16px; font-weight: 800; outline: none; -moz-appearance: textfield; color: var(--color-ink-black); padding: 0;">
@@ -1461,7 +1461,7 @@
                                 </style>
                             </div>
                             <div style="flex: 1;">
-                                <label style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block;">Color Code</label>
+                                <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block; letter-spacing: 0.5px;">Color Code</label>
                                 <div id="pdp-color-input-container" style="position: relative;">
                                     <input type="text" id="pdp-color-input" placeholder="#HEX or Name" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px;">
                                     
