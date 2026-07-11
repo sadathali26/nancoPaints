@@ -1289,7 +1289,7 @@
                 <div class="bento-card card-cobalt"
                     style="margin-top: 40px; display: flex; justify-content: space-between; align-items: center; padding: 40px; flex-wrap: wrap; gap: 24px;">
                     <div>
-                        <span class=""
+                        <span class="section-label"
                             style="background: var(--color-lime-spark); color: var(--color-ink-black); border:none;">Free
                             Resources</span>
                         <h2 class="bento-card-title" style="color: #fff; font-size: 28px; margin-top: 16px;">Download
@@ -2026,9 +2026,9 @@
                             <div class="pc2-img" style="${imgBgStyle}">
                                 ${visualHtml}
                                 ${badgeHtml ? `<div style="position:absolute;top:12px;right:12px;z-index:5;">${badgeHtml}</div>` : ''}
+                                <h3 class="pc2-name" style="position:absolute; top:12px; left:12px; right:60px; z-index:5; margin:0; color:#fff; text-shadow:0 1px 6px rgba(0,0,0,0.6);">${p.name}</h3>
                             </div>
                             <div class="pc2-body">
-                                <h3 class="pc2-name" style="margin-bottom: 6px;">${p.name}</h3>
                                 <div class="pc2-desc-text">
                                     ${catName} Paint<br>
                                     ${p.coverage ? `Coverage: ${p.coverage} sq.m/L` : ''}
