@@ -1437,8 +1437,15 @@
                         <div style="display: flex; gap: 16px; margin-top: 8px;">
                             <div style="flex: 1;">
                                 <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block; letter-spacing: 0.5px;">Select Unit</label>
-                                <select id="pdp-unit-select" onchange="updatePdpPrice()" style="width: 100%; padding: 16px 40px 16px 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=\'%23000000\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/><path d=\'M0 0h24v24H0z\' fill=\'none\'/></svg>'); background-repeat: no-repeat; background-position-x: calc(100% - 16px); background-position-y: center;">
-                                </select>
+                                <div class="custom-select-container" style="position: relative; width: 100%;">
+                                    <div id="pdp-unit-display" onclick="toggleCustomDropdown()" style="width: 100%; padding: 16px 20px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); font-family:var(--font-primary); font-size: 16px; font-weight: 600; cursor: pointer; box-sizing: border-box; height: 54px; display: flex; align-items: center; justify-content: space-between; transition: border-color 0.2s;">
+                                        <span id="pdp-unit-text">...</span>
+                                        <i class="fas fa-chevron-down" style="font-size: 12px; color: var(--color-ink-black);"></i>
+                                    </div>
+                                    <div id="pdp-unit-dropdown" style="display: none; position: absolute; top: calc(100% + 8px); left: 0; width: 100%; background: #ffffff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); overflow: hidden; z-index: 100; flex-direction: column; max-height: 220px; overflow-y: auto;">
+                                    </div>
+                                    <input type="hidden" id="pdp-unit-select" value="0" onchange="updatePdpPrice()">
+                                </div>
                             </div>
                             <div style="width: 130px;">
                                 <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block; letter-spacing: 0.5px;">Quantity</label>
@@ -1484,7 +1491,7 @@
                     </div>
 
                     <!-- Bottom Actions -->
-                    <div style="display: flex; gap: 12px; margin-top: auto;">
+                    <div style="display: flex; gap: 12px; position: sticky; bottom: -40px; margin-left: -40px; margin-right: -40px; padding: 16px 40px 40px 40px; background: #f3f3f1; z-index: 10; margin-top: auto; border-top: 1px solid rgba(0,0,0,0.05);">
                         <button onclick="addToCart(false)" class="btn-primary"
                             style="flex: 1; background: var(--color-white-plate); border: 1px solid rgba(0,0,0,0.1); color: var(--color-ink-black); border-radius: 99px; padding: 16px 24px; font-weight: 800; font-size: 14px; cursor: pointer; box-shadow: none;">
                             <i class="fas fa-cart-plus" style="margin-right: 8px;"></i> Add to Cart
@@ -2279,8 +2286,17 @@
                 icon.className = 'fas fa-chevron-down';
             }
 
-            const unitSelect = document.getElementById('pdp-unit-select');
-            unitSelect.innerHTML = currentPdpProduct.pricing.map((tier, idx) => `<option value="${idx}">${tier.unit}</option>`).join('');
+            const dropdown = document.getElementById('pdp-unit-dropdown');
+            dropdown.innerHTML = currentPdpProduct.pricing.map((tier, idx) => `
+                <div onclick="selectPdpUnit(${idx}, '${tier.unit}')" style="padding: 16px 20px; font-size: 15px; font-weight: 600; cursor: pointer; transition: background 0.2s; border-bottom: 1px solid rgba(0,0,0,0.03);" onmouseover="this.style.background='var(--color-linen-canvas)'" onmouseout="this.style.background='transparent'">
+                    ${tier.unit}
+                </div>
+            `).join('');
+            
+            if (currentPdpProduct.pricing.length > 0) {
+                document.getElementById('pdp-unit-select').value = "0";
+                document.getElementById('pdp-unit-text').innerText = currentPdpProduct.pricing[0].unit;
+            }
             
             updatePdpPrice();
 
@@ -2336,6 +2352,26 @@
                 content.style.transform = 'scale(1)';
             }, 10);
         }
+
+        function toggleCustomDropdown() {
+            const dropdown = document.getElementById('pdp-unit-dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'flex' : 'none';
+        }
+        
+        function selectPdpUnit(idx, text) {
+            document.getElementById('pdp-unit-select').value = idx;
+            document.getElementById('pdp-unit-text').innerText = text;
+            document.getElementById('pdp-unit-dropdown').style.display = 'none';
+            updatePdpPrice();
+        }
+        
+        document.addEventListener('click', function(e) {
+            const display = document.getElementById('pdp-unit-display');
+            const dropdown = document.getElementById('pdp-unit-dropdown');
+            if (display && dropdown && !display.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
 
         function updatePdpPrice() {
             if (!currentPdpProduct || !currentPdpProduct.pricing.length) return;
