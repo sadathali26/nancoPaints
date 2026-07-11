@@ -65,39 +65,34 @@
             flex-shrink: 0;
             border-radius: 0;
         }
-        .pc2-body {
-            padding: 16px 18px 18px;
+        .pc2-body-mid {
+            background: var(--color-cobalt-deep);
+            padding: 16px 18px 12px;
             display: flex;
             flex-direction: column;
-            flex: 1;
             gap: 10px;
-            
-            --c-bg: #ffffff;
-            --c-title: var(--color-ink-black);
-            --c-desc: var(--color-sage-mute);
-            --c-tag: var(--color-sage-mute);
-            --c-tag-border: rgba(0,0,0,0.1);
-            --c-price: #780016;
-            
-            background-color: var(--c-bg);
-            transition: background-color 0.5s ease;
+            flex: 1;
         }
-        .pc2-body * {
-            transition: color 0.5s ease, border-color 0.5s ease;
+        .pc2-body-bottom {
+            background: var(--color-lime-spark);
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
         .pc2-name {
             font-size: 15px;
             font-weight: 800;
-            color: var(--c-title);
+            color: #ffffff;
             line-height: 1.25;
             margin: 0;
         }
-        .mrp-text { color: var(--c-desc); }
-        .offer-text { color: var(--c-price); }
+        .mrp-text { color: rgba(0,0,0,0.6); }
+        .offer-text { color: var(--color-ink-black); }
         .pc2-desc-text {
             font-size: 14px;
             font-weight: 700;
-            color: var(--c-desc);
+            color: rgba(255,255,255,0.8);
             line-height: 1.4;
             margin-bottom: 8px;
         }
@@ -109,7 +104,7 @@
         .pc2-tag {
             font-size: 13px;
             font-weight: 800;
-            color: var(--c-tag);
+            color: #ffffff;
             border: none;
             padding: 0;
             background: transparent;
@@ -1711,49 +1706,15 @@
             });
         }
 
-        function extractBottomColor(imgEl) {
-            try {
-                const canvas = document.createElement('canvas');
-                canvas.width = 1;
-                canvas.height = 1;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(imgEl, imgEl.naturalWidth / 2, imgEl.naturalHeight - 1, 1, 1, 0, 0, 1, 1);
-                const data = ctx.getImageData(0, 0, 1, 1).data;
-                if (data[3] === 0) return;
-                
-                const r = data[0], g = data[1], b = data[2];
-                const cardBody = imgEl.closest('.pc2')?.querySelector('.pc2-body');
-                if (cardBody) {
-                    cardBody.style.setProperty('--c-bg', `rgb(${r}, ${g}, ${b})`);
-                    
-                    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-                    if (brightness < 135) { // Dark bg
-                        cardBody.style.setProperty('--c-title', '#ffffff');
-                        cardBody.style.setProperty('--c-desc', 'rgba(255,255,255,0.85)');
-                        cardBody.style.setProperty('--c-tag', '#ffffff');
-                        cardBody.style.setProperty('--c-tag-border', 'rgba(255,255,255,0.3)');
-                        cardBody.style.setProperty('--c-price', '#ffffff');
-                    } else { // Light bg
-                        cardBody.style.setProperty('--c-title', 'var(--color-ink-black)');
-                        cardBody.style.setProperty('--c-desc', 'var(--color-sage-mute)');
-                        cardBody.style.setProperty('--c-tag', 'var(--color-sage-mute)');
-                        cardBody.style.setProperty('--c-tag-border', 'rgba(0,0,0,0.1)');
-                        cardBody.style.setProperty('--c-price', '#780016');
-                    }
-                }
-            } catch (e) {
-                // Ignore canvas errors (e.g., CORS)
-            }
-        }
-
+        // Removed dynamic background color extractor
         function generateProductVisualHTML(product) {
             if (product.images && product.images.length > 0) {
                 if (product.images.length === 1) {
-                    return `<img src="${product.images[0]}" alt="${product.name}" crossorigin="anonymous" onload="extractBottomColor(this)" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
+                    return `<img src="${product.images[0]}" alt="${product.name}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border-radius:inherit;">`;
                 } else {
                     return `
                         <div style="position:absolute; inset:0; border-radius:inherit; overflow:hidden;" class="prod-carousel" data-images='${JSON.stringify(product.images)}' data-idx="0">
-                            <img src="${product.images[0]}" crossorigin="anonymous" onload="extractBottomColor(this)" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.3s;" class="carousel-img">
+                            <img src="${product.images[0]}" style="width:100%; height:100%; object-fit:cover; transition: opacity 0.3s;" class="carousel-img">
                             <button class="carousel-btn prev-btn" onclick="event.stopPropagation(); changeCarousel(this, -1)" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-left"></i></button>
                             <button class="carousel-btn next-btn" onclick="event.stopPropagation(); changeCarousel(this, 1)" style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0; display:flex; align-items:center; justify-content:center; z-index:10;"><i class="fas fa-chevron-right"></i></button>
                             <div style="position:absolute; bottom:10px; width:100%; display:flex; justify-content:center; gap:6px; z-index:10;" class="carousel-dots">
@@ -2027,7 +1988,7 @@
                                 ${visualHtml}
                                 ${badgeHtml ? `<div style="position:absolute;top:12px;right:12px;z-index:5;">${badgeHtml}</div>` : ''}
                             </div>
-                            <div class="pc2-body">
+                            <div class="pc2-body-mid">
                                 <h3 class="pc2-name" style="margin-bottom: 6px;">${p.name}</h3>
                                 <div class="pc2-desc-text">
                                     ${catName} Paint<br>
@@ -2035,15 +1996,15 @@
                                 </div>
                                 ${tagsHtml ? `<div class="pc2-tags" style="margin-bottom: 12px;">${tagsHtml}</div>` : ''}
                                 <div style="flex: 1;"></div>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 12px; border-top: 1px solid var(--c-tag-border);">
-                                    <div>
-                                        ${retailPrice > 0 && retailPrice !== displayPrice ? `<div class="mrp-text" style="font-size: 12px; text-decoration: line-through; margin-bottom: 2px;">MRP ₹${retailPrice}</div>` : ''}
-                                        <div class="offer-text" style="font-size: 24px; font-weight: 900; line-height: 1;">₹${displayPrice}</div>
-                                    </div>
-                                    <button class="pc2-arrow-btn" onclick="event.stopPropagation(); openPDP('${p.id}')">
-                                        <i class="fas fa-arrow-right"></i>
-                                    </button>
+                            </div>
+                            <div class="pc2-body-bottom">
+                                <div>
+                                    ${retailPrice > 0 && retailPrice !== displayPrice ? `<div class="mrp-text" style="font-size: 12px; text-decoration: line-through; margin-bottom: 2px;">MRP ₹${retailPrice}</div>` : ''}
+                                    <div class="offer-text" style="font-size: 24px; font-weight: 900; line-height: 1;">₹${displayPrice}</div>
                                 </div>
+                                <button class="pc2-arrow-btn" onclick="event.stopPropagation(); openPDP('${p.id}')">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
                             </div>
                         </div>
                     `;
