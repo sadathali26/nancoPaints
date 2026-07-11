@@ -2255,15 +2255,7 @@
                             const icon = window.allIcons[fid];
                             if (icon && icon.image_url) {
                                 overlayHtml += `
-                                <div style="border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; min-width: max-content; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-                                    <div style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                        <img src="${icon.image_url}" style="width: 100%; height: 100%; object-fit: contain;" alt="${icon.name}">
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; justify-content: center;">
-                                        <div style="font-size: 14px; font-weight: 800; color: var(--color-ink-black); margin-bottom: 2px;">${icon.name}</div>
-                                        <div style="font-size: 10px; font-weight: 700; color: var(--color-sage-mute); text-transform: uppercase; letter-spacing: 0.05em;">Premium Feature</div>
-                                    </div>
-                                </div>
+                                    <img src="${icon.image_url}" style="width: 64px; height: 64px; object-fit: contain;" alt="${icon.name}" title="${icon.name}">
                                 `;
                             }
                         });
@@ -2273,15 +2265,7 @@
                     const wIcon = window.allIcons[currentPdpProduct.warranty];
                     if (wIcon && wIcon.image_url) {
                         overlayHtml += `
-                                <div style="border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; min-width: max-content; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.03);">
-                                    <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                        <img src="${wIcon.image_url}" style="width: 100%; height: 100%; object-fit: contain;" alt="${wIcon.name}">
-                                    </div>
-                                    <div style="display: flex; flex-direction: column; justify-content: center;">
-                                        <div style="font-size: 14px; font-weight: 800; color: var(--color-ink-black); margin-bottom: 2px;">${wIcon.name}</div>
-                                        <div style="font-size: 10px; font-weight: 700; color: var(--color-sage-mute); text-transform: uppercase; letter-spacing: 0.5px;">Warranty</div>
-                                    </div>
-                                </div>
+                            <img src="${wIcon.image_url}" style="width: 64px; height: 64px; object-fit: contain;" alt="${wIcon.name}" title="${wIcon.name}">
                         `;
                     }
                 }
