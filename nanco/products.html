@@ -18,15 +18,20 @@
             100% { transform: scale(1); opacity: 1; }
         }
         .offer-pill-badge {
-            background: #780016;
-            backdrop-filter: blur(4px);
+            background: radial-gradient(circle at 30% 30%, #cd9bff 0%, #a265ec 50%, #7636c7 100%);
+            box-shadow: 
+                0 6px 12px rgba(118,54,199,0.4), 
+                inset -3px -5px 10px rgba(0,0,0,0.2), 
+                inset 3px 5px 10px rgba(255,255,255,0.5);
             color: #ffffff;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 99px;
             display: inline-block;
             text-align: center;
             animation: badge-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 10;
+            text-shadow: 0px 2px 4px rgba(0,0,0,0.2);
         }
         .offer-pill-badge .badge-label {
             font-size: 11px;
@@ -37,8 +42,9 @@
         }
         .offer-pill-badge .badge-label b {
             display: block;
-            font-size: 16px;
+            font-size: 20px;
             font-weight: 900;
+            letter-spacing: -0.5px;
         }
 
         /* ---- Redesigned Product Card (pc2) ---- */
