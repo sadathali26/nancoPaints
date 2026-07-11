@@ -1367,6 +1367,30 @@
                         style="font-size: 15px; color: var(--color-ink-black); line-height: 1.5; margin-bottom: 24px; font-weight: 500;">
                         Description goes here.</p>
                         
+                    <!-- Resource Cards -->
+                    <div style="display: flex; gap: 16px; margin-bottom: 24px;">
+                        <!-- Datasheet Card -->
+                        <div onclick="openDatasheetModal()" style="flex: 1; background: #ffffff; padding: 16px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-linen-canvas); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-file-pdf" style="color: var(--color-ink-black); font-size: 16px;"></i>
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 13px; font-weight: 800; color: var(--color-ink-black);">Datasheet</span>
+                                <span style="font-size: 11px; color: var(--color-sage-mute); font-weight: 600;">View technical specs</span>
+                            </div>
+                        </div>
+
+                        <!-- Tutorials Card -->
+                        <div onclick="alert('Tutorials coming soon!')" style="flex: 1; background: #ffffff; padding: 16px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-linen-canvas); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <i class="fas fa-play" style="color: var(--color-ink-black); font-size: 16px;"></i>
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                                <span style="font-size: 13px; font-weight: 800; color: var(--color-ink-black);">Tutorials</span>
+                                <span style="font-size: 11px; color: var(--color-sage-mute); font-weight: 600;">How to apply guide</span>
+                            </div>
+                        </div>
+                    </div>
 
                     <div style="background: #ffffff; padding: 24px; border-radius: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); margin-bottom: 24px; display: flex; flex-direction: column; gap: 24px;">
                         <!-- Stats Bar -->
@@ -1402,10 +1426,7 @@
                             </div>
                         </div>
                         
-                        <div>
-                            <button onclick="openDatasheetModal()" id="btn-pdp-details" style="background:var(--color-linen-canvas); border:1px solid rgba(0,0,0,0.05); color:var(--color-ink-black); border-radius:99px; padding:8px 16px; font-size:12px; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:8px; width:fit-content;">
-                                <i class="fas fa-file-pdf"></i> <span>View Datasheet</span> <i class="fas fa-chevron-down" id="icon-pdp-details"></i>
-                            </button>
+                        <div style="display: none;">
                             <div id="pdp-more-details" style="display:none; gap:24px; margin-top:16px; border: 1px solid rgba(0,0,0,0.05); border-radius:12px; padding: 16px; background:var(--color-linen-canvas);">
                                 <div style="flex:1;">
                                     <h4 style="font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom:8px;">Specifications</h4>
