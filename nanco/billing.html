@@ -300,6 +300,93 @@
             color: #ffffff;
         }
 
+        @media (max-width: 640px) {
+            body {
+                padding: 12px;
+            }
+            .header-top {
+                flex-direction: column;
+                padding-top: 24px;
+            }
+            .header-logo {
+                padding-left: 20px;
+                margin-bottom: 24px;
+                font-size: 24px;
+            }
+            .header-pill {
+                padding: 20px;
+                border-radius: 0;
+                width: 100%;
+                text-align: left;
+                box-sizing: border-box;
+            }
+            .invoice-to-wrapper {
+                flex-direction: column !important;
+                padding: 0 20px !important;
+                gap: 24px;
+            }
+            .invoice-to {
+                width: 100% !important;
+                text-align: left !important;
+            }
+            .table-wrapper {
+                padding: 0 20px;
+                overflow-x: auto;
+            }
+            th, td {
+                padding: 12px 10px;
+            }
+            td.desc-cell {
+                padding-left: 10px !important;
+                width: auto;
+            }
+            .td-right {
+                padding-right: 10px !important;
+            }
+            .bottom-section {
+                flex-direction: column;
+                padding: 0 20px;
+                gap: 32px;
+            }
+            .payment-info, .totals-block {
+                width: 100%;
+            }
+            .footer-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 32px;
+            }
+            .terms {
+                width: 100%;
+                padding: 0 20px;
+                box-sizing: border-box;
+            }
+            .signature {
+                width: 100%;
+                padding: 0 20px;
+                text-align: left;
+                box-sizing: border-box;
+            }
+            .signature-line {
+                display: inline-block;
+                width: 200px;
+            }
+            .thanks-pill {
+                width: 100%;
+                border-radius: 0;
+                padding: 16px 20px;
+                text-align: center;
+            }
+            .actions-bar {
+                flex-direction: column;
+                padding: 20px;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         @media print {
             body {
                 padding: 0;
@@ -331,7 +418,7 @@
             </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; padding: 0 40px; margin-bottom: 40px;">
+        <div class="invoice-to-wrapper" style="display: flex; justify-content: space-between; padding: 0 40px; margin-bottom: 40px;">
             <div class="invoice-to" style="padding: 0; margin: 0; width: 45%;">
                 <h4>Billed From,</h4>
                 <h2>Nanco Paints Factory Outlet</h2>
@@ -457,11 +544,13 @@
                 const itemTotal = item.quantity * item.priceVal;
                 total += itemTotal;
 
+                const shadeInfo = item.shade ? `${item.shade.name} (${item.shade.id})` : (item.color || 'Base');
+
                 html += `
                     <tr>
                         <td class="desc-cell" style="padding-left: 30px;">
                             <div class="item-name">${item.name}</div>
-                            <div class="item-desc">${item.unitName} - ${item.color}</div>
+                            <div class="item-desc">${item.unitName} - ${shadeInfo}</div>
                         </td>
                         <td class="td-center">${item.quantity}</td>
                         <td class="td-center">₹${item.priceVal}</td>
@@ -488,7 +577,8 @@
             cart.forEach((item, index) => {
                 const itemTotal = item.quantity * item.priceVal;
                 total += itemTotal;
-                message += `${index + 1}. *${item.name}* (${item.unitName})\n`;
+                const shadeInfo = item.shade ? `${item.shade.name} (${item.shade.id})` : (item.color || 'Base');
+                message += `${index + 1}. *${item.name}* (${item.unitName} - ${shadeInfo})\n`;
                 message += `   Qty: ${item.quantity} x ₹${item.priceVal} = ₹${itemTotal}\n`;
             });
 
