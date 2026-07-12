@@ -1810,6 +1810,11 @@
                         cardBody.style.setProperty('--c-price', '#780016');
                     }
                 }
+                
+                const pdpWrapper = imgEl.closest('#pdp-bucket-container-wrapper');
+                if (pdpWrapper) {
+                    pdpWrapper.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+                }
             } catch (e) {
                 // Ignore canvas errors (e.g., CORS)
             }
