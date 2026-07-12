@@ -1323,13 +1323,8 @@
                 <!-- Left Visual -->
                 <div class="pdp-visual" style="flex: 1; background: var(--color-linen-canvas); display: flex; flex-direction: column; justify-content: flex-start; padding: 0; border-right: 1px solid rgba(0,0,0,0.05); border-top-left-radius: 32px; border-bottom-left-radius: 32px; overflow: hidden;">
                     <div id="pdp-bucket-container-wrapper" style="position: relative; display: flex; flex-direction: column; width: 100%; box-sizing: border-box; background: var(--color-white-plate); transition: background-color 0.3s; border-radius: 32px;">
-                        <div class="pdp-image-container" style="aspect-ratio: 1/1; position: relative; display: flex; align-items: center; justify-content: center; width: 100%; padding: 2px; box-sizing: border-box; transition: all 0.3s ease;">
-                            <div id="pdp-bucket-container" style="position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.06); background: transparent; transition: all 0.3s ease;"></div>
-                        </div>
-                        <div class="pdp-mobile-header-info">
-                            <div id="pdp-mobile-badges" style="display:flex; gap:4px; margin-bottom: 2px;"></div>
-                            <div id="pdp-mobile-name" style="font-size: 14px; font-weight: 900; color: var(--color-ink-black); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.1;"></div>
-                            <div id="pdp-mobile-brand" style="font-size: 10px; color: var(--color-sage-mute); font-weight: 700; margin-top: 2px;"></div>
+                        <div style="aspect-ratio: 1/1; position: relative; display: flex; align-items: center; justify-content: center; width: 100%; padding: 2px; box-sizing: border-box;">
+                            <div id="pdp-bucket-container" style="position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.06); background: transparent;"></div>
                         </div>
                         <div id="pdp-feature-icons-wrapper" style="display: none; padding: 5px 10px; justify-content: center; align-items: center; width: 100%;">
                             <div id="pdp-feature-icons" style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; align-items: center;"></div>
@@ -1337,7 +1332,7 @@
                     </div>
                     
                     <!-- Bottom Div (2 Buttons) -->
-                    <div class="pdp-bottom-buttons" style="display: flex; flex-direction: column; gap: 8px; padding: 9.6px 0 0 0; width: 100%; flex: 1; box-sizing: border-box; transition: opacity 0.2s ease;">
+                    <div style="display: flex; flex-direction: column; gap: 8px; padding: 9.6px 0 0 0; width: 100%; flex: 1; box-sizing: border-box;">
                         <!-- Calculator Button -->
                         <div onclick="goToCalculator()" style="flex: 1; min-height: 70px; width: 100%; background: linear-gradient(135deg, var(--color-forest-ink, #254f1a) 0%, #1a3812 100%); border-radius: 32px; position: relative; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding: 12px 16px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                             <i class="fas fa-calculator" style="position: absolute; top: 0px; right: 0px; font-size: 60px; color: rgba(255,255,255,0.1); transform: rotate(-15deg);"></i>
@@ -1446,24 +1441,14 @@
                         <!-- Unit and Quantity Selectors -->
                         <style>
                             @media (max-width: 768px) {
-                                .pdp-grid { flex-direction: column !important; max-height: 90vh; overflow: hidden; }
-                                .pdp-visual { position: sticky !important; top: 0 !important; z-index: 50 !important; border-radius: 0 0 24px 24px !important; transition: all 0.3s ease !important; flex: none !important; }
-                                .pdp-visual.scrolled { padding: 12px 16px 12px 12px !important; border-radius: 0 0 16px 16px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important; background: var(--color-white-plate) !important; flex-direction: row !important; align-items: center !important; justify-content: space-between !important; border-bottom: 1px solid rgba(0,0,0,0.05); }
-                                .pdp-visual.scrolled #pdp-bucket-container-wrapper { flex-direction: row !important; align-items: center !important; background: transparent !important; padding: 0 !important; gap: 12px !important; width: 100% !important; border-radius: 0 !important; box-shadow: none !important; }
-                                .pdp-visual.scrolled .pdp-image-container { width: 48px !important; height: 48px !important; padding: 0 !important; flex-shrink: 0 !important; }
-                                .pdp-visual.scrolled #pdp-bucket-container { border-radius: 8px !important; box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important; }
-                                .pdp-visual.scrolled #pdp-feature-icons-wrapper, .pdp-visual.scrolled .pdp-bottom-buttons { display: none !important; opacity: 0; }
-                                .pdp-mobile-header-info { display: none; flex-direction: column; justify-content: center; flex: 1; overflow: hidden; }
-                                .pdp-visual.scrolled .pdp-mobile-header-info { display: flex !important; }
-                                
                                 .pdp-selectors-row { flex-wrap: wrap !important; }
                                 .pdp-color-col { min-width: 100% !important; flex: 1 1 100% !important; }
                                 .pdp-mobile-calc { display: inline-flex !important; }
-                                .pdp-sticky-footer { position: static !important; bottom: auto !important; margin-top: 16px !important; border-radius: 24px !important; border: 1px solid rgba(0,0,0,0.05) !important;}
+                                .pdp-sticky-footer { position: static !important; bottom: auto !important; }
+                                .pdp-visual { display: none !important; }
                             }
                             @media (min-width: 769px) {
                                 .pdp-mobile-calc { display: none !important; }
-                                .pdp-mobile-header-info { display: none !important; }
                             }
                         </style>
                         <div class="pdp-selectors-row" style="display: flex; gap: 16px; margin-top: 8px;">
@@ -2279,8 +2264,6 @@
 
             document.getElementById('pdp-name').innerText = currentPdpProduct.name;
             document.getElementById('pdp-brand').innerText = currentPdpProduct.brand;
-            document.getElementById('pdp-mobile-name').innerText = currentPdpProduct.name;
-            document.getElementById('pdp-mobile-brand').innerText = currentPdpProduct.brand;
             document.getElementById('pdp-desc').innerText = currentPdpProduct.desc;
             document.getElementById('pdp-finish').innerText = currentPdpProduct.finish;
             document.getElementById('pdp-coverage').innerText = currentPdpProduct.coverage;
@@ -2350,9 +2333,8 @@
             
             updatePdpPrice();
 
-            const badgeHtml = `<span style="font-size: 14px; font-weight: 800; color: var(--color-ink-black); text-transform: uppercase; letter-spacing: 1px;">${currentPdpProduct.category}</span>`;
-            document.getElementById('pdp-badges').innerHTML = badgeHtml;
-            document.getElementById('pdp-mobile-badges').innerHTML = badgeHtml;            
+            document.getElementById('pdp-badges').innerHTML = `<span style="font-size: 14px; font-weight: 800; color: var(--color-ink-black); text-transform: uppercase; letter-spacing: 1px;">${currentPdpProduct.category}</span>`;
+            
             // Check if there is a pending calculated quantity for this product from the calculator
             const calcQtyStr = sessionStorage.getItem('calculatedQuantity');
             let pendingQty = 1;
@@ -2915,25 +2897,6 @@
             } else if (shadeProductId) {
                 openPDP(shadeProductId);
                 sessionStorage.removeItem('shadeProductId');
-            }
-        });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const pdpDetails = document.querySelector('.pdp-details');
-            const pdpVisual = document.querySelector('.pdp-visual');
-            if (pdpDetails && pdpVisual) {
-                pdpDetails.addEventListener('scroll', () => {
-                    if (window.innerWidth <= 768) {
-                        if (pdpDetails.scrollTop > 30) {
-                            pdpVisual.classList.add('scrolled');
-                        } else {
-                            pdpVisual.classList.remove('scrolled');
-                        }
-                    } else {
-                        pdpVisual.classList.remove('scrolled');
-                    }
-                });
             }
         });
     </script>
