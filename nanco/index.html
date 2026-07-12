@@ -1795,6 +1795,15 @@
         });
       }
 
+      const heroViewProductsBtn = document.getElementById('hero-view-products');
+      if (heroViewProductsBtn && chatWindow && chatToggleBtn) {
+        heroViewProductsBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          chatWindow.classList.add('open');
+          chatToggleBtn.style.display = 'none'; // hide the floating button
+        });
+      }
+
       // Popup Menu Logic
       const plusBtn = document.querySelector('.plus-icon');
       const popupMenu = document.getElementById('popupMenu');
