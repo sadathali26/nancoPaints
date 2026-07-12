@@ -1415,6 +1415,12 @@ a, button, [role="button"], label {
 @media (max-width: 600px) {
   .chat-input-wrapper {
     width: 95%;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+  .inputbar {
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
