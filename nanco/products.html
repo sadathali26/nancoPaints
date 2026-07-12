@@ -2645,7 +2645,7 @@
                 const pdpSelectedShadeName = document.getElementById('pdp-selected-shade-name');
                 if (pdpSelectedShadeContainer) {
                     pdpSelectedShadeColor.style.background = foundColor.hex;
-                    pdpSelectedShadeName.textContent = foundColor.name;
+                    pdpSelectedShadeName.textContent = `${foundColor.name} (${foundColor.id})`;
                     pdpSelectedShadeContainer.style.display = 'flex';
                 }
                 
@@ -2655,7 +2655,7 @@
                 const colorNameView = document.getElementById('pdp-color-name-view');
                 if (colorSelectedView) {
                     colorSwatchView.style.background = foundColor.hex;
-                    colorNameView.textContent = foundColor.name;
+                    colorNameView.textContent = `${foundColor.name} (${foundColor.id})`;
                     colorSelectedView.style.display = 'flex';
                 }
             } else {
@@ -2892,7 +2892,7 @@
                 const pdpSelectedShadeName = document.getElementById('pdp-selected-shade-name');
                 if (pdpSelectedShadeContainer && shade) {
                     pdpSelectedShadeColor.style.background = shade.hex;
-                    pdpSelectedShadeName.textContent = shade.name;
+                    pdpSelectedShadeName.textContent = `${shade.name} (${shade.id})`;
                     pdpSelectedShadeContainer.style.display = 'flex';
                 }
             } else if (shadeProductId) {
