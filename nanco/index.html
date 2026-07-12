@@ -2152,7 +2152,7 @@
           </ul>
           <input type="file" id="fileUpload" style="display: none;" multiple="">
         </div>
-        <span class="material-symbols-outlined mso plus-icon">add</span>
+        <a href="chat.html" class="mso plus-icon" title="Open full chat" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; font-size: 18px; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'"><i class="fas fa-expand-alt"></i></a>
         <div id="previewContainer" class="preview-container"></div>
         <textarea class="chatbox" id="chatbox" placeholder="Ask anything"></textarea>
         <!-- Mic button -->
@@ -2164,14 +2164,9 @@
         <i class="fas fa-times"></i>
       </div>
     </div>
-    <div style="display: flex; align-items: center; gap: 8px;">
-      <a href="chat.html" class="chatbot-toggle-btn" id="chatbot-expand-btn" aria-label="Open full chat" title="Open full chat page" style="background: rgba(200,217,15,0.12); border: 1px solid rgba(200,217,15,0.3); color: #c8d90f; font-size: 14px;">
-        <i class="fas fa-expand-alt"></i>
-      </a>
-      <button class="chatbot-toggle-btn" id="chatbot-toggle-btn" aria-label="Open Chatbot">
-        <i class="fas fa-comments chat-open-icon"></i>
-      </button>
-    </div>
+    <button class="chatbot-toggle-btn" id="chatbot-toggle-btn" aria-label="Open Chatbot">
+      <i class="fas fa-comments chat-open-icon"></i>
+    </button>
   </div>
 
   <!-- ANNOUNCEMENT BANNER -->
