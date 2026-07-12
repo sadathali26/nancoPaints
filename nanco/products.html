@@ -2362,11 +2362,10 @@
             // Attempt to apply the pending size if one was found
             let sizeFound = false;
             if (pendingSize) {
-                const unitSelect = document.getElementById('pdp-unit-select');
-                for (let i = 0; i < unitSelect.options.length; i++) {
-                    const optText = unitSelect.options[i].text.toLowerCase();
+                for (let i = 0; i < currentPdpProduct.pricing.length; i++) {
+                    const optText = currentPdpProduct.pricing[i].unit.toLowerCase();
                     if (optText.includes(pendingSize + 'l') || optText.includes(pendingSize + ' l')) {
-                        unitSelect.value = i;
+                        selectPdpUnit(i, currentPdpProduct.pricing[i].unit);
                         sizeFound = true;
                         break;
                     }
