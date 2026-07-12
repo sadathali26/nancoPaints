@@ -1439,7 +1439,17 @@
                         </div>
 
                         <!-- Unit and Quantity Selectors -->
-                        <div style="display: flex; gap: 16px; margin-top: 8px;">
+                        <style>
+                            @media (max-width: 768px) {
+                                .pdp-selectors-row { flex-wrap: wrap !important; }
+                                .pdp-color-col { min-width: 100% !important; flex: 1 1 100% !important; }
+                                .pdp-mobile-calc { display: inline-flex !important; }
+                            }
+                            @media (min-width: 769px) {
+                                .pdp-mobile-calc { display: none !important; }
+                            }
+                        </style>
+                        <div class="pdp-selectors-row" style="display: flex; gap: 16px; margin-top: 8px;">
                             <div style="flex: 1;">
                                 <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block; letter-spacing: 0.5px;">Select Unit</label>
                                 <div class="custom-select-container" style="position: relative; width: 100%;">
@@ -1463,11 +1473,7 @@
                                     #pdp-quantity::-webkit-inner-spin-button, #pdp-quantity::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
                                 </style>
                             </div>
-                        </div>
-
-                        <!-- Color Code and Estimation Cost Row -->
-                        <div style="display: flex; gap: 16px; margin-top: 16px;">
-                            <div style="flex: 1;">
+                            <div class="pdp-color-col" style="flex: 1;">
                                 <label style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-ink-black); margin-bottom:8px; display:block; letter-spacing: 0.5px;">Color Code</label>
                                 <div id="pdp-color-input-container" style="position: relative;">
                                     <input type="text" id="pdp-color-input" placeholder="#HEX or Name" onchange="checkColorCode(this.value)" style="width: 100%; padding: 16px; border-radius: 99px; border: 1px solid rgba(0,0,0,0.1); background: var(--color-white-plate); outline:none; font-family:var(--font-primary); font-size: 14px; font-weight: 600; box-sizing: border-box; height: 54px;">
@@ -1484,9 +1490,6 @@
                                 </div>
                                 <div id="pdp-color-error" style="color: var(--color-coral-red, #ef4444); font-size: 11px; margin-top: 4px; display: none; font-weight: 800; padding-left: 12px;">Color not found in studio</div>
                             </div>
-                            <!-- Placeholder for Color Estimation Cost -->
-                            <div id="pdp-color-estimation-cost" style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end;">
-                            </div>
                         </div>
                     </div>
                     
@@ -1499,10 +1502,16 @@
                                 <div style="font-size: 12px; color: var(--color-sage-mute); font-weight: 700; text-decoration: line-through;" id="pdp-mrp">MRP: ₹0</div>
                                 <div style="font-size: 28px; font-weight: 900; color: var(--color-ink-black); letter-spacing: -0.5px;" id="pdp-price-val">₹0</div>
                                 <div style="font-size: 12px; color: var(--color-sage-mute); font-weight: 700; margin-top: 2px;" id="pdp-per-unit-price"></div>
+                                <div id="pdp-color-cost" style="font-size: 11px; font-weight: 800; color: var(--color-cobalt-band); margin-top: 4px; display: none;">+ Color Cost: ₹0</div>
                             </div>
-                            <div style="text-align:right;">
-                                <div style="font-size: 12px; font-weight: 800; color: #16a34a;" id="pdp-save">Save ₹0</div>
-                                <div style="font-size: 12px; font-weight: 700; color: var(--color-sage-mute);" id="pdp-code">Code: --</div>
+                            <div style="text-align:right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                                <div>
+                                    <div style="font-size: 12px; font-weight: 800; color: #16a34a;" id="pdp-save">Save ₹0</div>
+                                    <div style="font-size: 12px; font-weight: 700; color: var(--color-sage-mute);" id="pdp-code">Code: --</div>
+                                </div>
+                                <button class="pdp-mobile-calc" onclick="goToCalculator()" style="display: none; background: var(--color-forest-ink, #254f1a); color: white; border: none; border-radius: 99px; padding: 6px 12px; font-size: 11px; font-weight: 800; cursor: pointer; align-items: center; gap: 6px;">
+                                    <i class="fas fa-calculator"></i> Calculator
+                                </button>
                             </div>
                         </div>
 
