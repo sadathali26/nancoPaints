@@ -408,9 +408,14 @@
                                 <button onclick="updateQuantity(${index}, 1)" class="w-8 h-8 rounded-full flex items-center justify-center bg-white text-slate-700 font-bold shadow-sm hover:bg-slate-50 transition-colors">+</button>
                             </div>
                             
-                            <button onclick="removeItem(${index})" class="w-10 h-10 rounded-full bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors">
-                                <i class="fas fa-trash-alt text-sm"></i>
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <button onclick="editItem(${index})" class="w-10 h-10 rounded-full bg-blue-50 text-blue-500 hover:bg-blue-100 flex items-center justify-center transition-colors" title="Edit Item">
+                                    <i class="fas fa-pen text-sm"></i>
+                                </button>
+                                <button onclick="removeItem(${index})" class="w-10 h-10 rounded-full bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center transition-colors" title="Remove Item">
+                                    <i class="fas fa-trash-alt text-sm"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -419,6 +424,20 @@
 
             document.getElementById('summary-subtotal').innerText = '₹' + totalCost;
             document.getElementById('summary-total').innerText = '₹' + totalCost;
+        }
+        
+        function editItem(index) {
+            const item = cart[index];
+            if (!item) return;
+            
+            if (item.shade) {
+                sessionStorage.setItem('shadeProductId', item.id);
+                sessionStorage.setItem('selectedShade', JSON.stringify(item.shade));
+            } else {
+                sessionStorage.setItem('calculatedQuantity', JSON.stringify({ productId: item.id }));
+            }
+            
+            window.location.href = 'products.html';
         }
 
         window.onload = function() {
