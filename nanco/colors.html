@@ -1214,7 +1214,8 @@
             window.location.href = `../nanco/paint_visualizer.html?colorHex=${encodeURIComponent(hex)}&colorName=${encodeURIComponent(name)}`;
         };
         document.getElementById('modal-btn-select').onclick = () => {
-            window.location.href = `../nanco/products.html?colorId=${encodeURIComponent(id)}`;
+            sessionStorage.setItem('selectedShade', JSON.stringify({ hex, name, id }));
+            window.location.href = `../nanco/products.html`;
         };
         
         document.getElementById('color-details-modal').style.display = 'flex';

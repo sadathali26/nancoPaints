@@ -1119,8 +1119,7 @@
                     // If we didn't get url params, apply it from session storage
                     if (!hex) window.setPaintColor(savedShade.hex, savedShade.name);
                     
-                    // If we are in "selection mode" (came from products page originally)
-                    if (sessionStorage.getItem('shadeProductId')) {
+                    if (savedShade) {
                         document.getElementById('shade-selector-hex').textContent = savedShade.id;
                         document.getElementById('shade-selector-name').textContent = savedShade.name.toLowerCase();
                         document.getElementById('shade-selector-swatch').style.backgroundColor = savedShade.hex;
@@ -1217,7 +1216,7 @@
         sessionStorage.setItem('selectedShade', JSON.stringify({ hex, name, id }));
         
         // Update popup if it exists
-        if (document.getElementById('shade-selector-popup') && sessionStorage.getItem('shadeProductId')) {
+        if (document.getElementById('shade-selector-popup')) {
             document.getElementById('shade-selector-hex').textContent = id;
             document.getElementById('shade-selector-name').textContent = name.toLowerCase();
             document.getElementById('shade-selector-swatch').style.backgroundColor = hex;

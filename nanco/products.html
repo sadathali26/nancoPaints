@@ -2249,6 +2249,31 @@
             const colorSelectedView = document.getElementById('pdp-color-selected-view');
             if (colorSelectedView) colorSelectedView.style.display = 'none';
 
+            // Check for pending selected shade from global selection
+            const pendingShadeStr = sessionStorage.getItem('selectedShade');
+            if (pendingShadeStr) {
+                try {
+                    const shade = JSON.parse(pendingShadeStr);
+                    currentSelectedShade = shade;
+                    
+                    const pdpSelectedShadeContainer = document.getElementById('pdp-selected-shade');
+                    const pdpSelectedShadeColor = document.getElementById('pdp-selected-shade-color');
+                    const pdpSelectedShadeName = document.getElementById('pdp-selected-shade-name');
+                    if (pdpSelectedShadeContainer && shade) {
+                        pdpSelectedShadeColor.style.background = shade.hex;
+                        pdpSelectedShadeName.textContent = `${shade.name} (${shade.id})`;
+                        pdpSelectedShadeContainer.style.display = 'flex';
+                    }
+                    
+                    const colorSwatchView = document.getElementById('pdp-color-swatch-view');
+                    const colorNameView = document.getElementById('pdp-color-name-view');
+                    if (colorSelectedView && shade) {
+                        colorSwatchView.style.background = shade.hex;
+                        colorNameView.textContent = `${shade.name} (${shade.id})`;
+                        colorSelectedView.style.display = 'flex';
+                    }
+                } catch(e) {}
+            }
 
             const pdpBucketContainer = document.getElementById('pdp-bucket-container');
             pdpBucketContainer.innerHTML = generateProductVisualHTML(currentPdpProduct);
@@ -2599,6 +2624,10 @@
             currentSelectedShade = null;
             sessionStorage.removeItem('selectedShade');
             document.getElementById('pdp-selected-shade').style.display = 'none';
+            const colorSelectedView = document.getElementById('pdp-color-selected-view');
+            if (colorSelectedView) colorSelectedView.style.display = 'none';
+            const colorInput = document.getElementById('pdp-color-input');
+            if (colorInput) colorInput.value = '';
         }
 
         let globalPaletteData = null;
