@@ -1569,14 +1569,14 @@
     function continueToPDP() {
         const liters = calc.budget.emulsionLiters || 0;
         const calcCtxStr = sessionStorage.getItem('calculatorContext');
-        if (calcCtxStr && liters > 0) {
+        if (calcCtxStr) {
             try {
-                const buckets = getPaintBuckets(liters, calc?.budget?.availableSizes);
                 const ctx = JSON.parse(calcCtxStr);
-                sessionStorage.setItem('calculatedQuantity', JSON.stringify({
-                    productId: ctx.productId,
-                    buckets: buckets // Send the full bucket breakdown
-                }));
+                const calcData = { productId: ctx.productId };
+                if (liters > 0) {
+                    calcData.buckets = getPaintBuckets(liters, calc?.budget?.availableSizes);
+                }
+                sessionStorage.setItem('calculatedQuantity', JSON.stringify(calcData));
             } catch(e) {}
         }
         window.location.href = 'products.html';
