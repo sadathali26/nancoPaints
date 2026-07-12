@@ -2885,6 +2885,7 @@
                         openPDP(calcData.productId);
                     }
                 } catch(e) {}
+                sessionStorage.removeItem('calculatedQuantity');
             } else if (shadeProductId && selectedShadeStr) {
                 const shade = JSON.parse(selectedShadeStr);
                 currentSelectedShade = shade;
@@ -2897,6 +2898,8 @@
                     pdpSelectedShadeName.textContent = `${shade.name} (${shade.id})`;
                     pdpSelectedShadeContainer.style.display = 'flex';
                 }
+                sessionStorage.removeItem('shadeProductId');
+                sessionStorage.removeItem('selectedShade');
             } else if (shadeProductId) {
                 openPDP(shadeProductId);
                 sessionStorage.removeItem('shadeProductId');
