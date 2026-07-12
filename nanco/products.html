@@ -1332,21 +1332,21 @@
                     </div>
                     
                     <!-- Bottom Div (2 Buttons) -->
-                    <div style="display: flex; flex: 1; flex-direction: column; gap: 16px; padding: 16px; width: 100%; box-sizing: border-box;">
+                    <div style="display: flex; flex-direction: row; gap: 12px; padding: 16px; width: 100%; box-sizing: border-box;">
                         <!-- Calculator Button -->
-                        <div onclick="goToCalculator()" style="flex: 1; min-height: 120px; width: 100%; background: linear-gradient(135deg, var(--color-forest-ink, #254f1a) 0%, #1a3812 100%); border-radius: 24px; position: relative; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-                            <i class="fas fa-calculator" style="position: absolute; top: -10px; right: -10px; font-size: 110px; color: rgba(255,255,255,0.1); transform: rotate(-15deg);"></i>
-                            <div style="color: white; font-weight: 900; font-size: 18px; z-index: 2; text-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 4px;">Calculator</div>
-                            <div style="color: rgba(255,255,255,0.95); font-size: 13px; font-weight: 600; z-index: 2;">Estimate quantity</div>
+                        <div onclick="goToCalculator()" style="flex: 1; min-height: 90px; width: 100%; background: linear-gradient(135deg, var(--color-forest-ink, #254f1a) 0%, #1a3812 100%); border-radius: 20px; position: relative; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                            <i class="fas fa-calculator" style="position: absolute; top: -10px; right: -10px; font-size: 80px; color: rgba(255,255,255,0.1); transform: rotate(-15deg);"></i>
+                            <div style="color: white; font-weight: 900; font-size: 15px; z-index: 2; text-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 2px;">Calculator</div>
+                            <div style="color: rgba(255,255,255,0.95); font-size: 11px; font-weight: 600; z-index: 2;">Estimate quantity</div>
                         </div>
 
                         <!-- Select Shades Button -->
-                        <div id="btn-pdp-select-shade" onclick="goToShadeSelection()" style="flex: 1; min-height: 120px; width: 100%; background: linear-gradient(135deg, var(--color-cobalt-band) 0%, #1e3a8a 100%); border-radius: 24px; position: relative; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding: 24px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
-                            <i class="fas fa-palette" style="position: absolute; top: -10px; right: -10px; font-size: 110px; color: rgba(255,255,255,0.15); transform: rotate(15deg);"></i>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%; z-index: 2;">
+                        <div id="btn-pdp-select-shade" onclick="goToShadeSelection()" style="flex: 1; min-height: 90px; width: 100%; background: linear-gradient(135deg, var(--color-cobalt-band) 0%, #1e3a8a 100%); border-radius: 20px; position: relative; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                            <i class="fas fa-palette" style="position: absolute; top: -10px; right: -10px; font-size: 80px; color: rgba(255,255,255,0.15); transform: rotate(15deg);"></i>
+                            <div style="display: flex; flex-direction: column; width: 100%; z-index: 2; gap: 4px;">
                                 <div>
-                                    <div style="color: white; font-weight: 900; font-size: 18px; text-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 4px;">Select Shades</div>
-                                    <div style="color: rgba(255,255,255,0.95); font-size: 13px; font-weight: 600;">Explore colors</div>
+                                    <div style="color: white; font-weight: 900; font-size: 15px; text-shadow: 0 1px 2px rgba(0,0,0,0.1); margin-bottom: 2px;">Select Shades</div>
+                                    <div style="color: rgba(255,255,255,0.95); font-size: 11px; font-weight: 600;">Explore colors</div>
                                 </div>
                                 <!-- Inline Selected Shade Display -->
                                 <div id="pdp-selected-shade" style="display:none; align-items:center; gap:8px; background: rgba(0,0,0,0.2); padding: 8px 12px; border-radius: 24px; backdrop-filter: blur(4px);">
