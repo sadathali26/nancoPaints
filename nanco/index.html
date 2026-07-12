@@ -1368,7 +1368,8 @@
     // Mobile nav toggle
     const btn = document.getElementById('mobile-menu-btn');
     const nav = document.getElementById('mobile-nav');
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopImmediatePropagation();
       const isOpen = nav.classList.toggle('open');
       btn.setAttribute('aria-expanded', isOpen);
     });
