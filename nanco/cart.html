@@ -359,19 +359,19 @@
                     }
 
                     shadeStr = `
-                        <div class="mt-4 bg-slate-50 rounded-2xl p-4 border border-slate-200 relative shadow-sm">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-full border-2 border-white shadow-md flex-shrink-0" style="background-color: ${item.shade.hex}"></div>
-                                <div class="flex-grow">
-                                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Selected Shade</div>
-                                    <div class="text-base font-bold text-slate-800">${item.shade.name} <span class="text-slate-500 font-semibold text-sm">(${item.shade.id})</span></div>
-                                    <div class="text-xs text-slate-600 mt-2 font-medium bg-white inline-block px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">
-                                        <i class="fas fa-magic text-indigo-400 mr-1.5"></i> Estimated Tinting: <span class="font-bold text-slate-800">${estimatedPrice}</span>
+                        <div class="mt-3 bg-slate-50 rounded-xl p-3 border border-slate-200 relative shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full border-2 border-white shadow-sm flex-shrink-0" style="background-color: ${item.shade.hex}"></div>
+                                <div class="flex-grow min-w-0">
+                                    <div class="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Selected Shade</div>
+                                    <div class="text-sm font-bold text-slate-800 truncate">${item.shade.name} <span class="text-slate-500 text-xs font-semibold">(${item.shade.id})</span></div>
+                                    <div class="text-[10px] text-slate-600 mt-1 font-medium flex items-center gap-1">
+                                        <i class="fas fa-magic text-indigo-400"></i> 
+                                        <span>Tinting: <span class="font-bold text-slate-800">${estimatedPrice}</span></span>
                                     </div>
-                                    <div class="text-[10px] text-slate-400 mt-2 italic">*Stainer cost varies by base & formulation. Finalized at checkout.</div>
                                 </div>
-                                <button onclick="removeShade(${index})" class="text-slate-300 hover:text-red-500 hover:bg-red-50 transition-colors w-8 h-8 flex items-center justify-center rounded-full" title="Remove Shade">
-                                    <i class="fas fa-times"></i>
+                                <button onclick="removeShade(${index})" class="text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors w-7 h-7 flex items-center justify-center rounded-full flex-shrink-0" title="Remove Shade">
+                                    <i class="fas fa-times text-xs"></i>
                                 </button>
                             </div>
                         </div>`;
