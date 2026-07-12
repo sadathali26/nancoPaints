@@ -53,22 +53,27 @@ Always include these [TOOL:...] tags in your response when applicable! DO NOT wr
 def chat():
     data = request.json
     user_message = data.get('message', '')
+    history = data.get('history', [])  # list of {role, content}
     
     if not user_message:
         return jsonify({'error': 'Message is required'}), 400
 
     try:
+        # Build messages list: system prompt + history + current message
+        messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+        
+        # Add conversation history (excluding the last user message since we add it below)
+        for msg in history[:-1]:  # exclude last since it's the current user message
+            role = msg.get('role', 'user')
+            content = msg.get('content', '')
+            if role in ('user', 'assistant') and content:
+                messages.append({"role": role, "content": content})
+        
+        # Add current user message
+        messages.append({"role": "user", "content": user_message})
+        
         chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "system",
-                    "content": SYSTEM_PROMPT
-                },
-                {
-                    "role": "user",
-                    "content": user_message
-                }
-            ],
+            messages=messages,
             model="llama-3.1-8b-instant",
         )
         response_text = chat_completion.choices[0].message.content
