@@ -1472,29 +1472,6 @@
           gtCombo.dispatchEvent(new Event('change'));
         }
       }
-    }
-      desktopLangOpts.forEach(opt => {
-        if (opt.getAttribute('data-lang') === lang) {
-          opt.classList.add('active');
-        } else {
-          opt.classList.remove('active');
-        }
-      });
-
-      mobileLangOpts.forEach(opt => {
-        if (opt.getAttribute('data-lang') === lang) {
-          opt.classList.add('active');
-          opt.style.fontWeight = '700';
-          opt.style.borderColor = 'var(--color-ink-black)';
-          opt.style.color = 'var(--color-ink-black)';
-        } else {
-          opt.classList.remove('active');
-          opt.style.fontWeight = '500';
-          opt.style.borderColor = 'rgba(0,0,0,0.1)';
-          opt.style.color = 'var(--color-sage-mute)';
-        }
-      });
-
       // Translate all DOM elements
       const dict = translations[lang];
       for (const id in dict) {
