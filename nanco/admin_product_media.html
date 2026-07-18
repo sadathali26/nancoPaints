@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Product Media Manager | Nanco Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS reset & base */
+        body { font-family: 'Inter', sans-serif; background: var(--color-linen-canvas); margin:0; padding:0; color: var(--color-ink-black); overflow-x: hidden; }
+        
+        /* ── FLOATING PILL NAV (matches product_info.html) ── */
+        .admin-nav {
+            position: sticky;
+            top: 12px;
+            z-index: 200;
+            display: flex;
+            justify-content: center;
+            padding: 0 16px;
+            pointer-events: none;
+        }
+        .admin-nav-inner {
+            background: #fff;
+            border-radius: 99px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 20px 8px 12px;
+            width: 100%;
+            max-width: 1400px;
+            gap: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+            pointer-events: all;
+            min-height: 60px;
+        }
+        .admin-nav-logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .admin-nav-logo img {
+            height: 36px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+        }
+        .admin-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            justify-content: flex-end;
+        }
+        .admin-nav-title {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            color: var(--color-ink-black);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* ── Morphing search bar (matches index.html) ── */
+        .admin-search-bar {
+            display: flex;
+            align-items: center;
+            background: #f3f3f1;
+            border-radius: 99px;
+            height: 40px;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            pointer-events: none;
+            flex: 1;
+            transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease,
+                        margin 0.4s ease,
+                        border-radius 0.4s ease;
+        }
+        .admin-nav-inner.search-active .admin-search-bar {
+            max-width: 2000px;
+            opacity: 1;
+            margin-right: -6px;
+            border-radius: 99px 0 0 99px;
+            pointer-events: auto;
+        }
+        .admin-search-bar input {
+            border: none;
+            background: transparent;
+            outline: none;
+            flex: 1;
+            padding: 8px 14px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--color-ink-black);
+            width: 100%;
+            min-width: 0;
+        }
+        .admin-search-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-ink-black);
+            font-size: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: background 0.3s ease, border-radius 0.3s ease;
+        }
+        .admin-nav-inner.search-active .admin-search-btn {
+            background: #f3f3f1;
+            border-radius: 0 99px 99px 0;
+        }
+        .admin-search-btn .search-icon,
+        .admin-search-btn .close-icon {
+            position: absolute;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+        .admin-search-btn .close-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.5);
+        }
+        .admin-nav-inner.search-active .admin-search-btn .search-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.5);
+        }
+        .admin-nav-inner.search-active .admin-search-btn .close-icon {
+            opacity: 1;
+            transform: rotate(0) scale(1);
+        }
+        /* Logo collapses when search opens — search bar+button take full width */
+        .admin-nav-logo {
+            transition: max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease,
+                        margin 0.3s ease;
+            max-width: 200px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .admin-nav-inner.search-active .admin-nav-logo {
+            max-width: 0;
+            opacity: 0;
+            margin: 0;
+            pointer-events: none;
+        }
+        /* Right container grows to fill all space when active */
+        .admin-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1;
+            justify-content: flex-end;
+            min-width: 0;
+        }
+        @media (max-width: 600px) {
+            .admin-nav { top: 8px; padding: 0 10px; }
+            .admin-nav-inner { padding: 6px 10px 6px 8px; min-height: 50px; gap: 4px; }
+            .admin-nav-logo img { height: 26px; }
+            .admin-nav-title { display: none; }
+        }
+
+        .btn { padding: 10px 20px; font-weight: 700; background: var(--color-lime-spark); border: 1.5px solid rgba(0,0,0,0.1); border-radius: 99px; cursor: pointer; color: #000; text-decoration: none; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; transition: transform 0.15s, box-shadow 0.15s; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        
+        /* Layout */
+        .container { max-width: 1400px; margin: 32px auto; padding: 0 20px; }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+        .product-card { background: #fff; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 20px; overflow: hidden; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); border-color: var(--color-cobalt-band); }
+        
+        /* Bucket CSS */
+        .bucket-wrapper { position: relative; display: flex; justify-content: center; align-items: flex-end; padding: 30px; }
+        .bucket-container { position: relative; width: 140px; height: 160px; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.15)); z-index: 2; margin-top: 20px; transition: transform 0.3s; }
+        .bucket-handle { position: absolute; width: 156px; height: 90px; border: 4px solid #b0b0b0; border-radius: 90px 90px 0 0; top: -50px; left: -8px; border-bottom: none; z-index: 1; transform-origin: bottom center; transform: rotate(-15deg); }
+        .bucket-lid { position: absolute; width: 150px; height: 20px; background: #e0e0e0; border-radius: 6px 6px 0 0; top: -15px; left: -5px; z-index: 3; box-shadow: inset 0 3px 5px rgba(255,255,255,0.7), 0 2px 5px rgba(0,0,0,0.2); }
+        .bucket-body { width: 100%; height: 100%; background: linear-gradient(to right, #f4f4f4 0%, #ffffff 50%, #e0e0e0 100%); border-radius: 4px 4px 16px 16px; position: relative; z-index: 2; overflow: hidden; box-shadow: inset -5px -5px 15px rgba(0,0,0,0.05); }
+        .bucket-label { position: absolute; top: 20%; left: 0; width: 100%; height: 60%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: #fff; padding: 10px; box-sizing: border-box; }
+        
+        /* ── MODAL ── */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(6px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal {
+            background: var(--color-linen-canvas);
+            width: 92%;
+            max-width: 960px;
+            height: 88vh;
+            border-radius: 20px;
+            border: 1.5px solid rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 32px 64px rgba(0,0,0,0.22);
+            animation: fadeInUp 0.28s ease;
+        }
+        @keyframes fadeInUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+        /* ── Title bar (Windows-style) ── */
+        .modal-titlebar {
+            background: #fff;
+            border-bottom: 1.5px solid rgba(0,0,0,0.08);
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+        .modal-titlebar-info { flex: 1; min-width: 0; }
+        .modal-titlebar-info h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .modal-titlebar-info p {
+            margin: 2px 0 0;
+            font-size: 12px;
+            color: var(--color-sage-mute);
+        }
+        .modal-titlebar-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+        .modal-save-btn {
+            display: flex; align-items: center; gap: 6px;
+            padding: 8px 18px;
+            background: var(--color-lime-spark);
+            border: 1.5px solid rgba(0,0,0,0.1);
+            border-radius: 99px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+        .modal-save-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+        .modal-close-btn {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.07);
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            transition: background 0.15s;
+        }
+        .modal-close-btn:hover { background: #fee2e2; color: #dc2626; }
+
+        /* ── Tab bar (Windows Explorer style) ── */
+        .modal-tabs {
+            background: #fff;
+            border-bottom: 1.5px solid rgba(0,0,0,0.08);
+            display: flex;
+            gap: 0;
+            flex-shrink: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .modal-tabs::-webkit-scrollbar { display: none; }
+        .modal-tab {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 11px 22px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--color-sage-mute);
+            border-bottom: 2.5px solid transparent;
+            white-space: nowrap;
+            transition: color 0.18s, border-color 0.18s;
+            flex-shrink: 0;
+            font-family: inherit;
+        }
+        .modal-tab:hover { color: var(--color-ink-black); }
+        .modal-tab.active { color: var(--color-cobalt-band); border-bottom-color: var(--color-cobalt-band); }
+        .tab-badge {
+            background: var(--color-cobalt-band);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            border-radius: 99px;
+            padding: 1px 6px;
+            min-width: 18px;
+            text-align: center;
+            display: none;
+        }
+        .tab-badge.visible { display: inline-block; }
+
+        /* ── Tab panels ── */
+        .modal-body { flex: 1; overflow-y: auto; background: var(--color-linen-canvas); padding: 20px; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── Media sections ── */
+        .media-section {
+            background: #fff;
+            border: 1.5px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .media-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1.5px dashed rgba(0,0,0,0.1);
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+        .media-item { border: 1.5px solid rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; aspect-ratio: 4/3; position: relative; background: #eee; }
+        .media-item img { width: 100%; height: 100%; object-fit: cover; }
+        .upload-btn { border: 2px dashed rgba(0,0,0,0.18); background: #f9f9f9; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #888; transition: all 0.2s; font-weight: 700; font-size: 13px; aspect-ratio: 4/3; border-radius: 10px; gap: 6px; }
+        .upload-btn:hover { background: #eef2ff; border-color: var(--color-cobalt-band); color: var(--color-cobalt-band); }
+        .upload-btn i { font-size: 22px; }
+        .add-link-btn { display:flex; align-items:center; gap:6px; background:#eef2ff; color:var(--color-cobalt-band); border:1.5px solid var(--color-cobalt-band); border-radius:99px; padding:6px 14px; font-size:12px; font-weight:700; cursor:pointer; transition:background 0.15s; }
+        .add-link-btn:hover { background: #dde9ff; }
+        .remove-media-btn { position: absolute; top: 6px; right: 6px; background: rgba(220,38,38,0.85); color: #fff; border: none; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s; font-size: 11px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+        .remove-media-btn:hover { transform: scale(1.1); }
+
+        /* ── MOBILE: full-screen bottom sheet ── */
+        @media (max-width: 768px) {
+            .modal-overlay { align-items: flex-end; }
+            .modal {
+                width: 100%; max-width: 100%;
+                height: 92vh;
+                border-radius: 20px 20px 0 0;
+                border: none;
+                animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            }
+            @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+            .modal-titlebar { position: relative; padding: 22px 14px 12px; }
+            .modal-titlebar::before {
+                content: '';
+                position: absolute;
+                top: 8px; left: 50%;
+                transform: translateX(-50%);
+                width: 36px; height: 4px;
+                background: rgba(0,0,0,0.15);
+                border-radius: 99px;
+            }
+            .modal-titlebar-info h2 { font-size: 15px; }
+            .modal-save-btn { padding: 7px 12px; font-size: 12px; }
+            .modal-tab { padding: 10px 14px; font-size: 12px; gap: 5px; }
+            .modal-body { padding: 12px; }
+            .media-grid { grid-template-columns: repeat(3, 1fr); gap: 7px; }
+            .media-section { padding: 12px; border-radius: 12px; }
+        }
+        @media (max-width: 420px) {
+            .media-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+            .tab-label { display: none; }
+            .modal-tab { padding: 10px 18px; font-size: 16px; }
+        }
+
+        /* ── MOBILE RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .container { margin: 20px auto; padding: 0 12px; }
+            .bento-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+            .modal {
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                border-radius: 0;
+                border: none;
+            }
+            .modal-overlay { align-items: flex-end; }
+            .modal-header { padding: 16px; }
+            .modal-header h2 { font-size: 20px !important; }
+            .modal-body { padding: 14px; }
+            .media-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+            .media-section { padding: 14px; }
+            .media-section-header h3 { font-size: 16px !important; }
+        }
+        @media (max-width: 480px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .bucket-container { width: 100px; height: 115px; }
+            .media-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="admin-nav">
+        <div class="admin-nav-inner" id="admin-nav-inner">
+            <!-- Logo — collapses when search opens -->
+            <a class="admin-nav-logo" href="#" onclick="event.preventDefault(); history.back();" aria-label="Back to Admin">
+                <img src="assets/light-logo.png" alt="Nanco Paints">
+            </a>
+            <!-- Right: title + search bar + button all in one div -->
+            <div class="admin-nav-right">
+                <span class="admin-nav-title">
+                    <i class="fas fa-photo-film" style="color:var(--color-cobalt-band); margin-right:6px;"></i>Media &amp; Manual Manager
+                </span>
+                <!-- Search bar lives here, next to button -->
+                <div class="admin-search-bar">
+                    <input type="text" id="search-input" placeholder="Search products..." aria-label="Search products">
+                </div>
+                <!-- Morphing search / close button -->
+                <button class="admin-search-btn" id="admin-search-toggle" aria-label="Toggle search">
+                    <i class="fas fa-search search-icon"></i>
+                    <i class="fas fa-times close-icon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Morphing search toggle
+        document.getElementById('admin-search-toggle').addEventListener('click', function() {
+            const inner = document.getElementById('admin-nav-inner');
+            const isActive = inner.classList.toggle('search-active');
+            const input = document.getElementById('search-input');
+            if (isActive) {
+                setTimeout(() => input.focus(), 250);
+            } else {
+                input.value = '';
+                // Clear search filter when closing
+                if (typeof renderProducts === 'function') renderProducts();
+            }
+        });
+        // Wire input to filter (renderProducts picks up input value by id)
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('search-input').addEventListener('input', () => {
+                if (typeof renderProducts === 'function') renderProducts();
+            });
+        });
+    </script>
+
+    <div class="container">
+        <div id="product-grid" class="bento-grid">
+            <!-- Loader -->
+            <div style="grid-column: 1 / -1; text-align: center; padding: 100px;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 48px; margin-bottom: 24px; color:var(--color-cobalt-band);"></i>
+                <h3 style="margin:0;">Loading products from Nanco ERP...</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Media Manager Modal -->
+    <div class="modal-overlay" id="media-modal">
+        <div class="modal">
+
+            <!-- ── Title bar ── -->
+            <div class="modal-titlebar">
+                <div class="modal-titlebar-info">
+                    <h2 id="modal-title">Product Name</h2>
+                    <p id="modal-subtitle">Manage media assets</p>
+                </div>
+                <div class="modal-titlebar-actions">
+                    <button class="modal-save-btn" onclick="saveMediaToDatabase()" id="save-media-btn">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button class="modal-close-btn" onclick="closeModal()" aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ── Tab bar ── -->
+            <div class="modal-tabs" role="tablist">
+                <button class="modal-tab active" data-tab="banner" onclick="switchModalTab('banner')" role="tab" aria-selected="true">
+                    <i class="fas fa-bullhorn" style="color:var(--color-mustard-pop);"></i>
+                    <span class="tab-label">Hero Banner</span>
+                    <span class="tab-badge" id="badge-banner">0</span>
+                </button>
+                <button class="modal-tab" data-tab="images" onclick="switchModalTab('images')" role="tab" aria-selected="false">
+                    <i class="fas fa-images" style="color:var(--color-cobalt-band);"></i>
+                    <span class="tab-label">Gallery</span>
+                    <span class="tab-badge" id="badge-images">0</span>
+                </button>
+                <button class="modal-tab" data-tab="videos" onclick="switchModalTab('videos')" role="tab" aria-selected="false">
+                    <i class="fas fa-video" style="color:var(--color-maroon-plate);"></i>
+                    <span class="tab-label">Videos</span>
+                    <span class="tab-badge" id="badge-videos">0</span>
+                </button>
+                <button class="modal-tab" data-tab="instructions" onclick="switchModalTab('instructions')" role="tab" aria-selected="false">
+                    <i class="fas fa-file-alt" style="color:var(--color-ink-black);"></i>
+                    <span class="tab-label">Instructions</span>
+                </button>
+            </div>
+
+            <!-- ── Tab panels ── -->
+            <div class="modal-body">
+
+                <!-- Banner Tab -->
+                <div class="tab-panel active" id="tab-banner" role="tabpanel">
+                    <div class="media-section">
+                        <div class="media-section-header">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800;">
+                                    <i class="fas fa-bullhorn" style="color:var(--color-mustard-pop); margin-right:7px;"></i>Hero Banner Image
+                                </h3>
+                                <p style="margin:4px 0 0; font-size:12px; color:var(--color-sage-mute);">Displayed at top of product page. Optimal ratio 21:9.</p>
+                            </div>
+                            <button class="add-link-btn" onclick="openLinkDialog('banner')">
+                                <i class="fas fa-link"></i> Add Link
+                            </button>
+                        </div>
+                        <div class="media-grid" id="grid-banner">
+                            <div class="upload-btn" onclick="triggerUpload('banner')">
+                                <i class="fas fa-plus"></i> Upload Banner
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Tab -->
+                <div class="tab-panel" id="tab-images" role="tabpanel">
+                    <div class="media-section">
+                        <div class="media-section-header">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800;">
+                                    <i class="fas fa-images" style="color:var(--color-cobalt-band); margin-right:7px;"></i>Gallery Photos
+                                </h3>
+                                <p style="margin:4px 0 0; font-size:12px; color:var(--color-sage-mute);">Shown in the product gallery grid.</p>
+                            </div>
+                            <button class="add-link-btn" onclick="openLinkDialog('images')">
+                                <i class="fas fa-link"></i> Add Link
+                            </button>
+                        </div>
+                        <div class="media-grid" id="grid-images">
+                            <div class="upload-btn" onclick="triggerUpload('images')">
+                                <i class="fas fa-plus"></i> Add Photo
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Videos Tab -->
+                <div class="tab-panel" id="tab-videos" role="tabpanel">
+                    <div class="media-section">
+                        <div class="media-section-header">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800;">
+                                    <i class="fas fa-video" style="color:var(--color-maroon-plate); margin-right:7px;"></i>Product Videos
+                                </h3>
+                                <p style="margin:4px 0 0; font-size:12px; color:var(--color-sage-mute);">YouTube, Instagram, or direct video links.</p>
+                            </div>
+                            <button class="add-link-btn" onclick="openLinkDialog('videos')">
+                                <i class="fas fa-link"></i> Add Link
+                            </button>
+                        </div>
+                        <div class="media-grid" id="grid-videos">
+                            <div class="upload-btn" onclick="triggerUpload('videos')">
+                                <i class="fas fa-plus"></i> Add Video
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions Tab -->
+                <div class="tab-panel" id="tab-instructions" role="tabpanel">
+                    <div class="media-section">
+                        <div class="media-section-header">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800;">
+                                    <i class="fas fa-file-alt" style="color:var(--color-ink-black); margin-right:7px;"></i>Product Instructions
+                                </h3>
+                                <p style="margin:4px 0 0; font-size:12px; color:var(--color-sage-mute);">Write the description or step-by-step points on how to use the product.</p>
+                            </div>
+                        </div>
+                        <div style="background: #f9f9f9; border-radius: 12px; padding: 16px; border: 1.5px solid rgba(0,0,0,0.08); box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);">
+                            <textarea id="instructions-text" style="width: 100%; min-height: 240px; border: none; background: transparent; font-family: inherit; font-size: 14px; line-height: 1.6; outline: none; resize: vertical; color: var(--color-ink-black);" placeholder="1. Clean the surface thoroughly before application...&#10;2. Mix well..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /modal-body -->
+        </div><!-- /modal -->
+    </div><!-- /modal-overlay -->
+
+    <script>
+        // Tab switching
+        function switchModalTab(tab) {
+            document.querySelectorAll('.modal-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.tab === tab);
+                t.setAttribute('aria-selected', t.dataset.tab === tab);
+            });
+            document.querySelectorAll('.tab-panel').forEach(p => {
+                p.classList.toggle('active', p.id === 'tab-' + tab);
+            });
+        }
+        // Update tab badges
+        function updateTabBadges() {
+            ['banner','images','videos'].forEach(type => {
+                const grid = document.getElementById('grid-' + type);
+                const count = grid ? grid.querySelectorAll('.media-item').length : 0;
+                const badge = document.getElementById('badge-' + type);
+                if (badge) {
+                    badge.textContent = count;
+                    badge.classList.toggle('visible', count > 0);
+                }
+            });
+        }
+    </script>
+    
+    <!-- Hidden File Input for triggering OS File Browser -->
+    <input type="file" id="hidden-file-input" style="display:none;" accept="image/*,video/*">
+
+    <!-- Link Dialog -->
+    <div id="link-dialog-overlay" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:24px; padding:32px; width:480px; max-width:90vw; box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            <h3 style="margin:0 0 8px 0; font-size:20px; font-weight:800;"><i class="fas fa-link" style="color:var(--color-cobalt-band); margin-right:8px;"></i>Add Media Link</h3>
+            <p id="link-dialog-subtitle" style="margin:0 0 20px 0; color:var(--color-sage-mute); font-size:14px;">Paste a direct image or video URL below.</p>
+            <input type="url" id="link-dialog-input" placeholder="https://example.com/image.jpg" style="width:100%; box-sizing:border-box; padding:14px 18px; border:1.5px solid rgba(0,0,0,0.15); border-radius:12px; font-size:15px; font-family:inherit; outline:none; margin-bottom:16px;" onfocus="this.style.borderColor='var(--color-cobalt-band)'" onblur="this.style.borderColor='rgba(0,0,0,0.15)'">
+            <div id="link-preview" style="display:none; border-radius:12px; overflow:hidden; max-height:160px; margin-bottom:16px; border:1.5px solid rgba(0,0,0,0.1);">
+                <img id="link-preview-img" src="" alt="Preview" style="width:100%; height:160px; object-fit:cover;">
+            </div>
+            <div style="display:flex; gap:10px;">
+                <button onclick="closeLinkDialog()" style="flex:1; padding:12px; border:1.5px solid rgba(0,0,0,0.1); border-radius:12px; font-weight:700; font-size:14px; cursor:pointer; background:#f5f5f5;">Cancel</button>
+                <button id="link-save-btn" onclick="saveLinkToDatabase()" style="flex:2; padding:12px; background:var(--color-cobalt-band); color:#fff; border:none; border-radius:12px; font-weight:800; font-size:14px; cursor:pointer;"><i class="fas fa-save"></i> Save to Database</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '')
+            ? 'http://localhost:5000/api' : '/api';
+        
+        let allProducts = [];
+        let currentProduct = null;
+        let uploadTypeTarget = '';
+
+        document.addEventListener('DOMContentLoaded', loadProducts);
+        document.getElementById('search-input').addEventListener('input', renderProducts);
+
+        // Fetch products identical to products.html
+        async function loadProducts() {
+            try {
+                const response = await fetch(`${API_URL}/items`);
+                const data = await response.json();
+                
+                const colors = ['#1e3a8a', '#ea580c', '#475569', '#0d9488', '#be185d', '#b45309', '#65a30d', '#9f1239'];
+                const groupedMap = {};
+                
+                data.forEach((p, index) => {
+                    let images = [];
+                    if (Array.isArray(p.images) && p.images.length > 0) {
+                        images = p.images;
+                    } else if (p.image_url) {
+                        images.push(p.image_url);
+                    }
+                    
+                    let id = p.id || String(index + 1);
+                    if (images.length === 0 && (typeof id === 'number' || !isNaN(Number(id))) && Number(id) <= 21) {
+                        const type1Ext = [null, 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpeg', 'jpeg'];
+                        const numId = Number(id);
+                        if (type1Ext[numId]) {
+                            images.push(`product_imgs/product_img_type_1/${numId}.${type1Ext[numId]}`);
+                        }
+                    }
+
+                    const name = String(p.item_name || p.product_name || p.name || 'Unknown Product');
+                    const category = String(p.category || p.sub_category || p.store_type || 'Interior').toLowerCase();
+                    const groupKey = name.toLowerCase().trim() + '|' + category;
+
+                    if (!groupedMap[groupKey]) {
+                        groupedMap[groupKey] = {
+                            id: id,
+                            name: name,
+                            brand: String(p.brand || 'Nanco'),
+                            category: category,
+                            finish: String(p.finish || ''),
+                            color: colors[index % colors.length],
+                            label: String(p.product_line || p.product_range || p.brand || 'Nanco'),
+                            images: images,
+                            // Temporary arrays to hold newly uploaded media during this session
+                            custom_banner: [],
+                            custom_images: [],
+                            custom_videos: []
+                        };
+                    } else {
+                        if (images.length > 0 && groupedMap[groupKey].images.length === 0) {
+                            groupedMap[groupKey].images = images;
+                        }
+                    }
+                });
+
+                allProducts = Object.values(groupedMap);
+                renderProducts();
+            } catch (err) {
+                document.getElementById('product-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--color-maroon-plate);"><h3>Failed to load products. Is backend running?</h3></div>';
+            }
+        }
+
+        // Exact bucket HTML generator used in products.html
+        function generateBucketHTML(product) {
+            return `
+                <div class="bucket-container">
+                    <div class="bucket-handle"></div>
+                    <div class="bucket-lid"></div>
+                    <div class="bucket-body">
+                        <div class="bucket-label" style="background-color: ${product.color};">
+                            <span style="font-size:9px; font-weight:800; text-transform:uppercase; opacity:0.8; letter-spacing:0.1em;">${product.brand}</span>
+                            <span style="font-size:14px; font-weight:800; line-height:1.1; margin-top:2px; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${product.name}">${product.name}</span>
+                            <div style="margin-top:6px; display:flex; justify-content:center;">
+                                <span style="font-size:8px; background:#fff; color:#000; padding:2px 6px; border-radius:4px; font-weight:800;">${product.label}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            const searchQ = document.getElementById('search-input').value.toLowerCase();
+            
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(searchQ) || p.category.includes(searchQ));
+            
+            grid.innerHTML = filtered.map((p, index) => {
+                let visualHtml = '';
+                let bgStyle = '';
+                if (p.images && p.images.length > 0) {
+                    visualHtml = `<img src="${p.images[0]}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">`;
+                } else {
+                    bgStyle = `background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('assets/pattern.jpg'); background-color: ${p.color}; background-blend-mode: multiply; background-size: cover; background-position: center;`;
+                    visualHtml = generateBucketHTML(p);
+                }
+
+                return `
+                    <div class="product-card" onclick="openMediaModal(${index})">
+                        <div class="bucket-wrapper" style="aspect-ratio:1/1; width:100%; position:relative; overflow:hidden; ${bgStyle}">
+                            ${visualHtml}
+                        </div>
+                        <div style="padding:16px 20px;">
+                            <h3 style="margin:0 0 6px 0; font-size:16px; font-weight:800; color:var(--color-ink-black); line-height:1.2;">${p.name}</h3>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; border-top:1px solid rgba(0,0,0,0.1); padding-top:12px;">
+                                <span style="font-size:11px; color:var(--color-sage-mute); text-transform:uppercase; font-weight:800;">${p.category}</span>
+                                <span style="font-size:12px; color:var(--color-cobalt-band); font-weight:800;"><i class="fas fa-edit"></i> Edit Media</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('') || '<div style="grid-column: 1 / -1; padding: 60px; text-align: center; color:var(--color-sage-mute);"><i class="fas fa-search" style="font-size:32px; margin-bottom:12px;"></i><p>No products match your search.</p></div>';
+        }
+
+        // Modal Logic
+        async function openMediaModal(index) {
+            currentProduct = allProducts[index];
+            document.getElementById('modal-title').innerText = currentProduct.name;
+            document.getElementById('modal-subtitle').innerText = currentProduct.category.toUpperCase() + ' - ' + currentProduct.label;
+
+            // Clear instructions while loading
+            document.getElementById('instructions-text').value = '';
+
+            document.getElementById('media-modal').style.display = 'flex';
+
+            // Fetch DB media and instructions in parallel
+            const [mediaRes, instRes] = await Promise.allSettled([
+                fetch(`${API_URL}/product-media/${currentProduct.id}`),
+                fetch(`${API_URL}/product-instructions/${currentProduct.id}`)
+            ]);
+
+            try {
+                if (mediaRes.status === 'fulfilled' && mediaRes.value.ok) {
+                    currentProduct.db_media = await mediaRes.value.json();
+                } else { currentProduct.db_media = []; }
+            } catch { currentProduct.db_media = []; }
+
+            try {
+                if (instRes.status === 'fulfilled' && instRes.value.ok) {
+                    const instData = await instRes.value.json();
+                    document.getElementById('instructions-text').value = instData.content || '';
+                } else {
+                    // Fallback to localStorage if DB fails
+                    document.getElementById('instructions-text').value = localStorage.getItem('instructions_' + currentProduct.id) || '';
+                }
+            } catch {
+                document.getElementById('instructions-text').value = localStorage.getItem('instructions_' + currentProduct.id) || '';
+            }
+
+            renderMediaGrids();
+        }
+
+        function closeModal() {
+            document.getElementById('media-modal').style.display = 'none';
+            currentProduct = null;
+        }
+
+        function renderMediaGrids() {
+            const p = currentProduct;
+            const dbMedia = p.db_media || [];
+            
+            // Banner rendering
+            let bannerHtml = '';
+            const dbBanners = dbMedia.filter(m => m.type === 'banner');
+            if (dbBanners.length > 0) {
+                bannerHtml += dbBanners.map(m => `<div class="media-item"><img src="${m.url}"><div class="remove-media-btn" onclick="deleteDbMedia('${m.id}', event)" title="Delete from Database"><i class="fas fa-trash"></i></div></div>`).join('');
+            }
+            if (p.custom_banner && p.custom_banner.length > 0) {
+                bannerHtml += p.custom_banner.map((item, i) => `<div class="media-item"><img src="${item.url}"><div class="remove-media-btn" onclick="removeMedia('banner', ${i}, event)" title="Remove"><i class="fas fa-times"></i></div></div>`).join('');
+            }
+            if (!bannerHtml) {
+                bannerHtml = `<div class="upload-btn" onclick="triggerUpload('banner')"><i class="fas fa-plus" style="font-size:24px; margin-bottom:8px;"></i> Upload Banner</div>`;
+            } else {
+                bannerHtml += `<div class="upload-btn" onclick="triggerUpload('banner')"><i class="fas fa-plus" style="font-size:24px; margin-bottom:8px;"></i> Upload Another</div>`;
+            }
+            document.getElementById('grid-banner').innerHTML = bannerHtml;
+
+            // Images rendering
+            let imgsHtml = '';
+            // 1. System images (read-only)
+            if (p.images && p.images.length > 0) {
+                imgsHtml += p.images.map(url => `<div class="media-item"><img src="${url}"><div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.85); color:#fff; font-size:10px; padding:6px; text-align:center; font-weight:800;">SYSTEM IMAGE</div></div>`).join('');
+            }
+            // 2. DB uploaded images
+            const dbImages = dbMedia.filter(m => m.type === 'image');
+            if (dbImages.length > 0) {
+                imgsHtml += dbImages.map(m => `<div class="media-item"><img src="${m.url}"><div class="remove-media-btn" onclick="deleteDbMedia('${m.id}', event)" title="Delete from Database"><i class="fas fa-trash"></i></div></div>`).join('');
+            }
+            // 3. Pending uploads
+            if (p.custom_images && p.custom_images.length > 0) {
+                imgsHtml += p.custom_images.map((item, i) => `<div class="media-item"><img src="${item.url}"><div class="remove-media-btn" onclick="removeMedia('images', ${i}, event)" title="Remove Pending"><i class="fas fa-times"></i></div></div>`).join('');
+            }
+            document.getElementById('grid-images').innerHTML = imgsHtml + `<div class="upload-btn" onclick="triggerUpload('images')"><i class="fas fa-plus" style="font-size:24px; margin-bottom:8px;"></i> Add Photo</div>`;
+
+            // Videos rendering
+            let vidsHtml = '';
+            // 1. DB uploaded videos
+            const dbVideos = dbMedia.filter(m => m.type === 'video');
+            if (dbVideos.length > 0) {
+                vidsHtml += dbVideos.map(m => {
+                    const embed = getEmbedUrl(m.url);
+                    if (embed.isEmbed) {
+                        return `<div class="media-item" style="background:#111; overflow:hidden;">
+                            <iframe src="${embed.url}" style="position:absolute; inset:0; width:100%; height:100%; border:none; pointer-events:none;"></iframe>
+                            <div style="position:absolute; top:8px; left:8px; background:rgba(0,0,0,0.7); color:#fff; border-radius:6px; padding:3px 8px; font-size:11px; font-weight:800; display:flex; align-items:center; gap:4px;"><i class="${embed.icon}"></i> ${embed.label}</div>
+                            <div class="remove-media-btn" style="z-index:3;" onclick="deleteDbMedia('${m.id}', event)" title="Delete from Database"><i class="fas fa-trash"></i></div>
+                        </div>`;
+                    }
+                    return `<div class="media-item" style="background:#111; display:flex; align-items:center; justify-content:center; color:#fff;"><video src="${m.url}" style="position:absolute; inset:0; opacity:0.6; object-fit:cover;" autoplay muted loop></video><i class="fas fa-play-circle" style="font-size:42px; position:relative; z-index:2; color:rgba(255,255,255,0.8);"></i><div class="remove-media-btn" style="z-index:3;" onclick="deleteDbMedia('${m.id}', event)" title="Delete from Database"><i class="fas fa-trash"></i></div></div>`;
+                }).join('');
+            }
+            // 2. Pending uploads
+            if (p.custom_videos && p.custom_videos.length > 0) {
+                vidsHtml += p.custom_videos.map((item, i) => `<div class="media-item" style="background:#111; display:flex; align-items:center; justify-content:center; color:#fff;"><video src="${item.url}" style="position:absolute; inset:0; opacity:0.6; object-fit:cover;" autoplay muted loop></video><i class="fas fa-play-circle" style="font-size:42px; position:relative; z-index:2; color:rgba(255,255,255,0.8);"></i><div class="remove-media-btn" style="z-index:3;" onclick="removeMedia('videos', ${i}, event)" title="Remove Pending"><i class="fas fa-times"></i></div></div>`).join('');
+            }
+            document.getElementById('grid-videos').innerHTML = vidsHtml + `<div class="upload-btn" onclick="triggerUpload('videos')"><i class="fas fa-plus" style="font-size:24px; margin-bottom:8px;"></i> Add Video</div>`;
+        }
+
+        // Convert YouTube / Instagram share URLs to embeddable URLs
+        function getEmbedUrl(url) {
+            // YouTube: youtube.com/watch?v=ID or youtu.be/ID
+            const ytMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+            if (ytMatch) {
+                return { isEmbed: true, url: `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=0`, icon: 'fab fa-youtube', label: 'YouTube' };
+            }
+            // YouTube embed already
+            if (url.includes('youtube.com/embed/')) {
+                return { isEmbed: true, url, icon: 'fab fa-youtube', label: 'YouTube' };
+            }
+            // Instagram: /p/ or /reel/
+            const igMatch = url.match(/instagram\.com\/(p|reel)\/([\w-]+)/);
+            if (igMatch) {
+                return { isEmbed: true, url: `https://www.instagram.com/${igMatch[1]}/${igMatch[2]}/embed/`, icon: 'fab fa-instagram', label: 'Instagram' };
+            }
+            return { isEmbed: false, url };
+        }
+
+        function triggerUpload(type) {
+            uploadTypeTarget = type;
+            const input = document.getElementById('hidden-file-input');
+            input.accept = type === 'videos' ? 'video/*' : 'image/*';
+            // Allow selecting multiple files at once for images and videos
+            input.multiple = (type !== 'banner');
+            input.click();
+        }
+
+        // Handle file selection
+        document.getElementById('hidden-file-input').addEventListener('change', function(e) {
+            if (e.target.files.length === 0) return;
+            
+            const files = Array.from(e.target.files);
+            
+            files.forEach(file => {
+                const mockUrl = URL.createObjectURL(file);
+                if (uploadTypeTarget === 'banner') {
+                    // Accumulate banners instead of replacing
+                    currentProduct.custom_banner.push({ url: mockUrl, file: file });
+                } else if (uploadTypeTarget === 'images') {
+                    currentProduct.custom_images.push({ url: mockUrl, file: file });
+                } else if (uploadTypeTarget === 'videos') {
+                    currentProduct.custom_videos.push({ url: mockUrl, file: file });
+                }
+            });
+            
+            renderMediaGrids();
+            e.target.value = ''; 
+        });
+
+        function removeMedia(type, index, e) {
+            e.stopPropagation();
+            if (type === 'banner') {
+                currentProduct.custom_banner.splice(index, 1);
+            } else if (type === 'images') {
+                currentProduct.custom_images.splice(index, 1);
+            } else if (type === 'videos') {
+                currentProduct.custom_videos.splice(index, 1);
+            }
+            renderMediaGrids();
+        }
+
+        async function deleteDbMedia(id, e) {
+            e.stopPropagation();
+            if (!confirm('Are you sure you want to permanently delete this media from the database?')) return;
+            
+            try {
+                const res = await fetch(`${API_URL}/product-media/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    // Remove from local array
+                    currentProduct.db_media = currentProduct.db_media.filter(m => m.id !== id);
+                    renderMediaGrids();
+                } else {
+                    alert('Failed to delete from database');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error deleting media');
+            }
+        }
+
+        // ---- LINK DIALOG LOGIC ----
+        let linkDialogType = '';
+
+        function openLinkDialog(type) {
+            linkDialogType = type;
+            const subtitles = { banner: 'Paste a direct banner image URL.', images: 'Paste a direct image URL.', videos: 'Paste a YouTube link, Instagram reel link, or direct video URL (mp4).' };
+            document.getElementById('link-dialog-subtitle').textContent = subtitles[type] || 'Paste a direct media URL below.';
+            document.getElementById('link-dialog-input').value = '';
+            document.getElementById('link-preview').style.display = 'none';
+            document.getElementById('link-dialog-overlay').style.display = 'flex';
+            
+            // Live preview — handles images AND YouTube/Instagram embeds
+            document.getElementById('link-dialog-input').oninput = function() {
+                const val = this.value.trim();
+                if (!val) { document.getElementById('link-preview').style.display = 'none'; return; }
+                
+                const embed = getEmbedUrl(val);
+                const previewBox = document.getElementById('link-preview');
+                
+                if (embed.isEmbed) {
+                    previewBox.innerHTML = `<iframe src="${embed.url}" style="width:100%; height:160px; border:none;"></iframe>`;
+                    previewBox.style.display = 'block';
+                } else if (!val.match(/\.(mp4|webm|mov|avi)$/i)) {
+                    previewBox.innerHTML = `<img src="${val}" alt="Preview" style="width:100%; height:160px; object-fit:cover;" onerror="this.parentElement.style.display='none'" onload="this.parentElement.style.display='block'">`;
+                    previewBox.style.display = 'none'; // will show once img loads
+                } else {
+                    previewBox.style.display = 'none';
+                }
+            };
+        }
+
+        function closeLinkDialog() {
+            document.getElementById('link-dialog-overlay').style.display = 'none';
+            linkDialogType = '';
+        }
+
+        async function saveLinkToDatabase() {
+            const url = document.getElementById('link-dialog-input').value.trim();
+            if (!url) { alert('Please enter a URL.'); return; }
+            if (!currentProduct) { alert('No product selected.'); return; }
+
+            const btn = document.getElementById('link-save-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch(`${API_URL}/product-media/save-link`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        product_id: currentProduct.id,
+                        url: url,
+                        type: linkDialogType === 'images' ? 'image' : (linkDialogType === 'videos' ? 'video' : 'banner')
+                    })
+                });
+
+                if (res.ok) {
+                    btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                    // Refresh the modal media from DB
+                    const refresh = await fetch(`${API_URL}/product-media/${currentProduct.id}`);
+                    if (refresh.ok) { currentProduct.db_media = await refresh.json(); }
+                    renderMediaGrids();
+                    setTimeout(() => { closeLinkDialog(); btn.innerHTML = '<i class="fas fa-save"></i> Save to Database'; btn.disabled = false; }, 1200);
+                } else {
+                    const data = await res.json();
+                    throw new Error(data.error || 'Save failed');
+                }
+            } catch (err) {
+                console.error('Link save error:', err);
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error';
+                btn.style.background = 'var(--color-maroon-plate)';
+                setTimeout(() => { btn.innerHTML = '<i class="fas fa-save"></i> Save to Database'; btn.style.background = 'var(--color-cobalt-band)'; btn.disabled = false; }, 2000);
+            }
+        }
+
+        // Utility to optimize image before saving (Canvas-based compression)
+        async function optimizeImage(file) {
+            return new Promise((resolve) => {
+                if (!file.type.startsWith('image/')) {
+                    resolve(file); // Return video files as is
+                    return;
+                }
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let width = img.width;
+                        let height = img.height;
+                        const MAX_WIDTH = 1920;
+                        const MAX_HEIGHT = 1080;
+                        
+                        if (width > height) {
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+                        } else {
+                            if (height > MAX_HEIGHT) {
+                                width *= MAX_HEIGHT / height;
+                                height = MAX_HEIGHT;
+                            }
+                        }
+                        
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Compress to JPEG with 0.85 quality (High quality, lower filesize)
+                        canvas.toBlob((blob) => {
+                            resolve(blob);
+                        }, 'image/jpeg', 0.85);
+                    };
+                };
+            });
+        }
+
+        async function saveMediaToDatabase() {
+            const btn = document.getElementById('save-media-btn');
+            const originalHtml = btn.innerHTML;
+
+            // Save instructions to DB
+            const instText = document.getElementById('instructions-text').value;
+            localStorage.setItem('instructions_' + currentProduct.id, instText); // local cache
+            fetch(`${API_URL}/product-instructions/save`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ product_id: currentProduct.id, content: instText })
+            }).catch(err => console.warn('Instructions save error:', err));
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Optimizing...';
+            btn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('product_id', currentProduct.id);
+
+                // Process and optimize Banner
+                if (currentProduct.custom_banner && currentProduct.custom_banner.length > 0) {
+                    const banner = currentProduct.custom_banner[0];
+                    if (banner.file) {
+                        const optimized = await optimizeImage(banner.file);
+                        formData.append('banner', optimized, 'banner.jpg');
+                    }
+                }
+
+                // Process and optimize Images
+                if (currentProduct.custom_images && currentProduct.custom_images.length > 0) {
+                    for (let i = 0; i < currentProduct.custom_images.length; i++) {
+                        const img = currentProduct.custom_images[i];
+                        if (img.file) {
+                            const optimized = await optimizeImage(img.file);
+                            formData.append('images', optimized, `image_${i}.jpg`);
+                        }
+                    }
+                }
+
+                // Append Videos directly
+                if (currentProduct.custom_videos && currentProduct.custom_videos.length > 0) {
+                    for (let i = 0; i < currentProduct.custom_videos.length; i++) {
+                        const vid = currentProduct.custom_videos[i];
+                        if (vid.file) {
+                            formData.append('videos', vid.file, vid.file.name);
+                        }
+                    }
+                }
+
+                const response = await fetch(`${API_URL}/product-media/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                    btn.style.background = '#4caf50';
+                    btn.style.color = '#fff';
+                    
+                    // Clear pending arrays
+                    currentProduct.custom_banner = [];
+                    currentProduct.custom_images = [];
+                    currentProduct.custom_videos = [];
+                    
+                    // Refetch the media to show DB versions
+                    const res = await fetch(`${API_URL}/product-media/${currentProduct.id}`);
+                    if (res.ok) {
+                        currentProduct.db_media = await res.json();
+                    }
+                    renderMediaGrids();
+                    
+                    setTimeout(() => {
+                        btn.innerHTML = originalHtml;
+                        btn.style.background = 'var(--color-lime-spark)';
+                        btn.style.color = '#000';
+                        btn.disabled = false;
+                    }, 2000);
+                } else {
+                    throw new Error('Upload failed');
+                }
+            } catch (err) {
+                console.error("Save error:", err);
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Backend Error';
+                btn.style.background = 'var(--color-maroon-plate)';
+                btn.style.color = '#fff';
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.style.background = 'var(--color-lime-spark)';
+                    btn.style.color = '#000';
+                    btn.disabled = false;
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

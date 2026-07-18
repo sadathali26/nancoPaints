@@ -353,8 +353,8 @@
     <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Print Document</button>
 
     <script>
-        const SUPABASE_URL = 'https://sawbglsfqyayuysqcjto.supabase.co';
-        const ANON_KEY = 'sb_publishable_dT1pmAyJdFf1pbGn_yw7_g_E2UFN5l2';
+        const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "")
+            ? "http://localhost:5000/api" : "/api";
         let product = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -417,13 +417,7 @@
             document.getElementById('table-headers').innerHTML = `<th>Information</th><th>${selectedPricing.unit}</th>`;
 
             try {
-                const response = await fetch(`${SUPABASE_URL}/rest/v1/datasheets?item_id=eq.${targetVariantId}&select=*`, {
-                    headers: {
-                        'apikey': ANON_KEY,
-                        'Authorization': `Bearer ${ANON_KEY}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const response = await fetch(`${API_URL}/datasheets?item_id=eq.${targetVariantId}`);
 
                 if (!response.ok) throw new Error('Supabase fetch failed');
                 const data = await response.json();

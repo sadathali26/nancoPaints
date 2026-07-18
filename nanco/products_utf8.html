@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -1611,29 +1611,27 @@
             return generateBucketHTML(product);
         }
 
+        const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "")
+            ? "http://localhost:5000/api" : "/api";
+
+        function openProductInfo(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            localStorage.setItem('datasheetProduct', JSON.stringify(product));
+            if (product.pricing && product.pricing.length > 0) {
+                localStorage.setItem('datasheetVariantId', product.pricing[0].variant_id || product.id);
+            }
+            window.location.href = 'product_info.html';
+        }
+
         async function fetchProducts() {
             try {
-                const url = 'https://sawbglsfqyayuysqcjto.supabase.co/rest/v1/items?select=*';
-                const anonKey = 'sb_publishable_dT1pmAyJdFf1pbGn_yw7_g_E2UFN5l2';
-                const response = await fetch(url, {
-                    headers: {
-                        'apikey': anonKey,
-                        'Authorization': `Bearer ${anonKey}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const response = await fetch(`${API_URL}/items`);
                 
-                if (!response.ok) throw new Error('Failed to fetch from Supabase');
+                if (!response.ok) throw new Error('Failed to fetch from backend');
                 const data = await response.json();
                 
-                const iconsUrl = 'https://sawbglsfqyayuysqcjto.supabase.co/rest/v1/icons?select=*';
-                const iconsRes = await fetch(iconsUrl, {
-                    headers: {
-                        'apikey': anonKey,
-                        'Authorization': `Bearer ${anonKey}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const iconsRes = await fetch(`${API_URL}/icons`);
                 if (iconsRes.ok) {
                     const iconsData = await iconsRes.json();
                     window.allIcons = {};

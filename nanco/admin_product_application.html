@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Edit Product Application | Nanco Admin</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables */
+    :root {
+      --color-lime-spark: #d2e823;
+      --color-linen-canvas: #f3f3f1;
+      --color-white-plate: #ffffff;
+      --color-ink-black: #000000;
+      --font-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-linen-canvas);
+      font-family: var(--font-primary);
+      color: var(--color-ink-black);
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    /* Admin specific styles */
+    .admin-top-bar {
+      background: #fff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .admin-top-bar h1 {
+      font-size: 20px;
+      font-weight: 800;
+    }
+    .save-btn {
+      background: var(--color-ink-black);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .save-btn:hover { background: #333; }
+    
+    [contenteditable="true"] {
+      outline: 2px dashed rgba(0,0,0,0.2);
+      outline-offset: 4px;
+      min-height: 1em;
+      transition: outline 0.2s;
+    }
+    [contenteditable="true"]:focus {
+      outline: 2px solid var(--color-lime-spark);
+      background: rgba(255,255,255,0.5);
+    }
+    
+    .editable-img-wrapper {
+      position: relative;
+      cursor: pointer;
+      display: block;
+    }
+    .editable-img-wrapper::after {
+      content: '\f03e Change Image';
+      font-family: 'Font Awesome 5 Free', 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-size: 16px;
+    }
+    .editable-img-wrapper:hover::after {
+      opacity: 1;
+    }
+    
+    /* Product Details CSS (Copied from product_application.html) */
+    .product-details-container { max-width: 1200px; margin: 60px auto; padding: 0 24px; display: flex; flex-direction: column; gap: 80px; }
+    .section-title { font-size: clamp(28px, 4vw, 40px); font-weight: 800; color: var(--color-ink-black); margin-bottom: 32px; text-align: center; position: relative; }
+    .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--color-lime-spark); margin: 12px auto 0; border-radius: 4px; }
+    
+    /* Overview */
+    .overview-grid { display: grid; gap: 32px; background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    @media (min-width: 768px) { .overview-grid { grid-template-columns: 1fr 2fr; } }
+    .overview-meta p { margin-bottom: 12px; font-weight: 600; color: #333;}
+    .overview-meta span { color: #888; font-weight: 500; display: block; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;}
+    .overview-tagline { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 16px; line-height: 1.3;}
+    .overview-desc { font-size: 16px; color: #555; line-height: 1.7; }
+
+    /* Features */
+    .features-grid { display: grid; gap: 24px; }
+    @media (min-width: 768px) { .features-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); } }
+    .feature-card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.04); display: flex; flex-direction: column; }
+    .feature-img { width: 100%; height: 200px; object-fit: cover; background: #f0f0f0; }
+    .feature-content { padding: 32px 24px; flex-grow: 1; display:flex; flex-direction:column; justify-content:center;}
+    .feature-title { font-size: 20px; font-weight: 800; margin-bottom: 12px; color: #111; display:flex; align-items:center;}
+    .feature-text { font-size: 15px; color: #666; line-height: 1.6; margin:0;}
+
+    /* How to Use */
+    .how-to-use { display: flex; flex-direction: column; gap: 40px; }
+    .phase-card { display: flex; flex-direction: column; background: #fff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+    @media (min-width: 768px) { .phase-card { flex-direction: row; } .phase-card:nth-child(even) { flex-direction: row-reverse; } }
+    .phase-img { width: 100%; height: 300px; object-fit: cover; }
+    @media (min-width: 768px) { .phase-img { width: 50%; height: auto; min-height: 400px; } }
+    .phase-content { padding: 40px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .phase-title { font-size: 24px; font-weight: 800; margin-bottom: 24px; color: var(--color-ink-black); }
+    .step-item { margin-bottom: 20px; padding-left: 20px; border-left: 3px solid var(--color-lime-spark); }
+    .step-title { font-weight: 800; color: #111; margin-bottom: 6px; font-size: 18px;}
+    .step-desc { font-size: 15px; color: #555; line-height: 1.6; }
+
+    /* Specs Table */
+    .specs-wrapper { background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow-x: auto; }
+    .specs-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .specs-table th, .specs-table td { padding: 16px 20px; border-bottom: 1px solid #eee; }
+    .specs-table th { font-weight: 800; color: #111; width: 40%; font-size: 16px;}
+    .specs-table td { color: #555; font-size: 15px; font-weight: 500;}
+    .specs-table tr:last-child th, .specs-table tr:last-child td { border-bottom: none; }
+
+    /* Warranty */
+    .warranty-box { background: linear-gradient(135deg, #111, #222); color: #fff; border-radius: 24px; padding: 60px 40px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+    .warranty-title { font-size: 28px; font-weight: 800; margin-bottom: 16px; color: var(--color-lime-spark); }
+    .warranty-desc { font-size: 16px; opacity: 0.9; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+    .icon-modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
+      display: none; align-items: center; justify-content: center;
+    }
+    .icon-modal-content {
+      background: #fff; width: 90%; max-width: 600px; border-radius: 16px;
+      padding: 24px; max-height: 80vh; overflow-y: auto; color: #000;
+    }
+    .icon-modal-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 16px; margin-top: 16px;
+    }
+    .icon-modal-item {
+      cursor: pointer; text-align: center; padding: 12px; border: 1px solid #eee; border-radius: 8px; transition: 0.2s;
+    }
+    .icon-modal-item:hover { background: #f9f9f9; border-color: var(--color-lime-spark); }
+    .icon-modal-item img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 8px; }
+    .warranty-icons-container {
+      margin-top: 32px; display: flex; gap: 16px; justify-content: center; align-items: center; flex-wrap: wrap;
+    }
+    .w-icon-badge {
+      position: relative; width: 50px; height: 50px; border-radius: 8px; overflow: hidden; background: #fff; padding: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .w-icon-badge img { width: 100%; height: 100%; object-fit: contain; }
+    .w-icon-del {
+      position: absolute; top: 0px; right: 0px; background: red; color: #fff; border-radius: 50%;
+      width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .add-icon-btn {
+      width: 50px; height: 50px; border-radius: 8px; border: 2px dashed rgba(0,0,0,0.2); display: flex;
+      align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; color: rgba(0,0,0,0.5); font-size: 16px; background: #fff;
+    }
+    .add-icon-btn:hover { border-color: rgba(0,0,0,0.5); color: #000; }
+    
+    .feature-card { position: relative; }
+    .delete-feature-btn {
+      position: absolute; top: -10px; right: -10px; background: red; color: #fff; border: none; border-radius: 50%;
+      width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .add-feature-card {
+      display: flex; align-items: center; justify-content: center; flex-direction: column; cursor: pointer;
+      border: 2px dashed #ccc; border-radius: 16px; min-height: 200px; color: #999; transition: 0.2s;
+    }
+    .add-feature-card:hover { border-color: var(--color-lime-spark); color: #000; background: #fff; }
+    
+    .delete-spec-btn {
+      background: none; border: none; color: red; cursor: pointer; padding: 8px; font-size: 16px; transition: 0.2s;
+    }
+    .delete-spec-btn:hover { transform: scale(1.2); }
+    .add-spec-btn {
+      background: rgba(0,0,0,0.05); border: 2px dashed rgba(0,0,0,0.2); border-radius: 8px; padding: 12px;
+      text-align: center; margin-top: 16px; cursor: pointer; color: rgba(0,0,0,0.6); font-weight: 600; transition: 0.2s;
+    }
+    .add-spec-btn:hover { border-color: #000; color: #000; background: #fff; }
+  </style>
+</head>
+<body>
+  
+  <div class="icon-modal-overlay" id="iconModal">
+    <div class="icon-modal-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h2>Select Icon</h2>
+        <button onclick="closeIconModal()" style="background:none;border:none;font-size:24px;cursor:pointer;">&times;</button>
+      </div>
+      <div class="icon-modal-grid" id="iconModalGrid">Loading...</div>
+    </div>
+  </div>
+
+  <div class="admin-top-bar">
+    <h1><a href="admin_products_of_the_year.html" style="color:#000;text-decoration:none;"><i class="fas fa-arrow-left"></i></a> &nbsp; Edit Product Page Data</h1>
+    <button class="save-btn" onclick="saveChanges()" id="saveBtn"><i class="fas fa-save"></i> Save Changes</button>
+  </div>
+
+  <main class="product-details-container">
+    
+    <!-- 1. Product Overview -->
+    <section>
+      <h2 class="section-title">Product Overview</h2>
+      <div class="overview-grid">
+        <div class="overview-meta">
+          <p><span>Product Name</span><span id="edit-overview-name" contenteditable="true">Nanco Paints PU Hybrid Advanced Emulsion</span></p>
+          <p><span>Category</span><span id="edit-overview-cat" contenteditable="true">Exterior & Interior Premium Wall Protection</span></p>
+        </div>
+        <div>
+          <h3 class="overview-tagline" id="edit-overview-tagline" contenteditable="true">Ultimate Protection for Concrete and Masonry Foundations</h3>
+          <p class="overview-desc" id="edit-overview-desc" contenteditable="true">Engineered with cutting-edge PU Hybrid Technologies, Nanco Paints offers an elite, high-performance emulsion coat designed to shield your home's exterior walls and concrete foundations. Formulated to withstand extreme weather, it bridges hairline cracks while delivering a pristine, ultra-white finish that lasts for years.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Key Product Features -->
+    <section>
+      <h2 class="section-title">Key Product Features</h2>
+      <div class="features-grid" id="features-grid-container">
+        <!-- Javascript will inject editable cards here -->
+      </div>
+    </section>
+
+    <!-- 3. How to Use -->
+    <section>
+      <h2 class="section-title">Application Guidelines</h2>
+      <div class="how-to-use" id="phases-container">
+        <!-- Javascript will inject editable phases here -->
+      </div>
+    </section>
+
+    <!-- 4. Technical Specifications -->
+    <section>
+      <h2 class="section-title">Technical Specifications</h2>
+      <div class="specs-wrapper">
+        <table class="specs-table">
+          <tbody id="specs-tbody">
+            <!-- Javascript will inject specs here -->
+          </tbody>
+        </table>
+        <div class="add-spec-btn" onclick="addSpec()">+ Add Specification</div>
+      </div>
+    </section>
+
+    <!-- 5. Warranty & Certification -->
+    <section>
+      <div class="warranty-box">
+        <h3 class="warranty-title"><i class="fas fa-certificate" style="margin-right:12px;"></i> <span id="edit-warranty-title" contenteditable="true">Warranty & Certification</span></h3>
+        <p class="warranty-desc" id="edit-warranty-desc" contenteditable="true">Nanco Paints PU Hybrid Advanced Emulsion comes with a comprehensive performance warranty when applied according to the specified guidelines. Certified ISO 9001-2015 for uncompromised quality standards.</p>
+        <div class="warranty-icons-container" id="warrantyIconsContainer"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const coyId = urlParams.get('coy_id');
+    const API_BASE_URL = 'http://127.0.0.1:5000';
+
+    let pageData = {
+        warranty_icons: [],
+        features: [
+            {icon: 'fas fa-shield-alt', title: 'Alkali & Dust Shield', text: 'Advanced formulation blocks structural efflorescence and actively repels surface dust.', img_url: 'assets/alkali_dust_shield_1784208072318.png'},
+            {icon: 'fas fa-paint-roller', title: 'Ultra-White Finish', text: 'High-opacity polymers deliver an exceptionally brilliant, non-yellowing white finish.', img_url: 'assets/ultra_white_finish_1784208084792.png'},
+            {icon: 'fas fa-compress-arrows-alt', title: 'Elastomeric Properties', text: 'Highly flexible paint film that stretches to accommodate micro-movements in concrete foundations, preventing surface cracking.', img_url: 'assets/elastomeric_paint_1784208096186.png'},
+            {icon: 'fas fa-sun', title: 'UV & Weather Resistance', text: 'Superior anti-rain formula coupled with UV-blocking tech ensures colors do not fade under harsh sun.', img_url: 'assets/uv_protection_1784207482008.png'},
+            {icon: 'fas fa-leaf', title: 'Eco-Friendly Formulation', text: 'Ultra-low VOC emissions and 100% lead-free, ensuring safety for both applicators and the environment.', img_url: 'assets/eco_friendly_1784207492155.png'}
+        ],
+        application: [
+            {title: 'Phase 1: Preparation', img_url: 'assets/wall_prep_1784207513168.png', steps: [
+                {title: 'Clean', desc: 'Ensure the target concrete or plaster surface is thoroughly dry, clean, and free from any efflorescence, dirt, or grease.'},
+                {title: 'Repair', desc: 'Fill any major surface dents or structural cracks using a heavy-duty exterior wall filler.'},
+                {title: 'Stir', desc: 'Stir well before use to perfectly blend the polyurethane-hybrid binders and pigments.'}
+            ]},
+            {title: 'Phase 2: Application', img_url: 'assets/paint_application_1784207501706.png', steps: [
+                {title: 'Dilution', desc: 'For raw, highly porous concrete foundations, thin the first coat with up to 10% clean water. For regular surfaces, direct application is recommended.'},
+                {title: 'Tools', desc: 'Apply using a high-quality synthetic roller or brush.'},
+                {title: 'Coats', desc: 'Apply 2 coats for optimum protection, maintaining a 2 to 4-hour drying interval between coats.'}
+            ]}
+        ],
+        specs: [
+            {label: 'Available Packaging', value: '1 Liter / 4 Liters / 10 Liters / 20 Liters'},
+            {label: 'Coverage Area', value: '10 - 12 m² per liter per coat (varies by surface porosity)'},
+            {label: 'Touch Dry Time', value: '30 to 45 minutes'},
+            {label: 'Recoating Window', value: '2 to 4 hours'},
+            {label: 'VOC Content', value: '< 15 grams/liter (Ultra-Low VOC)'},
+            {label: 'pH Level', value: '8.5 - 9.5 (Optimized for Alkali Resistance)'}
+        ]
+    };
+    
+    // File inputs for images
+    let featureFiles = {};
+    let phaseFiles = {};
+
+    async function init() {
+        if (!coyId) {
+            alert('No Product ID specified!');
+            return;
+        }
+        
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/coy-page-details/${coyId}`);
+            const data = await res.json();
+            if (data && data.page_data && Object.keys(data.page_data).length > 0) {
+                const p = data.page_data;
+                document.getElementById('edit-overview-name').innerText = p.overview.product_name || '';
+                document.getElementById('edit-overview-cat').innerText = p.overview.category || '';
+                document.getElementById('edit-overview-tagline').innerText = p.overview.tagline || '';
+                document.getElementById('edit-overview-desc').innerText = p.overview.description || '';
+                
+                document.getElementById('edit-warranty-title').innerText = p.warranty.title || '';
+                document.getElementById('edit-warranty-desc').innerText = p.warranty.desc || '';
+                
+                pageData.features = p.features || pageData.features;
+                pageData.application = p.application || pageData.application;
+                pageData.specs = p.specs || pageData.specs;
+                pageData.warranty_icons = p.warranty_icons || [];
+            }
+        } catch (e) { console.error(e); }
+        
+        renderArrays();
+    }
+    
+    async function openIconModal() {
+        document.getElementById('iconModal').style.display = 'flex';
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/icons`);
+            const data = await res.json();
+            const grid = document.getElementById('iconModalGrid');
+            grid.innerHTML = '';
+            if(data.length === 0) {
+                grid.innerHTML = 'No icons found in database.';
+                return;
+            }
+            data.forEach(icon => {
+                grid.innerHTML += `
+                    <div class="icon-modal-item" onclick="selectIcon('${icon.image_url}', '${icon.name}')">
+                        <img src="${icon.image_url}" alt="${icon.name}">
+                        <div style="font-size:12px;font-weight:600;word-wrap:break-word;">${icon.name}</div>
+                    </div>
+                `;
+            });
+        } catch (e) {
+            console.error(e);
+            document.getElementById('iconModalGrid').innerHTML = 'Error loading icons.';
+        }
+    }
+    
+    function closeIconModal() { document.getElementById('iconModal').style.display = 'none'; }
+    
+    function selectIcon(url, name) {
+        pageData.warranty_icons.push({ img_url: url, name: name });
+        closeIconModal();
+        renderArrays();
+    }
+    
+    function removeWarrantyIcon(idx) {
+        pageData.warranty_icons.splice(idx, 1);
+        renderArrays();
+    }
+
+    function syncFeaturesDOM() {
+        pageData.features.forEach((feat, idx) => {
+            const iconEl = document.getElementById(`feat_icon_${idx}`);
+            const titleEl = document.getElementById(`feat_title_${idx}`);
+            const textEl = document.getElementById(`feat_text_${idx}`);
+            if(iconEl) feat.icon = iconEl.className;
+            if(titleEl) feat.title = titleEl.innerText;
+            if(textEl) feat.text = textEl.innerText;
+        });
+    }
+
+    function removeFeature(idx) {
+        if(!confirm('Are you sure you want to remove this feature?')) return;
+        syncFeaturesDOM();
+        pageData.features.splice(idx, 1);
+        renderArrays();
+    }
+    
+    function addFeature() {
+        syncFeaturesDOM();
+        pageData.features.push({
+            icon: 'fas fa-star',
+            title: 'New Feature',
+            text: 'Describe the new feature here.',
+            img_url: 'assets/catelog.jpg'
+        });
+        renderArrays();
+    }
+
+    function syncSpecsDOM() {
+        pageData.specs.forEach((spec, idx) => {
+            const labelEl = document.getElementById(`spec_${idx}_label`);
+            const valueEl = document.getElementById(`spec_${idx}_value`);
+            if(labelEl) spec.label = labelEl.innerText;
+            if(valueEl) spec.value = valueEl.innerText;
+        });
+    }
+
+    function removeSpec(idx) {
+        if(!confirm('Are you sure you want to remove this specification?')) return;
+        syncSpecsDOM();
+        pageData.specs.splice(idx, 1);
+        renderArrays();
+    }
+    
+    function addSpec() {
+        syncSpecsDOM();
+        pageData.specs.push({
+            label: 'New Spec',
+            value: 'Detail here'
+        });
+        renderArrays();
+    }
+
+    function renderArrays() {
+        // Render Warranty Icons
+        const wContainer = document.getElementById('warrantyIconsContainer');
+        if (wContainer) {
+            wContainer.innerHTML = '';
+            pageData.warranty_icons.forEach((icon, idx) => {
+                wContainer.innerHTML += `
+                    <div class="w-icon-badge">
+                        <img src="${icon.img_url}" alt="${icon.name}">
+                        <div class="w-icon-del" onclick="removeWarrantyIcon(${idx})"><i class="fas fa-times"></i></div>
+                    </div>
+                `;
+            });
+            wContainer.innerHTML += `<div class="add-icon-btn" onclick="openIconModal()"><i class="fas fa-plus"></i></div>`;
+        }
+
+        // Render Features
+        const featContainer = document.getElementById('features-grid-container');
+        featContainer.innerHTML = '';
+        pageData.features.forEach((feat, idx) => {
+            featContainer.innerHTML += `
+                <div class="feature-card">
+                  <button class="delete-feature-btn" onclick="removeFeature(${idx})"><i class="fas fa-times"></i></button>
+                  <label class="editable-img-wrapper">
+                      <img src="${feat.img_url}" id="preview_feat_${idx}" class="feature-img" alt="">
+                      <input type="file" style="display:none;" accept="image/*" onchange="updateFeatureImage(this, ${idx})">
+                  </label>
+                  <div class="feature-content">
+                    <h3 class="feature-title"><i class="${feat.icon}" style="color:var(--color-lime-spark); margin-right:12px;" contenteditable="true" id="feat_icon_${idx}"></i> <span contenteditable="true" id="feat_title_${idx}">${feat.title}</span></h3>
+                    <p class="feature-text" contenteditable="true" id="feat_text_${idx}">${feat.text}</p>
+                  </div>
+                </div>
+            `;
+        });
+        featContainer.innerHTML += `
+            <div class="add-feature-card" onclick="addFeature()">
+                <i class="fas fa-plus" style="font-size: 32px; margin-bottom: 12px;"></i>
+                <h4>Add Feature</h4>
+            </div>
+        `;
+        
+        // Render Phases
+        const phaseContainer = document.getElementById('phases-container');
+        phaseContainer.innerHTML = '';
+        pageData.application.forEach((phase, idx) => {
+            let stepsHtml = '';
+            phase.steps.forEach((step, sidx) => {
+                stepsHtml += `
+                    <div class="step-item">
+                      <div class="step-title" contenteditable="true" id="phase_${idx}_step_${sidx}_title">${step.title}</div>
+                      <div class="step-desc" contenteditable="true" id="phase_${idx}_step_${sidx}_desc">${step.desc}</div>
+                    </div>
+                `;
+            });
+            
+            phaseContainer.innerHTML += `
+                <div class="phase-card">
+                  <label class="editable-img-wrapper" style="width:100%; max-width:50%;">
+                      <img src="${phase.img_url}" id="preview_phase_${idx}" class="phase-img" alt="" style="width:100%;">
+                      <input type="file" style="display:none;" accept="image/*" onchange="updatePhaseImage(this, ${idx})">
+                  </label>
+                  <div class="phase-content">
+                    <h3 class="phase-title" contenteditable="true" id="phase_${idx}_title">${phase.title}</h3>
+                    ${stepsHtml}
+                  </div>
+                </div>
+            `;
+        });
+        
+        // Render Specs
+        const specContainer = document.getElementById('specs-tbody');
+        specContainer.innerHTML = '';
+        pageData.specs.forEach((spec, idx) => {
+            specContainer.innerHTML += `
+                <tr style="position:relative;">
+                  <th contenteditable="true" id="spec_${idx}_label">${spec.label}</th>
+                  <td contenteditable="true" id="spec_${idx}_value">${spec.value}</td>
+                  <td style="width: 40px; text-align: center; vertical-align: middle; padding: 0;">
+                    <button class="delete-spec-btn" onclick="removeSpec(${idx})" title="Remove">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+            `;
+        });
+    }
+    
+    function updateFeatureImage(input, idx) {
+        if(input.files && input.files[0]) {
+            featureFiles[idx] = input.files[0];
+            document.getElementById(`preview_feat_${idx}`).src = URL.createObjectURL(input.files[0]);
+        }
+    }
+    
+    function updatePhaseImage(input, idx) {
+        if(input.files && input.files[0]) {
+            phaseFiles[idx] = input.files[0];
+            document.getElementById(`preview_phase_${idx}`).src = URL.createObjectURL(input.files[0]);
+        }
+    }
+    
+    async function saveChanges() {
+        const btn = document.getElementById('saveBtn');
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        
+        // Gather Overview
+        const overview = {
+            product_name: document.getElementById('edit-overview-name').innerText,
+            category: document.getElementById('edit-overview-cat').innerText,
+            tagline: document.getElementById('edit-overview-tagline').innerText,
+            description: document.getElementById('edit-overview-desc').innerText
+        };
+        
+        // Gather Warranty
+        const warranty = {
+            title: document.getElementById('edit-warranty-title').innerText,
+            desc: document.getElementById('edit-warranty-desc').innerText
+        };
+        
+        // Gather Features
+        const features = pageData.features.map((feat, idx) => ({
+            icon: document.getElementById(`feat_icon_${idx}`).className,
+            title: document.getElementById(`feat_title_${idx}`).innerText,
+            text: document.getElementById(`feat_text_${idx}`).innerText,
+            img_url: feat.img_url
+        }));
+        
+        // Gather Phases
+        const application = pageData.application.map((phase, idx) => {
+            const steps = phase.steps.map((step, sidx) => ({
+                title: document.getElementById(`phase_${idx}_step_${sidx}_title`).innerText,
+                desc: document.getElementById(`phase_${idx}_step_${sidx}_desc`).innerText
+            }));
+            return {
+                title: document.getElementById(`phase_${idx}_title`).innerText,
+                img_url: phase.img_url,
+                steps: steps
+            };
+        });
+        
+        // Gather Specs
+        const specs = pageData.specs.map((spec, idx) => ({
+            label: document.getElementById(`spec_${idx}_label`).innerText,
+            value: document.getElementById(`spec_${idx}_value`).innerText
+        }));
+        
+        const finalData = {
+            overview,
+            features,
+            application,
+            specs,
+            warranty,
+            warranty_icons: pageData.warranty_icons
+        };
+        
+        const formData = new FormData();
+        formData.append('page_data', JSON.stringify(finalData));
+        
+        Object.keys(featureFiles).forEach(idx => {
+            formData.append(`feature_img_${idx}`, featureFiles[idx]);
+        });
+        
+        Object.keys(phaseFiles).forEach(idx => {
+            formData.append(`phase_img_${idx}`, phaseFiles[idx]);
+        });
+        
+        try {
+            const token = localStorage.getItem('adminToken') || 'super-secret-nanco-token';
+            const res = await fetch(`${API_BASE_URL}/api/coy-page-details/${coyId}`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: formData
+            });
+            if(res.ok) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+                setTimeout(() => btn.innerHTML = '<i class="fas fa-save"></i> Save Changes', 2000);
+            } else {
+                alert('Error saving data');
+                btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Network error');
+            btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

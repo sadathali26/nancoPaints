@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Product Info &amp; Videos | Nanco Paints</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <meta name="description" content="Explore Nanco Paints products – full gallery of photos and videos, specs, and technical data.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ── CSS VARIABLES ── */
+    :root {
+      --color-lime-spark: #d2e823;
+      --color-cobalt-band: #2665d6;
+      --color-maroon-plate: #780016;
+      --color-cobalt-deep: #061492;
+      --color-forest-ink: #254f1a;
+      --color-mustard-pop: #d6a337;
+      --color-linen-canvas: #f3f3f1;
+      --color-white-plate: #ffffff;
+      --color-ink-black: #000000;
+      --color-sage-mute: #676b5f;
+      --radius-cards: 28px;
+      --radius-buttons: 99px;
+      --font-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+      --nav-h: 60px;
+      --safe-area-top: env(safe-area-inset-top, 0px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-linen-canvas);
+      font-family: var(--font-primary);
+      color: var(--color-ink-black);
+      overflow-x: hidden;
+    }
+
+    /* ════════════════════════════════════
+       NAV BAR — floating pill (matches index.html)
+    ════════════════════════════════════ */
+    .pinfo-nav {
+      position: sticky;
+      top: 12px;
+      z-index: 200;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+      pointer-events: none;
+    }
+
+    .pinfo-nav-inner {
+      background: var(--color-white-plate);
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px 8px 12px;
+      width: 100%;
+      max-width: 1200px;
+      gap: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+      pointer-events: all;
+      min-height: 60px;
+    }
+
+    /* Logo */
+    .pinfo-nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .pinfo-nav-logo img {
+      height: 36px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Product name (right side) */
+    .pinfo-nav-product {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--color-ink-black);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 55vw;
+    }
+
+    @media (max-width: 480px) {
+      .pinfo-nav { top: 8px; padding: 0 10px; }
+      .pinfo-nav-inner { padding: 6px 14px 6px 10px; gap: 10px; min-height: 50px; }
+      .pinfo-nav-logo img { height: 28px; }
+      .pinfo-nav-product { font-size: 13px; max-width: 45vw; }
+    }
+
+    /* ════════════════════════════════════
+       HERO BANNER
+    ════════════════════════════════════ */
+    .pinfo-hero {
+      position: relative;
+      width: 100%;
+      background: var(--color-cobalt-deep);
+      min-height: 420px;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .pinfo-hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.45;
+    }
+
+    .pinfo-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.90) 0%,
+        rgba(0,0,0,0.35) 55%,
+        transparent 100%
+      );
+    }
+
+    .pinfo-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 40px 40px 44px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .pinfo-category-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      color: var(--color-lime-spark);
+      border: none;
+      padding: 0;
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 14px;
+    }
+
+    .pinfo-hero-name {
+      font-size: clamp(30px, 5.5vw, 68px);
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -2px;
+      line-height: 1.02;
+      margin-bottom: 10px;
+    }
+
+    .pinfo-hero-desc {
+      font-size: clamp(14px, 1.8vw, 18px);
+      font-weight: 500;
+      color: rgba(255,255,255,0.78);
+      max-width: 560px;
+      line-height: 1.55;
+    }
+
+    /* Stats row */
+    .pinfo-hero-stats {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .pinfo-stat {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      border-radius: 14px;
+      padding: 10px 16px;
+      text-align: center;
+      min-width: 80px;
+    }
+    .pinfo-stat-val {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--color-lime-spark);
+      line-height: 1.1;
+    }
+    .pinfo-stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.65);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+
+    /* ════════════════════════════════════
+       MOBILE REDESIGN OVERRIDES
+    ════════════════════════════════════ */
+    .mobile-control-bar, .mobile-details-overlay { display: none; }
+    
+    @media (max-width: 600px) {
+      body { background: #000; }
+      
+      .pinfo-nav {
+        position: fixed;
+        top: 8px;
+        left: 0;
+        right: 0;
+        width: 100%;
+      }
+
+      /* Screen 1 Redesign */
+      .mobile-screen-1-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 0 0 32px 32px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+      .mobile-screen-1-wrapper.fullscreen {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+        z-index: 10000 !important;
+        background: #000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        animation: fullscreenZoomIn 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) forwards !important;
+      }
+      .mobile-screen-1-wrapper.fullscreen-closing {
+        animation: fullscreenZoomOut 0.2s ease forwards !important;
+      }
+      @keyframes fullscreenZoomIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+      }
+      @keyframes fullscreenZoomOut {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 0; transform: scale(0.98); }
+      }
+      .mobile-screen-1-wrapper.fullscreen .pinfo-hero {
+        background: transparent !important;
+      }
+      .mobile-screen-1-wrapper.fullscreen #banner-fullscreen-close {
+        display: flex !important;
+      }
+      .mobile-screen-1-wrapper.fullscreen .pinfo-hero-bg,
+      .mobile-screen-1-wrapper.fullscreen .featured-banner-img {
+        object-fit: contain !important;
+        padding: 60px 0; /* add padding so close button isn't covered */
+      }
+      .mobile-screen-1-wrapper.fullscreen .featured-slider-container {
+        background: transparent !important;
+      }
+      .pinfo-hero { 
+        position: absolute;
+        inset: 0;
+        min-height: 0; 
+        border-radius: 0; 
+      }
+      .pinfo-hero-overlay {
+        background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+        z-index: 2; /* keep over slider for readability */
+      }
+      
+      /* Dynamic height expansion for active tabs */
+      .mobile-screen-1-wrapper[data-mobile-tab="instructions"],
+      .mobile-screen-1-wrapper[data-mobile-tab="details"] {
+        aspect-ratio: auto;
+      }
+
+      /* Hide banners when not active */
+      .mobile-screen-1-wrapper[data-mobile-tab="details"] #featured-banner-section,
+      .mobile-screen-1-wrapper[data-mobile-tab="instructions"] #featured-banner-section {
+        display: none !important;
+      }
+      .mobile-screen-1-wrapper[data-mobile-tab="banners"] #featured-banner-section {
+        display: block !important;
+      }
+      
+      /* Instructions section behavior */
+      .mobile-screen-1-wrapper[data-mobile-tab="instructions"] #instructions-section {
+        display: block !important;
+        position: relative;
+        inset: auto;
+        min-height: 50vh;
+      }
+      .mobile-screen-1-wrapper[data-mobile-tab="details"] #instructions-section,
+      .mobile-screen-1-wrapper[data-mobile-tab="banners"] #instructions-section {
+        display: none !important;
+      }
+
+      /* Details overlay behavior */
+      .mobile-screen-1-wrapper[data-mobile-tab="details"] .pinfo-hero {
+        position: relative;
+      }
+      .mobile-screen-1-wrapper[data-mobile-tab="details"] .mobile-details-overlay {
+        position: relative;
+        inset: auto;
+        min-height: 50vh;
+        padding-top: 100px; /* clear space for nav pill */
+      }
+
+      /* Overlay slider on mobile hero */
+      #featured-banner-section {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        padding: 0;
+      }
+      #featured-banner-section .featured-inner {
+        padding: 0;
+        height: 100%;
+        max-width: 100%;
+      }
+      #featured-banner-section .featured-header {
+        display: none; /* Hide header text and arrows on mobile hero */
+      }
+      #featured-banner-section .featured-slider-container {
+        border-radius: 0 0 32px 32px;
+        height: 100%;
+        aspect-ratio: auto;
+      }
+      #featured-banner-section .featured-dots {
+        bottom: 24px; /* push up above rounded corners */
+      }
+      
+      /* Hide desktop elements on mobile */
+      .pinfo-hero-content { display: none; }
+      
+      /* Mobile Control Bar */
+      .mobile-control-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: #000;
+      }
+      .mob-ctrl-btn {
+        background: rgba(255,255,255,0.15);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        padding: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        flex: 1;
+        text-align: center;
+        transition: background 0.2s;
+      }
+      .mob-ctrl-btn.active {
+        background: rgba(255,255,255,0.3);
+      }
+      .mob-ctrl-icon {
+        background: #e2e2e0;
+        color: #000;
+        border: none;
+        border-radius: 12px;
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      
+      /* Screen 2 wrapper (Gallery) */
+      .pinfo-main {
+        background: var(--color-linen-canvas);
+        border-radius: 32px 32px 0 0;
+        min-height: 50vh;
+        margin-top: 0;
+        padding-top: 24px;
+        display: block !important; /* Always show gallery on mobile */
+      }
+      
+      /* Instructions Overlay in Screen 1 */
+      #instructions-section {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        background: rgba(0,0,0,0.75);
+        color: #fff;
+        padding: 80px 24px 24px 24px; /* padding top for nav */
+        overflow-y: auto;
+        display: none; /* toggled via JS */
+      }
+      #instructions-section .featured-inner { padding: 0; }
+      #instructions-section h2 { color: #fff; margin-bottom: 12px; }
+      #instructions-section > div > div {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+      }
+      #product-instructions-text { color: #fff !important; font-size: 14px; }
+      
+      /* Details Overlay */
+      .mobile-details-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.75);
+        z-index: 10;
+        border-radius: 0 0 32px 32px;
+        display: none;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 32px 24px;
+      }
+      .mobile-details-overlay.active { display: flex; }
+      .mdo-inner { color: #fff; }
+    }
+
+    /* ════════════════════════════════════
+       FEATURED BANNER CAROUSEL
+    ════════════════════════════════════ */
+    .featured-section {
+      background: transparent;
+      padding: 0;
+    }
+    .featured-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 20px 0;
+    }
+    .featured-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .featured-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+    .featured-controls { display: flex; gap: 8px; }
+    .feat-control-btn {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      transition: background 0.18s;
+    }
+    .feat-control-btn:hover { background: var(--color-lime-spark); }
+
+    .featured-slider-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      aspect-ratio: 16/5;
+      background: #ddd;
+    }
+    .featured-slider-track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .featured-slide {
+      min-width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+    }
+    .featured-banner-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .featured-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+    .feat-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .feat-dot.active {
+      background: #fff;
+      transform: scale(1.3);
+    }
+
+    @media (max-width: 600px) {
+      .featured-slider-container { aspect-ratio: 16/7; border-radius: 14px; }
+      .featured-inner { padding: 16px 14px 0; }
+    }
+
+    /* ════════════════════════════════════
+       MAIN LAYOUT
+    ════════════════════════════════════ */
+    .pinfo-main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+    }
+
+    /* ════════════════════════════════════
+       SECTION HEADER
+    ════════════════════════════════════ */
+    .pinfo-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 12px;
+    }
+    .pinfo-section-title {
+      font-size: clamp(20px, 3vw, 28px);
+      font-weight: 900;
+      letter-spacing: -0.4px;
+    }
+    .pinfo-section-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-sage-mute);
+      border: 1.5px solid currentColor;
+      border-radius: 99px;
+      padding: 4px 11px;
+      white-space: nowrap;
+    }
+
+    /* ════════════════════════════════════
+       GALLERY FILTERS
+    ════════════════════════════════════ */
+    .pinfo-gallery-section { margin-bottom: 48px; }
+
+    .pinfo-gallery-filters {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding-bottom: 2px;
+    }
+    .pinfo-gallery-filters::-webkit-scrollbar { display: none; }
+
+    .pinfo-filter-btn {
+      font-size: 13px;
+      font-weight: 700;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      border-radius: 99px;
+      padding: 8px 18px;
+      cursor: pointer;
+      background: transparent;
+      transition: all 0.18s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .pinfo-filter-btn.active,
+    .pinfo-filter-btn:hover {
+      background: var(--color-lime-spark);
+      border-color: var(--color-lime-spark);
+    }
+
+    /* ════════════════════════════════════
+       GALLERY GRID — variable columns
+    ════════════════════════════════════ */
+    :root { --gallery-cols: 4; }
+
+    .pinfo-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--gallery-cols), 1fr);
+      gap: 2px;
+      transition: grid-template-columns 0.25s ease;
+    }
+
+    .pinfo-gallery-item {
+      border: none;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 4/3;
+      cursor: pointer;
+      background: #e8e8e6;
+      transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.22s;
+    }
+    .pinfo-gallery-item:hover {
+      transform: scale(1.025);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+    }
+    .pinfo-gallery-item img,
+    .pinfo-gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Badge hidden — replaced by play icon on videos */
+    .pinfo-gallery-type-badge { display: none; }
+
+    /* Top-left play icon for video items only */
+    .pinfo-play-icon {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 26px;
+      height: 26px;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 9px;
+      pointer-events: none;
+      transition: background 0.18s;
+    }
+    .pinfo-gallery-item:hover .pinfo-play-icon {
+      background: rgba(0,0,0,0.82);
+    }
+
+    .pinfo-gallery-caption { display: none; }
+
+     /* ── Zoom controls ── */
+    .pinfo-zoom-controls {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+    .pinfo-zoom-btn {
+      width: 24px;
+      height: 24px;
+      border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      transition: background 0.18s;
+      color: var(--color-ink-black);
+    }
+    .pinfo-zoom-btn:hover:not(:disabled) { background: var(--color-lime-spark); }
+    .pinfo-zoom-btn:disabled { opacity: 0.3; cursor: default; }
+    .pinfo-zoom-count {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--color-sage-mute);
+      min-width: 18px;
+      text-align: center;
+      user-select: none;
+    }
+
+    /* Mobile: cap at 2 cols max */
+    @media (max-width: 600px) {
+      :root { --gallery-cols: 2; }
+      .pinfo-gallery-grid { gap: 2px; }
+      .pinfo-gallery-item { border-radius: 2px; aspect-ratio: 4/3; }
+    }
+    @media (max-width: 360px) {
+      :root { --gallery-cols: 1; }
+    }
+
+    /* ════════════════════════════════════
+       EMPTY STATE
+    ════════════════════════════════════ */
+    .pinfo-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 20px;
+      color: var(--color-sage-mute);
+    }
+    .pinfo-empty i {
+      font-size: 44px;
+      opacity: 0.28;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .pinfo-empty p { font-weight: 700; font-size: 15px; }
+    .pinfo-empty small { font-size: 12px; margin-top: 5px; display: block; }
+
+    /* ════════════════════════════════════
+       LIGHTBOX — true fullscreen
+    ════════════════════════════════════ */
+    .pinfo-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000;
+      align-items: center;
+      justify-content: center;
+    }
+    .pinfo-lightbox.open { display: flex; }
+
+    /* The inner wrapper fills the whole screen */
+    .pinfo-lightbox-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Images: fill screen, preserve ratio */
+    .pinfo-lightbox-inner img {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      border-radius: 0;
+      border: none;
+    }
+
+    /* Native video: fill screen */
+    .pinfo-lightbox-inner video {
+      max-width: 100vw;
+      max-height: 100vh;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      border-radius: 0;
+      border: none;
+    }
+
+    /* Embed iframes (YouTube / Instagram): fill screen */
+    .pinfo-lightbox-inner iframe {
+      width: 100vw;
+      height: 100vh;
+      border: none;
+      display: block;
+    }
+
+    /* Close / back button — top-left */
+    .pinfo-lightbox-close {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      z-index: 10001;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      border: 1.5px solid rgba(255,255,255,0.2);
+      color: #fff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.18s;
+    }
+    .pinfo-lightbox-close:hover { background: rgba(255,255,255,0.18); }
+
+    /* Nav arrows — sides (desktop only) */
+    .pinfo-lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10001;
+      background: rgba(255,255,255,0.1);
+      border: 1.5px solid rgba(255,255,255,0.18);
+      color: #fff;
+      border-radius: 50%;
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background 0.18s;
+      backdrop-filter: blur(6px);
+    }
+    .pinfo-lightbox-nav:hover { background: rgba(255,255,255,0.28); }
+    .pinfo-lb-prev { left: 14px; }
+    .pinfo-lb-next { right: 14px; }
+
+    /* Hide arrows on mobile — use swipe instead */
+    @media (max-width: 600px) {
+      .pinfo-lightbox-nav { display: none; }
+    }
+
+    /* ════════════════════════════════════
+       LOADING SKELETON
+    ════════════════════════════════════ */
+    .pinfo-skeleton {
+      background: linear-gradient(90deg, #e2e2e0 25%, #ececea 50%, #e2e2e0 75%);
+      background-size: 200% 100%;
+      animation: skeleton-shimmer 1.4s infinite;
+      border-radius: 18px;
+    }
+    @keyframes skeleton-shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ════════════════════════════════════
+       MOBILE BOTTOM SAFE AREA
+    ════════════════════════════════════ */
+    @media (max-width: 600px) {
+      .pinfo-main { padding: 20px 14px 80px; }
+    }
+
+    /* ════════════════════════════════════
+       SWIPE HINT (mobile only)
+    ════════════════════════════════════ */
+    .swipe-hint {
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .swipe-hint {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--color-sage-mute);
+        margin-bottom: 14px;
+      }
+    }
+
+    /* ════════════════════════════════════
+       MOBILE FLOATING ACTION BUTTON
+    ════════════════════════════════════ */
+    .pinfo-fab-group {
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .pinfo-fab-group {
+        display: flex;
+        position: fixed;
+        bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+        right: 16px;
+        z-index: 150;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-end;
+      }
+      .pinfo-fab {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--color-ink-black);
+        color: #fff;
+        border-radius: 99px;
+        padding: 12px 18px;
+        font-size: 13px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+        text-decoration: none;
+        transition: transform 0.18s, background 0.18s;
+      }
+      .pinfo-fab:hover { transform: scale(1.04); }
+      .pinfo-fab.primary {
+        background: var(--color-lime-spark);
+        color: #000;
+      }
+    }
+
+    /* ════════════════════════════════════
+       HERO SCROLL INDICATOR
+    ════════════════════════════════════ */
+    .pinfo-scroll-indicator {
+      position: absolute;
+      bottom: 16px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 3;
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+    @media (max-width: 600px) {
+      .pinfo-scroll-indicator { display: none; }
+    }
+
+    /* ════════════════════════════════════
+       PULL-TO-REFRESH (visual only)
+    ════════════════════════════════════ */
+    .ptr-spinner {
+      display: none;
+      justify-content: center;
+      padding: 10px 0;
+      color: var(--color-sage-mute);
+      font-size: 13px;
+      gap: 8px;
+      align-items: center;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════
+       NAV BAR — floating pill
+  ══════════════════════════════════ -->
+  <nav class="pinfo-nav" role="navigation" aria-label="Product navigation">
+    <div class="pinfo-nav-inner">
+      <!-- Logo -->
+      <a class="pinfo-nav-logo" href="#" onclick="event.preventDefault(); history.back();" aria-label="Go back">
+        <img src="assets/light-logo.png" alt="Nanco Paints" id="pinfo-nav-logo-img">
+      </a>
+      <!-- Product name (populated by JS) -->
+      <div class="pinfo-nav-product" id="pinfo-nav-title" aria-live="polite">Product Info</div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════
+       HERO BANNER & SLIDER WRAPPER (Screen 1)
+  ══════════════════════════════════ -->
+  <div class="mobile-screen-1-wrapper" data-mobile-tab="banners">
+    <button id="banner-fullscreen-close" aria-label="Close fullscreen" style="display: none; position: absolute; top: 16px; left: 16px; z-index: 10001; background: transparent; border: none; font-size: 24px; color: #fff; cursor: pointer; padding: 10px;">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <div class="pinfo-hero" id="pinfo-hero" role="banner">
+    <img id="pinfo-hero-bg" class="pinfo-hero-bg" src="" alt="" aria-hidden="true">
+    <div class="pinfo-hero-overlay" aria-hidden="true"></div>
+    <div class="pinfo-hero-content">
+      <div class="pinfo-category-tag" aria-label="Product category">
+        <i class="fas fa-paint-roller" aria-hidden="true"></i>
+        <span id="pinfo-category">Interior Paint</span>
+      </div>
+      <h1 class="pinfo-hero-name" id="pinfo-product-name">Loading…</h1>
+      <p class="pinfo-hero-desc" id="pinfo-product-desc">Fetching product details…</p>
+      <div class="pinfo-hero-stats" id="pinfo-stats" role="list" aria-label="Product stats"></div>
+    </div>
+    
+    <!-- Mobile Details Overlay -->
+    <div class="mobile-details-overlay" id="mobile-details-overlay">
+      <div class="mdo-inner">
+        <div class="pinfo-category-tag"><i class="fas fa-paint-roller"></i> <span id="mdo-category">Interior Paint</span></div>
+        <h2 class="pinfo-hero-name" id="mdo-name">Loading…</h2>
+        <p class="pinfo-hero-desc" id="mdo-desc" style="font-size: 13px; margin-bottom: 20px;">Fetching details…</p>
+        <div class="pinfo-hero-stats" id="mdo-stats" style="gap: 6px;"></div>
+      </div>
+    </div>
+    <div class="pinfo-scroll-indicator" aria-hidden="true">
+      <i class="fas fa-chevron-down"></i> Scroll to explore
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       FEATURED PRODUCT BANNER CAROUSEL
+  ══════════════════════════════════ -->
+  <section id="featured-banner-section" aria-labelledby="featured-heading" style="display:none;">
+    <div class="featured-inner">
+      <div class="featured-header">
+        <h2 id="featured-heading">Featured</h2>
+        <div class="featured-controls">
+          <button class="feat-control-btn feat-prev" id="featPrev" aria-label="Previous Slide">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="feat-control-btn feat-next" id="featNext" aria-label="Next Slide">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+      <div class="featured-slider-container" id="featSliderContainer">
+        <div class="featured-slider-track" id="featTrack"></div>
+        <div class="featured-dots" id="featDots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       PRODUCT INSTRUCTIONS
+  ══════════════════════════════════ -->
+  <section id="instructions-section" aria-labelledby="instructions-heading" style="display:none;">
+    <div class="featured-inner">
+      <div class="featured-header">
+        <h2 id="instructions-heading"><i class="fas fa-file-alt" style="color:var(--color-sage-mute); margin-right:8px;"></i>Instructions</h2>
+      </div>
+      <div style="background: #f9f9f9; border-radius: 16px; padding: 24px; border: 1.5px solid rgba(0,0,0,0.08); box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+        <p id="product-instructions-text" style="white-space: pre-wrap; margin: 0; font-size: 15px; color: var(--color-ink-black); line-height: 1.6; font-family: inherit;"></p>
+      </div>
+    </div>
+  </section>
+  
+  </div> <!-- /mobile-screen-1-wrapper -->
+
+  <!-- ══════════════════════════════════
+       MOBILE CONTROL BAR
+  ══════════════════════════════════ -->
+  <div class="mobile-control-bar" id="mobile-control-bar">
+    <button class="mob-ctrl-btn" id="mob-btn-details">Details</button>
+    <button class="mob-ctrl-icon" id="mob-btn-banners"><i class="fas fa-image"></i></button>
+    <button class="mob-ctrl-btn" id="mob-btn-instructions">Instructions</button>
+  </div>
+
+
+
+
+  <!-- ══════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════ -->
+  <main class="pinfo-main" id="pinfo-main">
+
+    <!-- GALLERY -->
+    <section class="pinfo-gallery-section" aria-labelledby="gallery-heading">
+      <div class="pinfo-section-header">
+        <h2 class="pinfo-section-title" id="gallery-heading">Photos &amp; Videos</h2>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <span class="pinfo-section-label" id="pinfo-media-count" aria-live="polite">0 items</span>
+          <!-- Zoom controls -->
+          <div class="pinfo-zoom-controls" aria-label="Adjust grid columns">
+            <button class="pinfo-zoom-btn" id="zoom-out" aria-label="Fewer columns" title="Fewer columns">
+              <i class="fas fa-minus"></i>
+            </button>
+            <span class="pinfo-zoom-count" id="zoom-count" aria-live="polite">4</span>
+            <button class="pinfo-zoom-btn" id="zoom-in" aria-label="More columns" title="More columns">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="pinfo-gallery-filters" role="group" aria-label="Filter media type">
+        <button class="pinfo-filter-btn active" data-filter="all" aria-pressed="true">All</button>
+        <button class="pinfo-filter-btn" data-filter="photo" aria-pressed="false">
+          <i class="fas fa-image" style="margin-right:4px;" aria-hidden="true"></i>Photos
+        </button>
+        <button class="pinfo-filter-btn" data-filter="video" aria-pressed="false">
+          <i class="fas fa-video" style="margin-right:4px;" aria-hidden="true"></i>Videos
+        </button>
+      </div>
+
+      <!-- Swipe hint (mobile) -->
+      <div class="swipe-hint" aria-hidden="true">
+        <i class="fas fa-hand-pointer"></i> Tap any item to view full size
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="pinfo-gallery-grid" id="pinfo-gallery" role="list" aria-label="Product media gallery">
+        <!-- Skeletons shown while loading -->
+        <div class="pinfo-skeleton" style="height:200px;" role="presentation"></div>
+        <div class="pinfo-skeleton" style="height:200px;" role="presentation"></div>
+        <div class="pinfo-skeleton" style="height:200px;" role="presentation"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════
+       MOBILE FLOATING ACTION BUTTONS
+  ══════════════════════════════════ -->
+  <div class="pinfo-fab-group" aria-label="Quick actions">
+    <a href="datasheet.html" class="pinfo-fab" aria-label="View Datasheet">
+      <i class="fas fa-file-alt" aria-hidden="true"></i> Datasheet
+    </a>
+    <a href="products.html" class="pinfo-fab primary" aria-label="Buy Now">
+      <i class="fas fa-shopping-cart" aria-hidden="true"></i> Buy Now
+    </a>
+  </div>
+
+  <!-- ══════════════════════════════════
+       LIGHTBOX
+  ══════════════════════════════════ -->
+  <div class="pinfo-lightbox" id="pinfo-lightbox" role="dialog" aria-modal="true" aria-label="Media viewer">
+    <!-- Close / back button — top-left -->
+    <button class="pinfo-lightbox-close" id="lb-close" aria-label="Close viewer">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <!-- Prev / Next arrows (desktop only — hidden on mobile, use swipe) -->
+    <button class="pinfo-lightbox-nav pinfo-lb-prev" id="lb-prev" aria-label="Previous media">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="pinfo-lightbox-nav pinfo-lb-next" id="lb-next" aria-label="Next media">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+    <!-- Media content injected here -->
+    <div class="pinfo-lightbox-inner" id="pinfo-lightbox-inner"></div>
+  </div>
+
+
+  <!-- ══════════════════════════════════
+       FEATURED BANNER CAROUSEL SCRIPT
+  ══════════════════════════════════ -->
+  <script>
+    (function initFeaturedCarousel() {
+      const API_URL = (
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname === ''
+      ) ? 'http://localhost:5000/api' : '/api';
+
+      document.addEventListener('DOMContentLoaded', async () => {
+        const track         = document.getElementById('featTrack');
+        const dotsContainer = document.getElementById('featDots');
+        const btnPrev       = document.getElementById('featPrev');
+        const btnNext       = document.getElementById('featNext');
+        const bannerSection = document.getElementById('featured-banner-section');
+        const sliderContainer = document.getElementById('featSliderContainer');
+
+        if (!track || !bannerSection) return;
+
+        let images = [];
+        try {
+          const productData = localStorage.getItem('datasheetProduct');
+          if (productData) {
+            const product = JSON.parse(productData);
+            if (product.images && product.images.length > 0) {
+              images.push(product.images[0]); // add main image as slide 1
+            }
+            
+            const mediaId = product.id || localStorage.getItem('datasheetVariantId');
+            if (mediaId) {
+              const res = await fetch(`${API_URL}/product-media/${mediaId}`);
+              if (res.ok) {
+                const data = await res.json();
+                const banners = (data || []).filter(m => m.type === 'banner').map(m => m.url);
+                images.push(...banners);
+              }
+            }
+          }
+        } catch (e) {
+          console.warn('Featured banners unavailable:', e);
+        }
+
+        if (images.length === 0) { bannerSection.style.display = 'none'; return; }
+
+        bannerSection.style.display = 'block';
+        track.innerHTML = '';
+        dotsContainer.innerHTML = '';
+
+        images.forEach((imgPath, i) => {
+          const slide = document.createElement('div');
+          slide.className = 'featured-slide';
+          slide.innerHTML = `<img src="${imgPath}" alt="Product Banner ${i + 1}" class="featured-banner-img" loading="lazy">`;
+          track.appendChild(slide);
+
+          const dot = document.createElement('span');
+          dot.className = `feat-dot${i === 0 ? ' active' : ''}`;
+          dot.setAttribute('data-slide', i);
+          dotsContainer.appendChild(dot);
+        });
+
+        const slides = track.querySelectorAll('.featured-slide');
+        const dots   = dotsContainer.querySelectorAll('.feat-dot');
+        let cur = 0, timer;
+
+        const goTo = (idx) => {
+          cur = (idx + slides.length) % slides.length;
+          track.style.transform = `translateX(-${cur * 100}%)`;
+          dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+        };
+
+        const play  = () => { timer = setInterval(() => goTo(cur + 1), 5000); };
+        const pause = () => clearInterval(timer);
+        const reset = (fn) => { pause(); fn(); play(); };
+
+        btnPrev?.addEventListener('click', () => reset(() => goTo(cur - 1)));
+        btnNext?.addEventListener('click', () => reset(() => goTo(cur + 1)));
+        dots.forEach((d, i) => d.addEventListener('click', () => reset(() => goTo(i))));
+
+        sliderContainer?.addEventListener('mouseenter', pause);
+        sliderContainer?.addEventListener('mouseleave', play);
+
+        // Touch swipe support
+        let tx0 = 0;
+        sliderContainer?.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
+        sliderContainer?.addEventListener('touchend', e => {
+          const diff = tx0 - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 40) reset(() => goTo(diff > 0 ? cur + 1 : cur - 1));
+        }, { passive: true });
+
+        play();
+      });
+    })();
+  </script>
+
+  <!-- ══════════════════════════════════
+       MAIN PAGE SCRIPT
+  ══════════════════════════════════ -->
+  <script>
+    const API_URL = (
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname === ''
+    ) ? 'http://localhost:5000/api' : '/api';
+
+    let allMedia = [];
+    let currentFilter = 'all';
+    let lbIndex = 0;
+
+    // ── INIT ──
+    document.addEventListener('DOMContentLoaded', async () => {
+      const productData = localStorage.getItem('datasheetProduct');
+      if (!productData) {
+        document.getElementById('pinfo-product-name').textContent = 'Product Not Found';
+        document.getElementById('pinfo-product-desc').textContent = 'Please go back and select a product.';
+        return;
+      }
+
+      const product = JSON.parse(productData);
+      populateHero(product);
+      await loadGallery(product);
+      loadInstructions(product.id); // load async, non-blocking
+
+      // Filter buttons
+      document.querySelectorAll('.pinfo-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.pinfo-filter-btn').forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-pressed', 'false');
+          });
+          btn.classList.add('active');
+          btn.setAttribute('aria-pressed', 'true');
+          currentFilter = btn.dataset.filter;
+          renderGallery();
+        });
+      });
+
+      // Lightbox nav
+      document.getElementById('lb-close')?.addEventListener('click', () => closeLightbox());
+      document.getElementById('lb-prev')?.addEventListener('click', () => navigateLightbox(-1));
+      document.getElementById('lb-next')?.addEventListener('click', () => navigateLightbox(1));
+
+      // Click outside lightbox to close
+      document.getElementById('pinfo-lightbox')?.addEventListener('click', e => {
+        if (e.target === document.getElementById('pinfo-lightbox')) closeLightbox();
+      });
+
+      // Touch swipe in lightbox
+      let lbTx0 = 0;
+      const lb = document.getElementById('pinfo-lightbox');
+      lb?.addEventListener('touchstart', e => { lbTx0 = e.touches[0].clientX; }, { passive: true });
+      lb?.addEventListener('touchend', e => {
+        const diff = lbTx0 - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) navigateLightbox(diff > 0 ? 1 : -1);
+      }, { passive: true });
+
+      // Mobile Control Bar Logic
+      const btnDetails = document.getElementById('mob-btn-details');
+      const btnBanners = document.getElementById('mob-btn-banners');
+      const btnInstructions = document.getElementById('mob-btn-instructions');
+      const mdo = document.getElementById('mobile-details-overlay');
+      const wrapper = document.querySelector('.mobile-screen-1-wrapper');
+
+      if (btnDetails && btnInstructions && btnBanners && wrapper) {
+        // Init default state
+        btnBanners.classList.add('active');
+
+        // Toggle fullscreen with the middle button
+        btnBanners.addEventListener('click', () => {
+          if (wrapper.getAttribute('data-mobile-tab') !== 'banners') {
+            setMobileTab('banners');
+          } else {
+            wrapper.classList.add('fullscreen');
+            btnBanners.classList.add('active');
+          }
+        });
+
+        const btnCloseFullscreen = document.getElementById('banner-fullscreen-close');
+        if (btnCloseFullscreen) {
+          btnCloseFullscreen.addEventListener('click', () => {
+            wrapper.classList.add('fullscreen-closing');
+            setTimeout(() => {
+              wrapper.classList.remove('fullscreen');
+              wrapper.classList.remove('fullscreen-closing');
+              btnBanners.classList.remove('active');
+            }, 250);
+          });
+        }
+
+        function setMobileTab(tab) {
+          if (wrapper.getAttribute('data-mobile-tab') === tab && tab !== 'banners') {
+            tab = 'banners'; // Toggle back to default
+          }
+          
+          // Reset buttons
+          btnDetails.classList.remove('active');
+          btnInstructions.classList.remove('active');
+          mdo.classList.remove('active');
+
+          // Set wrapper attribute to drive CSS
+          wrapper.setAttribute('data-mobile-tab', tab);
+
+          if (tab === 'details') {
+            btnDetails.classList.add('active');
+            mdo.classList.add('active');
+          } else if (tab === 'instructions') {
+            btnInstructions.classList.add('active');
+          }
+        }
+
+        btnDetails.addEventListener('click', () => setMobileTab('details'));
+        btnInstructions.addEventListener('click', () => setMobileTab('instructions'));
+      }
+    });
+
+    // ── HERO ──
+    function populateHero(product) {
+      document.title = `${product.name} | Nanco Paints`;
+      document.getElementById('pinfo-nav-title').textContent = product.name;
+      document.getElementById('pinfo-product-name').textContent = product.name;
+      document.getElementById('pinfo-product-desc').textContent =
+        product.desc || 'Premium quality paint by Nanco Paints.';
+      document.getElementById('pinfo-category').textContent =
+        (product.category || 'Paint').charAt(0).toUpperCase() +
+        (product.category || 'paint').slice(1);
+
+      const heroBg = document.getElementById('pinfo-hero-bg');
+      if (product.images && product.images.length > 0) {
+        heroBg.src = product.images[0];
+        document.getElementById('pinfo-hero').style.background = product.color || '#061492';
+      } else {
+        heroBg.style.display = 'none';
+      }
+
+      const stats = [];
+      if (product.coverage)  stats.push({ val: product.coverage + ' sqm/L', label: 'Coverage' });
+      if (product.finish)    stats.push({ val: product.finish, label: 'Finish' });
+      if (product.pricing && product.pricing.length > 0) {
+        const minPrice = Math.min(...product.pricing.map(p => Number(p.offer_price || 0)).filter(x => x > 0));
+        if (minPrice > 0) stats.push({ val: '₹' + minPrice, label: 'From' });
+        stats.push({ val: product.pricing.length + ' sizes', label: 'Pack Sizes' });
+      }
+
+      const statsHtml = stats.map(s => `
+        <div class="pinfo-stat" role="listitem">
+          <div class="pinfo-stat-val">${s.val}</div>
+          <div class="pinfo-stat-label">${s.label}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('pinfo-stats').innerHTML = statsHtml;
+
+      // Also populate the Mobile Details Overlay
+      const mdoName = document.getElementById('mdo-name');
+      if (mdoName) {
+        mdoName.textContent = product.name;
+        document.getElementById('mdo-category').textContent = (product.category || 'Paint').charAt(0).toUpperCase() + (product.category || 'paint').slice(1);
+        document.getElementById('mdo-desc').textContent = product.desc || 'Premium quality paint by Nanco Paints.';
+        document.getElementById('mdo-stats').innerHTML = statsHtml;
+      }
+      // Instructions are now loaded async from DB (see loadInstructions below)
+    }
+
+    // ── LOAD INSTRUCTIONS ──
+    async function loadInstructions(productId) {
+      const instructionsSection = document.getElementById('instructions-section');
+      const instructionsText = document.getElementById('product-instructions-text');
+      try {
+        const res = await fetch(`${API_URL}/product-instructions/${productId}`);
+        if (res.ok) {
+          const data = await res.json();
+          const content = data.content || localStorage.getItem('instructions_' + productId) || '';
+          if (content && content.trim().length > 0) {
+            instructionsText.textContent = content.trim();
+            instructionsSection.style.display = 'block';
+          } else {
+            instructionsSection.style.display = 'none';
+          }
+        } else {
+          throw new Error('Non-OK response');
+        }
+      } catch {
+        // Fallback to localStorage
+        const cached = localStorage.getItem('instructions_' + productId) || '';
+        if (cached && cached.trim().length > 0) {
+          instructionsText.textContent = cached.trim();
+          instructionsSection.style.display = 'block';
+        } else {
+          instructionsSection.style.display = 'none';
+        }
+      }
+    }
+
+    // ── LOAD GALLERY ──
+    async function loadGallery(product) {
+      allMedia = [];
+
+      (product.images || []).forEach((url, i) => {
+        allMedia.push({ type: 'photo', url, caption: `${product.name} – Image ${i + 1}` });
+      });
+
+      try {
+        const mediaId = product.id || localStorage.getItem('datasheetVariantId');
+        if (mediaId) {
+          const res = await fetch(`${API_URL}/product-media/${mediaId}`);
+          if (res.ok) {
+            const data = await res.json();
+            (data || []).forEach(m => {
+              if (m.type === 'image' || m.type === 'video') {
+                allMedia.push({
+                  type: m.type === 'video' ? 'video' : 'photo',
+                  url: m.url,
+                  caption: m.caption || m.title || product.name
+                });
+              }
+            });
+          }
+        }
+      } catch (_) { /* silently continue */ }
+
+      renderGallery();
+    }
+
+    // ── URL EMBED PARSER ──
+    function getEmbedUrl(url) {
+      const ytFull = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      if (ytFull) return { isEmbed: true, url: `https://www.youtube.com/embed/${ytFull[1]}`, icon: 'fab fa-youtube', label: 'YouTube' };
+      if (url.includes('youtube.com/embed/')) return { isEmbed: true, url, icon: 'fab fa-youtube', label: 'YouTube' };
+      const ig = url.match(/instagram\.com\/(p|reel)\/([a-zA-Z0-9_-]+)/);
+      if (ig) return { isEmbed: true, url: `https://www.instagram.com/${ig[1]}/${ig[2]}/embed/`, icon: 'fab fa-instagram', label: 'Instagram' };
+      return { isEmbed: false, url };
+    }
+
+    // ── GRID ZOOM CONTROLS ──
+    const COLS_MIN = 1;
+    const COLS_MAX = 6;
+    let galleryCols = 4; // will be set smart on first render
+    let userOverride = false; // true once user clicks +/−
+
+    function applyColumns(n) {
+      galleryCols = Math.min(COLS_MAX, Math.max(COLS_MIN, n));
+      document.documentElement.style.setProperty('--gallery-cols', galleryCols);
+      const countEl = document.getElementById('zoom-count');
+      if (countEl) countEl.textContent = galleryCols;
+      // update button disabled states
+      const btnOut = document.getElementById('zoom-out');
+      const btnIn  = document.getElementById('zoom-in');
+      if (btnOut) btnOut.disabled = galleryCols <= COLS_MIN;
+      if (btnIn)  btnIn.disabled  = galleryCols >= COLS_MAX;
+    }
+
+    function smartCols(count) {
+      if (count <= 2) return 1;
+      if (count <= 4) return 2;
+      return 4;
+    }
+
+    // Wire zoom buttons (safe to call before DOM ready — buttons exist by now)
+    document.getElementById('zoom-out')?.addEventListener('click', () => {
+      userOverride = true;
+      applyColumns(galleryCols - 1);
+    });
+    document.getElementById('zoom-in')?.addEventListener('click', () => {
+      userOverride = true;
+      applyColumns(galleryCols + 1);
+    });
+
+    // ── RENDER GALLERY ──
+    function renderGallery() {
+      const filtered = currentFilter === 'all'
+        ? allMedia
+        : allMedia.filter(m => m.type === currentFilter);
+
+      document.getElementById('pinfo-media-count').textContent =
+        filtered.length + ' item' + (filtered.length !== 1 ? 's' : '');
+
+      // Auto-set columns based on count (unless user has manually adjusted)
+      if (!userOverride) {
+        applyColumns(smartCols(filtered.length));
+      }
+
+      const grid = document.getElementById('pinfo-gallery');
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="pinfo-empty" role="status">
+            <i class="fas fa-photo-film" aria-hidden="true"></i>
+            <p>No ${currentFilter === 'all' ? 'media' : currentFilter + 's'} available yet.</p>
+            <small>Upload photos and videos from the admin panel.</small>
+          </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((m, i) => {
+        const globalIdx = allMedia.indexOf(m);
+        if (m.type === 'video') {
+          const embed = getEmbedUrl(m.url);
+          if (embed.isEmbed) {
+            return `
+              <div class="pinfo-gallery-item" role="listitem" tabindex="0"
+                   onclick="openLightbox(${globalIdx})"
+                   onkeydown="if(event.key==='Enter')openLightbox(${globalIdx})"
+                   aria-label="${m.caption || 'Video'}">
+                <iframe src="${embed.url}" style="width:100%;height:100%;border:none;pointer-events:none;" title="${m.caption || 'Video'}" loading="lazy"></iframe>
+                <div class="pinfo-play-icon" aria-hidden="true"><i class="fas fa-play" style="margin-left:3px;"></i></div>
+              </div>`;
+          }
+          return `
+            <div class="pinfo-gallery-item" role="listitem" tabindex="0"
+                 onclick="openLightbox(${globalIdx})"
+                 onkeydown="if(event.key==='Enter')openLightbox(${globalIdx})"
+                 aria-label="${m.caption || 'Video'}">
+              <video src="${m.url}" muted preload="metadata" style="width:100%;height:100%;object-fit:cover;" aria-hidden="true"></video>
+              <div class="pinfo-play-icon" aria-hidden="true"><i class="fas fa-play" style="margin-left:3px;"></i></div>
+            </div>`;
+        }
+        return `
+          <div class="pinfo-gallery-item" role="listitem" tabindex="0"
+               onclick="openLightbox(${globalIdx})"
+               onkeydown="if(event.key==='Enter')openLightbox(${globalIdx})"
+               aria-label="${m.caption || 'Photo'}">
+            <img src="${m.url}" alt="${m.caption || 'Product photo'}" loading="lazy">
+          </div>`;
+      }).join('');
+
+    }
+
+    // ── LIGHTBOX ──
+    function getFilteredMedia() {
+      return currentFilter === 'all' ? allMedia : allMedia.filter(m => m.type === currentFilter);
+    }
+
+    // ── STOP ALL MEDIA in lightbox ──
+    function stopAllLightboxMedia() {
+      const inner = document.getElementById('pinfo-lightbox-inner');
+      // 1. Stop native video
+      inner.querySelectorAll('video').forEach(v => { v.pause(); v.src = ''; });
+      // 2. Stop YouTube / Instagram iframes via postMessage
+      inner.querySelectorAll('iframe').forEach(fr => {
+        try {
+          // YouTube stop
+          fr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'stopVideo', args: [] }), '*');
+          // Generic pause for YouTube embed API
+          fr.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'pauseVideo', args: [] }), '*');
+        } catch(_) {}
+        // Nuke the src to guarantee stop (works for all embeds)
+        const saved = fr.src;
+        fr.src = 'about:blank';
+      });
+      // 3. Clear inner HTML to remove all media
+      inner.innerHTML = '';
+    }
+
+    function openLightbox(globalIndex) {
+      lbIndex = globalIndex;
+      renderLightboxItem();
+      document.getElementById('pinfo-lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      stopAllLightboxMedia();
+      document.getElementById('pinfo-lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function navigateLightbox(dir) {
+      stopAllLightboxMedia();
+      const filtered = getFilteredMedia();
+      const currentInFiltered = filtered.findIndex((m, i) => allMedia.indexOf(m) === lbIndex);
+      const nextInFiltered = (currentInFiltered + dir + filtered.length) % filtered.length;
+      lbIndex = allMedia.indexOf(filtered[nextInFiltered]);
+      renderLightboxItem();
+    }
+
+    function renderLightboxItem() {
+      const m = allMedia[lbIndex];
+      if (!m) return;
+      const inner = document.getElementById('pinfo-lightbox-inner');
+      let content = '';
+
+      if (m.type === 'video') {
+        const embed = getEmbedUrl(m.url);
+        if (embed.isEmbed) {
+          // enablejsapi=1 allows postMessage stop; autoplay=1
+          const sep = embed.url.includes('?') ? '&' : '?';
+          content = `<iframe
+            src="${embed.url}${sep}autoplay=1&enablejsapi=1"
+            style="width:100vw;height:100vh;border:none;display:block;"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowfullscreen
+            title="${m.caption || 'Video'}"></iframe>`;
+        } else {
+          content = `<video src="${m.url}" controls autoplay
+            style="max-width:100vw;max-height:100vh;width:100%;object-fit:contain;"
+            aria-label="${m.caption || 'Video'}"></video>`;
+        }
+      } else {
+        content = `<img src="${m.url}" alt="${m.caption || 'Product photo'}"
+          style="max-width:100vw;max-height:100vh;object-fit:contain;display:block;">`;
+      }
+
+      inner.innerHTML = content;
+    }
+
+    // ── Swipe to navigate in lightbox (mobile) ──
+    (function () {
+      const lb = document.getElementById('pinfo-lightbox');
+      let tx0 = 0, ty0 = 0;
+      lb.addEventListener('touchstart', e => {
+        tx0 = e.touches[0].clientX;
+        ty0 = e.touches[0].clientY;
+      }, { passive: true });
+      lb.addEventListener('touchend', e => {
+        const dx = tx0 - e.changedTouches[0].clientX;
+        const dy = ty0 - e.changedTouches[0].clientY;
+        // Only handle horizontal swipes (avoid conflicting with vertical scroll in iframes)
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 44) {
+          navigateLightbox(dx > 0 ? 1 : -1);
+        }
+      }, { passive: true });
+    })();
+
+    // ── Click backdrop to close ──
+    // (handled in DOMContentLoaded section above)
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      const lb = document.getElementById('pinfo-lightbox');
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowRight')  navigateLightbox(1);
+      if (e.key === 'ArrowLeft')   navigateLightbox(-1);
+    });
+  </script>
+
+</body>
+</html>

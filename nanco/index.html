@@ -5,13 +5,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nanco Paints — Paints for Better Satisfaction | Malappuram</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
   <meta name="description"
     content="Nanco Paints Malappuram. ISO 9001-2015 Certified. Premium quality paints for workers, outlets, and projects. Call +91 8891220590.">
   <meta name="keywords" content="Nanco Paints, Malappuram, paint company, paint workers, Kerala, ISO certified paints">
   <link rel="canonical" href="https://nancopaints.com/">
   <link rel="manifest" href="../nanco/manifest.json">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
   <link rel="stylesheet" href="../nanco/style.css">
   <link rel="icon" type="image/png" data-asset-href="logos.main">
@@ -26,11 +27,11 @@
         <img data-asset="logos.light" alt="Nanco Paints">
       </a>
       <ul class="nav-links" role="list">
-        <li><a href="../nanco/index.html" id="nav-home">Home</a></li>
-        <li><a href="../nanco/products.html" id="nav-products">Products</a></li>
+        <li class="hide-on-mobile"><a href="../nanco/index.html" id="nav-home">Home</a></li>
+        <li class="hide-on-mobile"><a href="../nanco/products.html" id="nav-products">Products</a></li>
         <li><a href="../nanco/services.html" id="nav-services">Services</a></li>
-        <li><a href="../nanco/calculators.html" id="nav-calculators">Calculators</a></li>
-        <li><a href="../nanco/colors.html" id="nav-colors">Color Studio</a></li>
+        <li class="hide-on-mobile"><a href="../nanco/calculators.html" id="nav-calculators">Calculators</a></li>
+        <li class="hide-on-mobile"><a href="../nanco/colors.html" id="nav-colors">Color Studio</a></li>
         <li><a href="../nanco/about_us.html" id="nav-about">About Us</a></li>
         <li><a href="https://trkmfg.com/color/nanco_paints_visualizer.php" id="nav-color-visualizer">Color Visualizer</a></li>
       </ul>
@@ -201,8 +202,6 @@
 
     <!-- HERO SECTION -->
     <section class="hero-section" aria-label="Hero">
-      <img data-asset="hero.houseBg" class="hero-house-bg" alt="" aria-hidden="true">
-      <div class="hero-yellow-overlay"></div>
       <div class="hero-inner">
         <div class="hero-left" style="color: white;">
           <div class="hero-tag" id="hero-tag" style="color: black;">
@@ -216,8 +215,8 @@
           </p>
           <div class="hero-actions">
             <button class="btn-primary" id="hero-view-products" style="border:none;cursor:pointer;">I will help you buy</button>
-            <a class="btn-ghost" href="chat.html" id="hero-download-app" style="display: inline-flex; align-items: center;"><i
-                class="fas fa-comments" style="margin-right:6px;"></i> Chat with AI</a>
+            <a class="btn-ghost" href="#" id="hero-download-app" style="display: inline-flex; align-items: center;"><i
+                class="fas fa-download" style="margin-right:6px;"></i> Install App</a>
           </div>
         </div>
         <div class="hero-mobile-bucket-wrap">
@@ -298,11 +297,12 @@
             const subEl = document.getElementById('hero-sub');
             const bucketImg = document.querySelector('.hero-bucket-image');
 
-            if (heroSection && heroData.bg_color)
-              heroSection.style.background = heroData.bg_color;
-            if (overlay && heroData.overlay_color) {
-              const isMob = window.innerWidth < 600;
-              overlay.style.background = `linear-gradient(${isMob ? 'to bottom' : 'to right'}, ${heroData.overlay_color} ${isMob ? '80%' : '40%'}, transparent 100%)`;
+            if (heroSection) {
+              heroSection.style.backgroundImage = `url('${heroData.house_bg_url || ''}')`;
+              heroSection.style.backgroundSize = 'cover';
+              heroSection.style.backgroundPosition = 'center';
+              heroSection.style.backgroundRepeat = 'no-repeat';
+              heroSection.style.backgroundColor = heroData.bg_color || 'transparent';
             }
             if (tagEl && heroData.tag_text)
               tagEl.innerHTML = `<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> ${heroData.tag_text}`;
@@ -312,11 +312,6 @@
               subEl.textContent = heroData.sub_text;
             if (bucketImg && heroData.bucket_image_url)
               bucketImg.src = heroData.bucket_image_url;
-            // house_bg_url is handled below in the backgrounds array
-            if (heroData.house_bg_url) {
-              const bgImg = document.querySelector('.hero-house-bg');
-              if (bgImg) bgImg.src = heroData.house_bg_url;
-            }
           }
         } catch (err) {
           console.warn('Hero settings not available, using defaults.');
@@ -368,11 +363,12 @@
           const subEl = document.getElementById('hero-sub');
           const bucketImg = document.querySelector('.hero-bucket-image');
 
-          if (bgImg) bgImg.src = slide.url;
-          if (heroSection && slide.bg_color) heroSection.style.background = slide.bg_color;
-          if (overlay && slide.overlay_color) {
-            const isMob = window.innerWidth < 600;
-            overlay.style.background = `linear-gradient(${isMob ? 'to bottom' : 'to right'}, ${slide.overlay_color} ${isMob ? '80%' : '40%'}, transparent 100%)`;
+          if (heroSection) {
+            heroSection.style.backgroundImage = `url('${slide.url || ''}')`;
+            heroSection.style.backgroundSize = 'cover';
+            heroSection.style.backgroundPosition = 'center';
+            heroSection.style.backgroundRepeat = 'no-repeat';
+            heroSection.style.backgroundColor = slide.bg_color || 'transparent';
           }
           
           if (window.currentLanguage === 'ml' && index === 0) {
@@ -442,12 +438,12 @@
       <div class="section-inner" style="max-width: 1300px; padding: 40px 20px 20px;">
         <div class="coy-header">
           <div class="coy-title-wrap">
-            <span class="section-label" id="coy-label"><i class="fas fa-palette" style="margin-right:6px;"></i> Curated Shades</span>
-            <h2 class="section-title" id="coy-heading">Colour of the Year</h2>
-            <p class="section-sub" id="coy-sub">Explore and elevate your space with featured shades of Nanco Paints.</p>
+            <span class="section-label" id="coy-label"><i class="fas fa-award" style="margin-right:6px;"></i> Featured Products</span>
+            <h2 class="section-title" id="coy-heading">Products of the Year</h2>
+            <p class="section-sub" id="coy-sub">Discover our most celebrated, high-performance paints designed to elevate any space.</p>
           </div>
           <div class="coy-actions">
-            <a href="../nanco/colors.html" class="btn-coy-view" id="coy-catalog-btn">View colour catalogue <i class="fas fa-arrow-right" style="margin-left: 6px;"></i></a>
+            <a href="../nanco/products.html" class="btn-coy-view" id="coy-catalog-btn">View all products <i class="fas fa-arrow-right" style="margin-left: 6px;"></i></a>
           </div>
         </div>
       </div>
@@ -456,92 +452,9 @@
         <button class="coy-btn coy-prev" id="coyPrev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>
         
         <div class="coy-slider-track" id="coyTrack">
-          <!-- Item 1 -->
-          <a href="../nanco/colors.html" class="coy-item">
-            <div class="coy-content">
-              <img class="coy-bg" data-asset="palettes.bg1" alt="Moonlit Silk Room">
-              <div class="coy-img-wrap">
-                <img class="coy-fg" data-asset="palettes.fg1" alt="Moonlit Silk">
-              </div>
-              <div class="coy-text-wrap">
-                <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
-              </div>
-            </div>
-          </a>
-          <!-- Item 2 -->
-          <a href="../nanco/colors.html" class="coy-item">
-            <div class="coy-content">
-              <img class="coy-bg" data-asset="palettes.bg2" alt="Cardinal Room">
-              <div class="coy-img-wrap">
-                <img class="coy-fg" data-asset="palettes.fg2" alt="Cardinal">
-              </div>
-              <div class="coy-text-wrap">
-                <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
-              </div>
-            </div>
-          </a>
-          <!-- Item 3 -->
-          <a href="../nanco/colors.html" class="coy-item">
-            <div class="coy-content">
-              <img class="coy-bg" data-asset="palettes.bg3" alt="Dessert Love Room">
-              <div class="coy-img-wrap">
-                <img class="coy-fg" data-asset="palettes.fg3" alt="Dessert Love">
-              </div>
-              <div class="coy-text-wrap">
-                <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
-              </div>
-            </div>
-          </a>
-          <!-- Item 4 -->
-          <a href="../nanco/colors.html" class="coy-item">
-            <div class="coy-content">
-              <img class="coy-bg" data-asset="palettes.bg4" alt="Silverfish Room">
-              <div class="coy-img-wrap">
-                <img class="coy-fg" data-asset="palettes.fg4" alt="Silverfish">
-              </div>
-              <div class="coy-text-wrap">
-                <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
-              </div>
-            </div>
-          </a>
-          <!-- Item 5 -->
-          <a href="../nanco/colors.html" class="coy-item">
-            <div class="coy-content">
-              <img class="coy-bg" data-asset="palettes.bg5" alt="Clematis Pink Room">
-              <div class="coy-img-wrap">
-                <img class="coy-fg" data-asset="palettes.fg5" alt="Clematis Pink">
-              </div>
-              <div class="coy-text-wrap">
-                <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
-              </div>
-            </div>
-          </a>
-          <!-- Item 6 -->
-          <a href="../nanco/colors.html" class="coy-item">
-            <div class="coy-content">
-              <img class="coy-bg" data-asset="palettes.bg6" alt="Ivy League Room">
-              <div class="coy-img-wrap">
-                <img class="coy-fg" data-asset="palettes.fg6" alt="Ivy League">
-              </div>
-              <div class="coy-text-wrap">
-                <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
-              </div>
-            </div>
-          </a>
-          <!-- Item 7 -->
-          <a href="../nanco/colors.html" class="coy-item">
-            <div class="coy-content">
-              <img class="coy-bg" data-asset="palettes.bg8" alt="Retro Blue Room">
-              <div class="coy-img-wrap">
-                <img class="coy-fg" data-asset="palettes.fg8" alt="Retro Blue">
-              </div>
-              <div class="coy-text-wrap">
-                <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
-              </div>
-            </div>
-          </a>
+          <!-- Dynamically populated via JS -->
         </div>
-
+        
         <button class="coy-btn coy-next" id="coyNext" aria-label="Next Slide"><i class="fas fa-chevron-right"></i></button>
       </div>
     </section>
@@ -561,6 +474,42 @@
             track.scrollBy({ left: 300, behavior: 'smooth' });
           });
         }
+
+        // Fetch dynamic Products of the Year
+        async function loadCoyItems() {
+          try {
+            const res = await fetch('http://127.0.0.1:5000/api/coy-items');
+            if (!res.ok) return;
+            const items = await res.json();
+            
+            if (track) {
+              track.innerHTML = '';
+              items.forEach(item => {
+                track.innerHTML += `
+                  <a href="../nanco/product_application.html?coy_id=${item.id}" class="coy-item">
+                    <div class="coy-content split-layout">
+                      <div class="coy-img-wrap">
+                        <img class="coy-fg" src="${item.top_image_url}" alt="${item.title}">
+                      </div>
+                      <div class="coy-img-wrap">
+                        <img class="coy-bg" src="${item.bottom_image_url}" alt="${item.title} Room">
+                        <div class="coy-text-wrap">
+                          <h3 class="coy-title">${item.title}</h3>
+                          <p class="coy-desc">${item.description}</p>
+                          <span class="coy-explore"><i class="fas fa-chevron-right"></i></span>
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                `;
+              });
+            }
+          } catch (err) {
+            console.error('Failed to load coy items:', err);
+          }
+        }
+        
+        loadCoyItems();
       });
     </script>
 
@@ -589,7 +538,7 @@
             <div class="bento-card-desc" id="card-outlets-desc">Find your nearest Nanco outlet and get directions to the closest store.</div>
             <div class="bento-card-arrow" id="card-outlets-arrow">View Map</div>
           </a>
-          <a class="bento-card card-cobalt bento-40" href="../nanco/products.html" id="card-products">
+          <a class="bento-card card-cobalt bento-40" href="../nanco/product_info.html" id="card-products">
             <div class="bento-card-icon"><i class="fas fa-box-open"></i></div>
             <div class="bento-card-title" id="card-products-title">Product Info &amp; Videos</div>
             <div class="bento-card-desc" id="card-products-desc">Full product range with pricing, specs, and how-to videos.</div>
@@ -629,7 +578,7 @@
     </section>
 
     <!-- FEATURED PRODUCTS BANNER CAROUSEL -->
-    <section class="section-wrap featured-section" aria-labelledby="featured-heading">
+    <section class="section-wrap featured-section" aria-labelledby="featured-heading" style="display: none;">
       <div class="section-inner">
         <span class="section-label" id="featured-label">
           <i class="fas fa-star" style="margin-right:6px;"></i> Curated Collection
@@ -701,33 +650,28 @@
         
         if (!track || !dotsContainer) return;
 
-        // Step 1: Detect available images in the banner_products folder
+        // Step 1: Detect available images from backend API
         let images = [];
         try {
-          // Attempt to retrieve from backend API
-          const ENABLE_API = false; // Set to true when backend is available
-          if (ENABLE_API) {
-            const res = await fetch('/api/banner-images');
-            if (res.ok) {
-              const data = await res.json();
-              if (data.images && data.images.length > 0) {
-                images = data.images.map(img => `assets/banner_products/${img}`);
-              }
+          const API_URL = 'http://127.0.0.1:5000/api/product-banners'; 
+          const res = await fetch(API_URL);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.length > 0) {
+              images = data.map(b => b.image_url);
             }
           }
         } catch (err) {
-          console.log("Backend API not reachable. Probing local assets sequentially...");
+          console.log("Backend API not reachable for product banners.");
         }
 
-        // Step 2: Removed sequential probing to prevent 404 console errors
-
-        // Step 3: Absolute fallback if folder is unreadable or empty
+        // If no banners from DB, hide the section
+        const featuredSection = document.querySelector('.featured-section');
         if (images.length === 0) {
-          images = [
-            'assets/banner_products/1.jpeg',
-            'assets/banner_products/2.jpeg',
-            'assets/banner_products/3.jpeg'
-          ];
+          if (featuredSection) featuredSection.style.display = 'none';
+          return;
+        } else {
+          if (featuredSection) featuredSection.style.display = 'block';
         }
 
         // Step 4: Inject slides and dots into DOM dynamically
@@ -852,7 +796,7 @@
     </section>
 
     <!-- INSPIRING IDEAS / SHORTS SECTION -->
-    <section class="section-wrap shorts-section" aria-labelledby="shorts-heading">
+    <section class="section-wrap shorts-section" id="shorts-section" aria-labelledby="shorts-heading">
       <div class="section-inner">
         <div class="shorts-header">
           <span class="section-label" id="shorts-label" style="color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.3);">
@@ -863,104 +807,7 @@
 
         <div class="shorts-carousel-container">
           <div class="shorts-slider-track" id="shortsTrack">
-            <!-- Short 1 -->
-            <a href="../nanco/colors.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v1" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 3K</div>
-                <div class="short-cta">Explore shade <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-            
-            <!-- Short 2 -->
-            <a href="../nanco/colors.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v2" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 2.8K</div>
-                <div class="short-cta">Explore shade <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-
-            <!-- Short 3 -->
-            <a href="../nanco/colors.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v3" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 2.2K</div>
-                <div class="short-cta">Explore shade <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-            
-            <!-- Short 4 -->
-            <a href="../nanco/services.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v4" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 2.2K</div>
-                <div class="short-cta">Explore catalogue <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-
-            <!-- Short 5 -->
-            <a href="../nanco/colors.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v5" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 2.5K</div>
-                <div class="short-cta">Explore shade <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-            
-            <!-- Short 6 -->
-            <a href="../nanco/colors.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v6" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 2.4K</div>
-                <div class="short-cta">Explore shade <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-            
-            <!-- Short 7 -->
-            <a href="../nanco/colors.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v7" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 2K</div>
-                <div class="short-cta">Explore shade <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-            
-            <!-- Short 8 -->
-            <a href="../nanco/services.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v8" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 2.2K</div>
-                <div class="short-cta">Explore catalogue <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
-
-            <!-- Short 9 -->
-            <a href="../nanco/paint_visualizer.html" class="short-card">
-              <video class="short-video" loop muted playsinline preload="metadata">
-                <source data-asset="videos.v9" type="video/mp4">
-              </video>
-              <div class="short-overlay">
-                <div class="short-views"><i class="fas fa-play"></i> 1.7K</div>
-                <div class="short-cta">Get Inspiration <i class="fas fa-arrow-right"></i></div>
-              </div>
-            </a>
+            <!-- Dynamic shorts injected via JS -->
           </div>
           
           <button class="shorts-control shorts-prev" id="shortsPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
@@ -996,15 +843,85 @@
         const shortsTrack = document.getElementById('shortsTrack');
         const swiperWrapper = document.getElementById('shortsModalSwiperWrapper');
         const API_BASE = 'http://127.0.0.1:5000/api';
-        const ENABLE_API = false; // Set to true to enable backend fetch
+        const ENABLE_API = true; // Set to true to enable backend fetch
 
-        // Videos are now statically defined in HTML — just init the UI directly
-        function loadDynamicVideos() {
-          initShortsUI();
+        async function loadDynamicVideos() {
+          const section = document.getElementById('shorts-section');
+          
+          function getEmbedHtml(url, isModal = false) {
+            const vidClass = isModal ? 'shorts-modal-video external-embed' : 'short-video external-embed';
+            const style = isModal ? 'width:100%; height:100%; border-radius:12px;' : 'pointer-events:none; width:100%; height:100%; object-fit:cover;';
+            
+            let ytMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+            if (ytMatch) {
+              if (isModal) {
+                return `<iframe class="${vidClass}" data-src="https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&mute=0&loop=1&playlist=${ytMatch[1]}&controls=1" frameborder="0" allow="autoplay; encrypted-media; fullscreen" style="${style}"></iframe>`;
+              } else {
+                return `<img class="short-video external-embed yt-thumbnail" src="https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg" style="${style}" data-yt-id="${ytMatch[1]}" />`;
+              }
+            }
+            
+            let instaMatch = url.match(/instagram\.com\/(?:p|reel)\/([A-Za-z0-9_-]+)/);
+            if (instaMatch) {
+              const src = `https://www.instagram.com/p/${instaMatch[1]}/embed`;
+              return isModal 
+                ? `<iframe class="${vidClass}" data-src="${src}" frameborder="0" style="${style}" scrolling="no"></iframe>`
+                : `<iframe class="${vidClass}" src="${src}" frameborder="0" style="${style}" scrolling="no"></iframe>`;
+            }
+            
+            let fbMatch = url.match(/facebook\.com.*\/videos\/.+/);
+            if (fbMatch) {
+              const autoplayParam = isModal ? '&autoplay=1' : '&autoplay=0';
+              const src = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&mute=0${autoplayParam}`;
+              return isModal
+                ? `<iframe class="${vidClass}" data-src="${src}" frameborder="0" allow="autoplay; encrypted-media; fullscreen" style="${style}"></iframe>`
+                : `<iframe class="${vidClass}" src="${src}" frameborder="0" allow="autoplay; encrypted-media; fullscreen" style="${style}"></iframe>`;
+            }
+            
+            if (isModal) {
+              return `<video class="shorts-modal-video" src="${url}" playsinline loop preload="metadata"></video>`;
+            } else {
+              return `<video class="short-video" loop muted playsinline preload="metadata">
+                        <source src="${url}" type="video/mp4">
+                      </video>`;
+            }
+          }
+
+          try {
+            const res = await fetch(`${API_BASE}/videos`);
+            if (res.ok) {
+              const videos = await res.json();
+              if (videos.length === 0) {
+                  if (section) section.style.display = 'none';
+                  return;
+              }
+              
+              if (section) section.style.display = 'block';
+              shortsTrack.innerHTML = '';
+              videos.forEach((v) => {
+                shortsTrack.innerHTML += `
+                  <a href="${v.link_url || '../nanco/colors.html'}" class="short-card" data-video-src="${v.video_url}">
+                    ${getEmbedHtml(v.video_url, false)}
+                    <div class="short-overlay">
+                      <div class="short-views"><i class="fas fa-play"></i> Watch</div>
+                      <div class="short-cta">Explore <i class="fas fa-arrow-right"></i></div>
+                    </div>
+                  </a>
+                `;
+              });
+              
+              initShortsUI(getEmbedHtml);
+            } else {
+              initShortsUI(getEmbedHtml); // fallback to static if error
+            }
+          } catch (e) {
+            console.error('Failed to load videos:', e);
+            initShortsUI(getEmbedHtml);
+          }
         }
 
         // 2. Shorts UI Initialization
-        function initShortsUI() {
+        function initShortsUI(getEmbedHtml) {
           const shortsPrev = document.getElementById('shortsPrev');
           const shortsNext = document.getElementById('shortsNext');
           const shortCards = document.querySelectorAll('.short-card');
@@ -1041,29 +958,28 @@
             // Populate Swiper
             let swiperHTML = '';
             shortCards.forEach((card) => {
-              const vidElem = card.querySelector('video');
-              const vidSrcElem = card.querySelector('video source');
+              const src = card.getAttribute('data-video-src') || '';
               const ctaElem = card.querySelector('.short-cta');
               const viewsElem = card.querySelector('.short-views');
+              const isIframe = src.includes('youtube.com') || src.includes('youtu.be') || src.includes('instagram.com') || src.includes('facebook.com');
               
-              const src = (vidElem && vidElem.getAttribute('src')) ? vidElem.src : (vidSrcElem ? vidSrcElem.src : '');
               const ctaText = ctaElem ? ctaElem.innerText : 'Explore';
               const targetUrl = card.getAttribute('href') || '#';
-              const viewsText = viewsElem ? viewsElem.innerText.trim() : '2.5K';
+              const viewsText = viewsElem ? viewsElem.innerText.trim() : 'Watch';
               
               swiperHTML += `
                 <div class="swiper-slide shorts-modal-content">
                   <div class="shorts-modal-video-wrapper">
-                    <video class="shorts-modal-video" src="${src}" playsinline loop preload="metadata"></video>
-                    <div class="shorts-modal-video-overlay">
+                    ${getEmbedHtml ? getEmbedHtml(src, true) : `<video class="shorts-modal-video" src="${src}" playsinline loop preload="metadata"></video>`}
+                    <div class="shorts-modal-video-overlay" style="${isIframe ? 'background:transparent; pointer-events:none;' : ''}">
                       <div class="shorts-modal-caption">
-                        <div class="short-views" style="margin-bottom:0;"><i class="fas fa-play"></i> <span class="shorts-modal-views">${viewsText}</span></div>
+                        <div class="short-views" style="margin-bottom:0; ${isIframe ? 'display:none;' : ''}"><i class="fas fa-play"></i> <span class="shorts-modal-views">${viewsText}</span></div>
                       </div>
-                      <div class="shorts-modal-side-controls">
+                      <div class="shorts-modal-side-controls" style="${isIframe ? 'display:none;' : ''}">
                         <button class="shorts-modal-icon-btn shorts-modal-mute"><i class="fas fa-volume-up"></i></button>
                         <button class="shorts-modal-icon-btn"><i class="fas fa-share"></i></button>
                       </div>
-                      <div class="shorts-modal-timeline-wrapper">
+                      <div class="shorts-modal-timeline-wrapper" style="${isIframe ? 'display:none;' : ''}">
                          <button class="shorts-modal-play-btn shorts-modal-play-pause"><i class="fas fa-play"></i></button>
                          <div class="shorts-modal-timeline">
                            <div class="shorts-modal-progress"></div>
@@ -1093,7 +1009,11 @@
 
             const pauseAllVideos = () => {
               document.querySelectorAll('.shorts-modal-video').forEach(vid => {
-                vid.pause();
+                if (vid.tagName === 'VIDEO') {
+                  vid.pause();
+                } else if (vid.tagName === 'IFRAME') {
+                  vid.src = '';
+                }
                 const slide = vid.closest('.shorts-modal-content');
                 if (slide) {
                   const ppBtn = slide.querySelector('.shorts-modal-play-pause');
@@ -1106,12 +1026,32 @@
               const slides = document.querySelectorAll('.shorts-modal-swiper .swiper-slide');
               const activeSlide = slides[index];
               if (activeSlide) {
+                const iframe = activeSlide.querySelector('iframe');
+                if (iframe && iframe.hasAttribute('data-src')) {
+                  iframe.src = iframe.getAttribute('data-src');
+                }
+                
                 const vid = activeSlide.querySelector('video');
                 if (vid) {
                   vid.currentTime = 0;
-                  vid.play().catch(err => console.log('Autoplay prevented:', err));
+                  // Explicitly set muted to false when trying to play in modal to ensure sound
+                  vid.muted = false;
+                  
+                  vid.play().catch(err => {
+                    console.log('Unmuted autoplay prevented. Muting and retrying.', err);
+                    vid.muted = true;
+                    const muteBtn = activeSlide.querySelector('.shorts-modal-mute');
+                    if (muteBtn) muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    vid.play().catch(e => console.log('Muted autoplay also prevented', e));
+                  });
                   const ppBtn = activeSlide.querySelector('.shorts-modal-play-pause');
                   if (ppBtn) ppBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                  
+                  // Ensure mute button reflects current state
+                  const muteBtn = activeSlide.querySelector('.shorts-modal-mute');
+                  if (muteBtn) {
+                     muteBtn.innerHTML = vid.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+                  }
                 }
               }
             };
@@ -1144,6 +1084,40 @@
             };
 
             shortCards.forEach((card, index) => {
+              const vid = card.querySelector('video');
+              if (vid) {
+                card.addEventListener('mouseenter', () => {
+                  vid.play().catch(e => console.log('Hover autoplay prevented', e));
+                });
+                card.addEventListener('mouseleave', () => {
+                  vid.pause();
+                });
+              }
+              
+              const ytThumb = card.querySelector('.yt-thumbnail');
+              if (ytThumb) {
+                let hoverTimeout;
+                card.addEventListener('mouseenter', () => {
+                  hoverTimeout = setTimeout(() => {
+                    const ytId = ytThumb.getAttribute('data-yt-id');
+                    if (ytId && !card.querySelector('iframe')) {
+                      const iframe = document.createElement('iframe');
+                      iframe.className = "short-video external-embed yt-iframe";
+                      iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${ytId}`;
+                      iframe.style.cssText = "pointer-events:none; width:100%; height:100%; object-fit:cover; position:absolute; top:0; left:0; border-radius:12px;";
+                      iframe.frameBorder = "0";
+                      iframe.allow = "autoplay";
+                      card.appendChild(iframe);
+                    }
+                  }, 250);
+                });
+                card.addEventListener('mouseleave', () => {
+                  clearTimeout(hoverTimeout);
+                  const iframe = card.querySelector('.yt-iframe');
+                  if (iframe) iframe.remove();
+                });
+              }
+
               card.addEventListener('click', (e) => {
                 e.preventDefault();
                 modal.classList.add('active');
@@ -1433,10 +1407,10 @@
         'hero-find-outlet': 'Find an Outlet',
         'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> Install App',
 
-        'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> Curated Shades',
-        'coy-heading': 'Colour of the Year',
-        'coy-sub': 'Explore and elevate your space with featured shades of Nanco Paints.',
-        'coy-catalog-btn': 'View colour catalogue <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
+        'coy-label': '<i class="fas fa-award" style="margin-right:6px;"></i> Featured Products',
+        'coy-heading': 'Products of the Year',
+        'coy-sub': 'Discover our most celebrated, high-performance paints designed to elevate any space.',
+        'coy-catalog-btn': 'View all products <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
 
         'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> Curated Collection',
         'featured-heading': 'Featured Products',
@@ -1550,10 +1524,10 @@
         'hero-find-outlet': 'ശാഖകൾ കണ്ടെത്തുക',
         'hero-download-app': '<i class="fas fa-download" style="margin-right:6px;"></i> ആപ്പ് ഇൻസ്റ്റാൾ ചെയ്യുക',
 
-        'coy-label': '<i class="fas fa-palette" style="margin-right:6px;"></i> തിരഞ്ഞെടുത്ത നിറങ്ങൾ',
-        'coy-heading': 'വർഷത്തിന്റെ നിറം',
-        'coy-sub': 'നാൻകോ പെയിന്റ്സിന്റെ പ്രധാന നിറങ്ങൾ ഉപയോഗിച്ച് നിങ്ങളുടെ ഇടം മനോഹരമാക്കൂ.',
-        'coy-catalog-btn': 'കളർ കാറ്റലോഗ് കാണുക <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
+        'coy-label': '<i class="fas fa-award" style="margin-right:6px;"></i> പ്രത്യേക ഉൽപ്പന്നങ്ങൾ',
+        'coy-heading': 'ഈ വർഷത്തെ ഉൽപ്പന്നങ്ങൾ',
+        'coy-sub': 'നിങ്ങളുടെ ഇടം കൂടുതൽ മികച്ചതാക്കാൻ നാൻകോ പെയിന്റ്സിന്റെ ഏറ്റവും മികച്ച ഉൽപ്പന്നങ്ങൾ തിരഞ്ഞെടുക്കൂ.',
+        'coy-catalog-btn': 'എല്ലാ ഉൽപ്പന്നങ്ങളും കാണുക <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>',
 
         'featured-label': '<i class="fas fa-star" style="margin-right:6px;"></i> മികച്ച കളക്ഷനുകൾ',
         'featured-heading': 'പ്രത്യേക ഉൽപ്പന്നങ്ങൾ',
@@ -1780,6 +1754,7 @@
       const chatToggleBtn = document.getElementById('chatbot-toggle-btn');
       const chatWindow = document.getElementById('chatbot-window');
       const chatCloseBtn = document.getElementById('chatbot-close-btn');
+      const mobileNavChatBtn = document.getElementById('mobile-nav-chat-btn');
 
       if (chatToggleBtn && chatWindow) {
         chatToggleBtn.addEventListener('click', () => {
@@ -1788,10 +1763,18 @@
         });
       }
 
+      if (mobileNavChatBtn && chatWindow) {
+        mobileNavChatBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          chatWindow.classList.add('open');
+          if (chatToggleBtn) chatToggleBtn.style.display = 'none';
+        });
+      }
+
       if (chatCloseBtn && chatWindow && chatToggleBtn) {
         chatCloseBtn.addEventListener('click', () => {
           chatWindow.classList.remove('open');
-          chatToggleBtn.style.display = 'flex'; // show the floating button again
+          chatToggleBtn.style.display = ''; // restore normal CSS flow
         });
       }
 
@@ -2218,6 +2201,200 @@
     </div>
   </div>
 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' 
+          ? 'http://127.0.0.1:5000' 
+          : 'https://nanco-backend.onrender.com';
+          
+        const [settingsRes, dataRes] = await Promise.all([
+          fetch(`${API_BASE_URL}/api/hero-settings`).catch(()=>null),
+          fetch(`${API_BASE_URL}/api/data`).catch(()=>null)
+        ]);
+
+        const settings = settingsRes?.ok ? await settingsRes.json() : null;
+        const data = dataRes?.ok ? await dataRes.json() : {};
+
+        let slides = [];
+        
+        if (settings && !settings.hide_default_hero) {
+          slides.push({
+            tag_text: settings.tag_text,
+            headline: settings.headline,
+            sub_text: settings.sub_text,
+            url: settings.house_bg_url,
+            bucket_image_url: settings.bucket_image_url,
+            bg_color: settings.bg_color,
+            overlay_color: settings.overlay_color,
+            tag_color: settings.tag_color,
+            headline_color: settings.headline_color,
+            sub_color: settings.sub_color,
+            btn_1_text: settings.btn_1_text,
+            btn_2_text: settings.btn_2_text
+          });
+        }
+
+        if (data.heroBgs && data.heroBgs.length > 0) {
+          slides = slides.concat(data.heroBgs);
+        }
+
+        if (slides.length > 0) {
+          let currentIdx = 0;
+          let slideInterval;
+          
+          const dotsContainer = document.querySelector('.bg-toggle-dots');
+          dotsContainer.innerHTML = '';
+
+          // Render dots
+          slides.forEach((_, idx) => {
+            const dot = document.createElement('div');
+            dot.style.width = '12px';
+            dot.style.height = '12px';
+            dot.style.borderRadius = '50%';
+            dot.style.background = idx === 0 ? 'var(--color-lime-spark)' : 'rgba(255,255,255,0.5)';
+            dot.style.cursor = 'pointer';
+            dot.style.transition = 'all 0.3s';
+            dot.onclick = () => goToSlide(idx);
+            dotsContainer.appendChild(dot);
+          });
+
+          function goToSlide(idx) {
+            currentIdx = idx;
+            const slide = slides[currentIdx];
+            
+            // Text Content
+            const titleEl = document.getElementById('hero-title');
+            const subEl = document.getElementById('hero-sub');
+            const tagEl = document.getElementById('hero-tag');
+            const btn1 = document.getElementById('hero-view-products');
+            const btn2 = document.getElementById('hero-download-app');
+            
+            if (titleEl) {
+                titleEl.textContent = slide.headline || '';
+                titleEl.style.color = slide.headline_color || '#ffffff';
+            }
+            if (subEl) {
+                subEl.textContent = slide.sub_text || '';
+                subEl.style.color = slide.sub_color || '#ffffff';
+            }
+            if (tagEl) {
+                tagEl.innerHTML = `<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> ${slide.tag_text || ''}`;
+                tagEl.style.color = slide.tag_color || '#000000';
+            }
+            if (btn1 && slide.btn_1_text) btn1.textContent = slide.btn_1_text;
+            if (btn2 && slide.btn_2_text) btn2.innerHTML = `<i class="fas fa-download" style="margin-right:6px;"></i> ${slide.btn_2_text}`;
+
+            // Images
+            const heroSection = document.querySelector('.hero-section');
+            if (heroSection && slide.url) {
+                heroSection.style.backgroundImage = `url('${slide.url}')`;
+                heroSection.style.backgroundColor = slide.bg_color || '#c8d90f';
+            }
+            
+            const fgImgs = document.querySelectorAll('.hero-mobile-bucket, .hero-bucket-image');
+            fgImgs.forEach(img => {
+                if(slide.bucket_image_url) {
+                    img.src = slide.bucket_image_url;
+                    img.removeAttribute('data-asset');
+                }
+            });
+
+            // Update dots
+            Array.from(dotsContainer.children).forEach((dot, i) => {
+              dot.style.background = i === currentIdx ? 'var(--color-lime-spark)' : 'rgba(255,255,255,0.5)';
+            });
+            
+            resetInterval();
+          }
+
+          function nextSlide() {
+            goToSlide((currentIdx + 1) % slides.length);
+          }
+
+          function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 5000); // 5 seconds
+          }
+
+          // Initialize first slide
+          goToSlide(0);
+        }
+      } catch (e) {
+        console.error('Failed to load dynamic hero banner', e);
+      }
+    });
+  </script>
+  <!-- MOBILE BOTTOM NAV -->
+  <nav class="mobile-bottom-nav">
+    <a href="../nanco/index.html" class="bottom-nav-item active">
+      <span class="material-symbols-rounded">home</span>
+    </a>
+    <a href="../nanco/products.html" class="bottom-nav-item">
+      <span class="material-symbols-rounded">inventory_2</span>
+    </a>
+    <a href="#" id="mobile-nav-chat-btn" class="bottom-nav-item">
+      <span class="material-symbols-rounded">forum</span>
+    </a>
+    <a href="../nanco/colors.html" class="bottom-nav-item">
+      <span class="material-symbols-rounded">palette</span>
+    </a>
+    <a href="../nanco/calculators.html" class="bottom-nav-item">
+      <span class="material-symbols-rounded">calculate</span>
+    </a>
+  </nav>
+
+  <style>
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #f3f3f1;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      z-index: 1000;
+      padding: 16px 0;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    }
+    .bottom-nav-item {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.4);
+      text-decoration: none;
+      transition: color 0.3s, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .bottom-nav-item .material-symbols-rounded {
+      font-size: 28px;
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      transition: font-variation-settings 0.3s, color 0.3s, transform 0.3s;
+    }
+    .bottom-nav-item.active, .bottom-nav-item:active {
+      color: #000000;
+    }
+    .bottom-nav-item.active .material-symbols-rounded {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      transform: scale(1.15);
+    }
+    
+    @media (max-width: 768px) {
+      .mobile-bottom-nav {
+        display: flex;
+      }
+      .hide-on-mobile {
+        display: none !important;
+      }
+      body {
+        padding-bottom: 70px !important;
+      }
+      #chatbot-toggle-btn {
+        display: none !important;
+      }
+    }
+  </style>
 
 <script src="assets.js"></script>
 </body>

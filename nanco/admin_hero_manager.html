@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Hero Banner Manager | Nanco Admin</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  
+  <style>
+    /* CSS Variables */
+    :root {
+      --color-lime-spark: #d2e823;
+      --color-linen-canvas: #f3f3f1;
+      --color-white-plate: #ffffff;
+      --color-ink-black: #000000;
+      --font-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    body {
+      background: var(--color-ink-black);
+      font-family: var(--font-primary);
+      margin: 0;
+    }
+
+    /* Color Palette Panel */
+    .color-palette {
+      position: fixed;
+      right: 24px;
+      top: 80px;
+      background: rgba(20,20,20,0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 16px;
+      border-radius: 12px;
+      z-index: 9999;
+      color: white;
+      width: 240px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .color-palette.active {
+      display: flex;
+    }
+    .color-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    .color-row input[type="color"] {
+      background: none;
+      border: none;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    /* Hide mobile bucket by default (copied from index.html inline style) */
+    .hero-mobile-bucket-wrap {
+      display: none;
+    }
+    @media (max-width: 600px) {
+      .hero-section {
+        overflow: visible !important;
+        padding-bottom: 24px !important;
+        background-image: url('assets/mobilebg.jpg') !important;
+      }
+      .hero-mobile-bucket-wrap {
+        display: block;
+        width: 100%;
+        max-width: 200px;
+        margin: 0 auto -100px;
+        position: relative;
+        z-index: 10;
+        filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.25));
+      }
+      .hero-mobile-bucket {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+
+    /* Admin Bar Overlay */
+    .admin-floating-bar {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 9999;
+      font-family: var(--font-primary);
+      color: #fff;
+    }
+    
+    .admin-floating-bar h1 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .admin-floating-bar h1 a {
+      color: #fff;
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+    }
+    .admin-floating-bar h1 a:hover { opacity: 1; }
+
+    .admin-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-action {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-action:hover { background: rgba(255,255,255,0.2); }
+    
+    .btn-danger {
+      color: #fc8181;
+      border-color: rgba(252, 129, 129, 0.3);
+    }
+    .btn-danger:hover {
+      background: rgba(252, 129, 129, 0.1);
+    }
+    
+    .btn-save {
+      background: var(--color-lime-spark);
+      color: var(--color-ink-black);
+      border: none;
+    }
+    .btn-save:hover { background: #e0f62b; }
+
+    /* Keep hero section natural to match index.html */
+    .hero-section {
+      position: relative;
+    }
+    
+    /* Content Editable styling */
+    [contenteditable="true"] {
+      outline: 2px dashed rgba(255,255,255,0.4);
+      outline-offset: 4px;
+      min-height: 1em;
+      transition: outline 0.2s;
+      cursor: text;
+    }
+    [contenteditable="true"]:focus {
+      outline: 2px solid var(--color-lime-spark);
+      background: rgba(0,0,0,0.5);
+    }
+    [contenteditable="false"] {
+      outline: none;
+      cursor: default;
+    }
+    
+    /* Image Upload Wrapper */
+    .editable-img-wrapper {
+      position: relative;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .editable-img-wrapper::after {
+      content: '\f03e Change Image';
+      font-family: 'Font Awesome 5 Free', 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-size: 16px;
+      border-radius: inherit;
+    }
+    .editable-img-wrapper:hover::after {
+      opacity: 1;
+    }
+
+    /* Thumbnail Navigation */
+    .thumbnail-nav {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 9999;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      background: rgba(0,0,0,0.6);
+      padding: 12px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      max-width: 90%;
+      overflow-x: auto;
+    }
+    .thumb-card {
+      width: 100px;
+      height: 60px;
+      border-radius: 6px;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      border: 2px solid transparent;
+      opacity: 0.6;
+      transition: all 0.2s;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .thumb-card.active {
+      border-color: var(--color-lime-spark);
+      opacity: 1;
+    }
+    .thumb-card:hover {
+      opacity: 1;
+    }
+    .thumb-card-add {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.1);
+      border: 2px dashed rgba(255,255,255,0.4);
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    .thumb-card-add:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Admin Top Bar -->
+  <div class="admin-floating-bar">
+    <h1>
+      <a href="admin.html" title="Back to Dashboard"><i class="fas fa-arrow-left"></i></a> 
+      <span>Hero Banner Manager</span>
+    </h1>
+    <div class="admin-controls">
+      <div id="slideIndicator" style="margin-right: 12px; font-weight: 500; font-size: 14px; opacity: 0.8;">Slide 1 of 1</div>
+      <button class="btn-action btn-danger" id="delSlideBtn" onclick="deleteCurrentSlide()" style="display:none;"><i class="fas fa-trash"></i> Delete Slide</button>
+      <button class="btn-action" onclick="document.getElementById('colorPalette').classList.toggle('active')"><i class="fas fa-palette"></i> Colors</button>
+      <button class="btn-action btn-save" onclick="saveChanges()" id="saveBtn"><i class="fas fa-save"></i> Save Current Slide</button>
+    </div>
+  </div>
+
+  <!-- Color Palette -->
+  <div class="color-palette" id="colorPalette">
+    <h3 style="margin:0 0 8px; font-size:14px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:8px;">Slide Colors</h3>
+    <div class="color-row"><span>Background</span><input type="color" id="cp_bg" oninput="updateLiveColor('bg', this.value)"></div>
+    <div class="color-row"><span>Headline</span><input type="color" id="cp_headline" oninput="updateLiveColor('headline', this.value)"></div>
+    <div class="color-row"><span>Subtitle</span><input type="color" id="cp_sub" oninput="updateLiveColor('sub', this.value)"></div>
+    <div class="color-row"><span>Tag</span><input type="color" id="cp_tag" oninput="updateLiveColor('tag', this.value)"></div>
+  </div>
+
+  <!-- Live Preview Container -->
+  <section class="hero-section" aria-label="Hero" id="heroSection">
+    <!-- Background Image Changer -->
+    <label class="btn-action" style="position: absolute; top: 24px; left: 24px; z-index: 100; background: rgba(0,0,0,0.7); cursor: pointer; border-radius: 8px;">
+      <i class="fas fa-image"></i> Change Background
+      <input type="file" id="bgImgInput" style="display:none;" accept="image/*" onchange="updateBackgroundImage(this, 'bg_file')">
+    </label>
+    
+    <div class="hero-inner" style="position: relative; z-index: 2;">
+      <div class="hero-left" style="color: white;">
+        <div class="hero-tag" id="edit-tag" contenteditable="true" style="color: black;">
+          <i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> ISO 9001-2015 Certified
+        </div>
+        <h1 class="hero-headline" id="edit-title" contenteditable="true" style="color: white;">Paint for<br>Better Lives.</h1>
+        <p class="hero-sub" id="edit-sub" contenteditable="true" style="color: white;">
+          Nanco Paints brings premium-quality, certified paints to homes, offices, and factories across Kerala. Bold colours. Lasting finish.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" id="edit-btn-1" contenteditable="true" style="border:none;cursor:pointer;">I will help you buy</button>
+          <a class="btn-ghost" href="#" id="edit-btn-2" contenteditable="true" style="display: inline-flex; align-items: center;"><i class="fas fa-download" style="margin-right:6px;"></i> Install App</a>
+        </div>
+      </div>
+      
+      <div class="hero-mobile-bucket-wrap">
+        <img class="hero-mobile-bucket" src="assets/HERO-PAINT.png" alt="Nanco Paints Bucket">
+      </div>
+      
+      <div class="hero-right" aria-hidden="true">
+        <div class="hero-image-wrap">
+          <label class="editable-img-wrapper" style="border-radius: 20px;">
+            <img id="fgImgPreview" class="hero-bucket-image" src="assets/HERO-PAINT.png" alt="Nanco Paints Bucket">
+            <input type="file" id="fgImgInput" style="display:none;" accept="image/*" onchange="updateImage(this, 'fgImgPreview', 'fg_file')">
+          </label>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Thumbnail Navigation for Editor -->
+  <div class="thumbnail-nav" id="dotsContainer">
+    <!-- Thumbnails injected by JS -->
+  </div>
+
+  <script>
+    const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' 
+      ? 'http://127.0.0.1:5000' 
+      : 'https://nanco-backend.onrender.com';
+      
+    const session = JSON.parse(sessionStorage.getItem('nanco_session') || 'null');
+    let token = '';
+    if (!session || !session.token || session.role !== 'admin') {
+      window.location.href = 'login.html';
+    } else {
+      token = session.token;
+    }
+
+    let backgrounds = [];
+    let currentIndex = 0;
+    
+    // File inputs store per slide
+    let files = {
+        bg_file: null,
+        fg_file: null
+    };
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadData();
+    });
+
+    async function loadData() {
+        try {
+            const [dataRes, settingsRes] = await Promise.all([
+                fetch(`${API_BASE_URL}/api/data`).catch(()=>null),
+                fetch(`${API_BASE_URL}/api/hero-settings`).catch(()=>null)
+            ]);
+            
+            const data = dataRes?.ok ? await dataRes.json() : {};
+            const settings = settingsRes?.ok ? await settingsRes.json() : {};
+            
+            // Build slides array
+            backgrounds = [];
+            
+            // 1. Default slide (from hero-settings)
+            backgrounds.push({
+                is_default: true,
+                tag_text: settings.tag_text || 'ISO 9001-2015 Certified',
+                headline: settings.headline || 'Paint for Better Lives.',
+                sub_text: settings.sub_text || 'Nanco Paints brings premium-quality, certified paints to homes, offices, and factories across Kerala. Bold colours. Lasting finish.',
+                btn_1_text: settings.btn_1_text || 'I will help you buy',
+                btn_2_text: settings.btn_2_text || 'Install App',
+                url: settings.house_bg_url || 'assets/house-bg.png', // We standardize on 'url' for local state
+                bucket_image_url: settings.bucket_image_url || 'assets/HERO-PAINT.png',
+                bg_color: settings.bg_color || '#c8d90f',
+                overlay_color: settings.overlay_color || '#c8d90f',
+                tag_color: settings.tag_color || '#000000',
+                headline_color: settings.headline_color || '#ffffff',
+                sub_color: settings.sub_color || '#ffffff'
+            });
+            
+            // 2. Additional slides (from heroBgs table)
+            if (data.heroBgs && data.heroBgs.length > 0) {
+                backgrounds = backgrounds.concat(data.heroBgs);
+            }
+            
+            renderDots();
+            applySlide(0);
+        } catch (e) {
+            console.error("Failed to load data", e);
+        }
+    }
+
+    function renderDots() {
+        const container = document.getElementById('dotsContainer');
+        container.innerHTML = '';
+        backgrounds.forEach((slide, idx) => {
+            const thumb = document.createElement('div');
+            thumb.className = `thumb-card ${idx === currentIndex ? 'active' : ''}`;
+            thumb.style.backgroundImage = `url('${slide.url || ''}')`;
+            thumb.style.backgroundColor = slide.bg_color || 'transparent';
+            thumb.onclick = () => {
+                syncCurrentSlide();
+                applySlide(idx);
+            };
+            container.appendChild(thumb);
+        });
+        
+        // Add Slide button as a thumbnail
+        const addThumb = document.createElement('div');
+        addThumb.className = 'thumb-card thumb-card-add';
+        addThumb.innerHTML = '<i class="fas fa-plus" style="font-size:16px;margin-bottom:4px;"></i> Add';
+        addThumb.onclick = () => {
+            syncCurrentSlide();
+            addNewSlide();
+        };
+        container.appendChild(addThumb);
+        
+        document.getElementById('slideIndicator').innerText = `Slide ${currentIndex + 1} of ${backgrounds.length}`;
+        
+        // Show delete button only if not the default slide
+        document.getElementById('delSlideBtn').style.display = currentIndex === 0 ? 'none' : 'flex';
+    }
+
+    function syncCurrentSlide() {
+        if (currentIndex < 0 || !backgrounds[currentIndex]) return;
+        const slide = backgrounds[currentIndex];
+        
+        const titleEl = document.getElementById('edit-title');
+        const subEl = document.getElementById('edit-sub');
+        const tagEl = document.getElementById('edit-tag');
+        
+        if (tagEl) {
+            // we remove the html injected for the icon by reading textContent
+            slide.tag_text = tagEl.textContent.trim();
+        }
+        if (titleEl) slide.headline = titleEl.innerHTML;
+        if (subEl) slide.sub_text = subEl.innerHTML;
+        
+        if (slide.is_default) {
+            const btn1 = document.getElementById('edit-btn-1');
+            const btn2 = document.getElementById('edit-btn-2');
+            if (btn1) slide.btn_1_text = btn1.innerHTML;
+            if (btn2) slide.btn_2_text = btn2.textContent.trim();
+        }
+    }
+
+    function applySlide(index) {
+        currentIndex = index;
+        const slide = backgrounds[index];
+        if (!slide) return;
+        
+        const titleEl = document.getElementById('edit-title');
+        const subEl = document.getElementById('edit-sub');
+        const tagEl = document.getElementById('edit-tag');
+        const btn1 = document.getElementById('edit-btn-1');
+        const btn2 = document.getElementById('edit-btn-2');
+        const fgPreview = document.getElementById('fgImgPreview');
+        const mobFg = document.querySelector('.hero-mobile-bucket');
+        const heroSection = document.getElementById('heroSection');
+
+        // Apply HTML content
+        // The tag might contain an icon, we can just replace the text node or innerHTML.
+        // For simplicity, we just inject the raw text inside the span. If they want the icon, they can't easily edit it. 
+        // We will just do a basic textContent update and re-add the icon if it's there.
+        tagEl.innerHTML = `<i class="fas fa-award" style="color:var(--color-mustard-pop);margin-right:6px;"></i> ${slide.tag_text || ''}`;
+        titleEl.textContent = slide.headline || '';
+        subEl.textContent = slide.sub_text || '';
+        
+        // Buttons are only editable on the default slide (since heroBgs doesn't store them)
+        if (slide.is_default) {
+            btn1.setAttribute('contenteditable', 'true');
+            btn2.setAttribute('contenteditable', 'true');
+            btn1.style.opacity = '1';
+            btn2.style.opacity = '1';
+            btn1.innerHTML = slide.btn_1_text || 'Button 1';
+            btn2.innerHTML = `<i class="fas fa-download" style="margin-right:6px;"></i> ${slide.btn_2_text || 'Button 2'}`;
+        } else {
+            btn1.setAttribute('contenteditable', 'false');
+            btn2.setAttribute('contenteditable', 'false');
+            // Dim them slightly to indicate they aren't editable on extra slides
+            btn1.style.opacity = '0.5';
+            btn2.style.opacity = '0.5';
+        }
+        
+        // Apply Images
+        if (slide.bucket_image_url) {
+            fgPreview.src = slide.bucket_image_url;
+            mobFg.src = slide.bucket_image_url;
+        }
+        
+        // Apply Colors and Background Image
+        if (heroSection) {
+            heroSection.style.backgroundImage = `url('${slide.url || ''}')`;
+            heroSection.style.backgroundSize = 'cover';
+            heroSection.style.backgroundPosition = 'center';
+            heroSection.style.backgroundRepeat = 'no-repeat';
+            heroSection.style.backgroundColor = slide.bg_color || 'transparent';
+        }
+
+        if (slide.headline_color) titleEl.style.color = slide.headline_color;
+        else titleEl.style.color = '#ffffff';
+        if (slide.sub_color) subEl.style.color = slide.sub_color;
+        else subEl.style.color = '#ffffff';
+        if (slide.tag_color) tagEl.style.color = slide.tag_color;
+        else tagEl.style.color = '#000000';
+        
+        // Update color pickers
+        document.getElementById('cp_bg').value = slide.bg_color || '#c8d90f';
+        document.getElementById('cp_headline').value = slide.headline_color || '#ffffff';
+        document.getElementById('cp_sub').value = slide.sub_color || '#ffffff';
+        document.getElementById('cp_tag').value = slide.tag_color || '#000000';
+
+        renderDots();
+    }
+
+    function updateLiveColor(type, value) {
+        const slide = backgrounds[currentIndex];
+        const heroSection = document.getElementById('heroSection');
+        const titleEl = document.getElementById('edit-title');
+        const subEl = document.getElementById('edit-sub');
+        const tagEl = document.getElementById('edit-tag');
+
+        if (type === 'bg') { slide.bg_color = value; }
+        
+        // Re-apply background combined image
+        if (type === 'bg') {
+            heroSection.style.backgroundImage = `url('${slide.url || ''}')`;
+            heroSection.style.backgroundColor = slide.bg_color || 'transparent';
+        }
+
+        if (type === 'headline') { slide.headline_color = value; titleEl.style.color = value; }
+        if (type === 'sub') { slide.sub_color = value; subEl.style.color = value; }
+        if (type === 'tag') { slide.tag_color = value; tagEl.style.color = value; }
+    }
+
+    function updateBackgroundImage(input, fileKey) {
+        if(input.files && input.files[0]) {
+            const slide = backgrounds[currentIndex];
+            slide[fileKey] = input.files[0];
+            const url = URL.createObjectURL(input.files[0]);
+            slide.url = url;
+            applySlide(currentIndex);
+        }
+    }
+
+    function updateImage(input, previewId, fileKey) {
+        if(input.files && input.files[0]) {
+            const slide = backgrounds[currentIndex];
+            slide[fileKey] = input.files[0];
+            const url = URL.createObjectURL(input.files[0]);
+            document.getElementById(previewId).src = url;
+            if (fileKey === 'fg_file') {
+                document.querySelector('.hero-mobile-bucket').src = url;
+                slide.bucket_image_url = url;
+            }
+        }
+    }
+
+    function addNewSlide() {
+        const newSlide = {
+            tag_text: 'New Banner',
+            headline: 'Your Custom Text Here',
+            sub_text: 'Describe your new slide.',
+            url: 'assets/house-bg.png',
+            bucket_image_url: 'assets/HERO-PAINT.png',
+            bg_color: '#c8d90f',
+            overlay_color: '#c8d90f',
+            tag_color: '#000000',
+            headline_color: '#ffffff',
+            sub_color: '#ffffff'
+        };
+        backgrounds.push(newSlide);
+        applySlide(backgrounds.length - 1);
+    }
+
+    async function deleteCurrentSlide() {
+        if (currentIndex === 0) {
+            alert('Cannot delete the default slide.');
+            return;
+        }
+        if (!confirm('Are you sure you want to delete this slide?')) return;
+        
+        const slide = backgrounds[currentIndex];
+        
+        // If it has an ID, delete from backend
+        if (slide.id) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/hero/${slide.id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (!res.ok) throw new Error('Failed to delete');
+            } catch (e) {
+                alert(e.message);
+                return;
+            }
+        }
+        
+        backgrounds.splice(currentIndex, 1);
+        applySlide(0);
+    }
+
+    async function saveChanges() {
+        syncCurrentSlide();
+        
+        const btn = document.getElementById('saveBtn');
+        const origText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+        btn.disabled = true;
+        
+        try {
+            const slide = backgrounds[currentIndex];
+            let bgUrl = slide.url;
+            let fgUrl = slide.bucket_image_url;
+            
+            // Upload images if changed
+            if (slide.bg_file) {
+                const fd = new FormData();
+                fd.append('image', slide.bg_file);
+                const res = await fetch(`${API_BASE_URL}/api/upload`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: fd
+                });
+                const resData = await res.json();
+                if (resData.publicUrl) {
+                    bgUrl = resData.publicUrl;
+                    slide.url = bgUrl; // update local state with real URL
+                    slide.bg_file = null;
+                }
+            }
+            if (slide.fg_file) {
+                const fd = new FormData();
+                fd.append('image', slide.fg_file);
+                const res = await fetch(`${API_BASE_URL}/api/upload`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: fd
+                });
+                const resData = await res.json();
+                if (resData.publicUrl) {
+                    fgUrl = resData.publicUrl;
+                    slide.bucket_image_url = fgUrl; // update local state with real URL
+                    slide.fg_file = null;
+                }
+            }
+            
+            // Parse text content. For tag and btn2, strip the injected icons
+            let rawTag = slide.tag_text;
+            let rawTitle = slide.headline;
+            let rawSub = slide.sub_text;
+            
+            if (slide.is_default) {
+                // Save to hero_settings
+                let rawBtn1 = slide.btn_1_text;
+                let rawBtn2 = slide.btn_2_text;
+                
+                const payload = {
+                    tag_text: rawTag,
+                    headline: rawTitle,
+                    sub_text: rawSub,
+                    btn_1_text: rawBtn1,
+                    btn_2_text: rawBtn2,
+                    house_bg_url: bgUrl,
+                    bucket_image_url: fgUrl,
+                    bg_color: slide.bg_color || '#c8d90f',
+                    overlay_color: slide.overlay_color || '#c8d90f',
+                    tag_color: slide.tag_color || '#000000',
+                    headline_color: slide.headline_color || '#ffffff',
+                    sub_color: slide.sub_color || '#ffffff'
+                };
+                
+                const res = await fetch(`${API_BASE_URL}/api/hero-settings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error('Save failed');
+            } else {
+                // Save to hero_backgrounds
+                const payload = {
+                    tag_text: rawTag,
+                    headline: rawTitle,
+                    sub_text: rawSub,
+                    url: bgUrl,
+                    bucket_image_url: fgUrl,
+                    bg_color: slide.bg_color || '#c8d90f',
+                    overlay_color: slide.overlay_color || '#c8d90f',
+                    tag_color: slide.tag_color || '#000000',
+                    headline_color: slide.headline_color || '#ffffff',
+                    sub_color: slide.sub_color || '#ffffff'
+                };
+                
+                let res;
+                if (slide.id) {
+                    res = await fetch(`${API_BASE_URL}/api/hero/${slide.id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    res = await fetch(`${API_BASE_URL}/api/hero`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify(payload)
+                    });
+                }
+                
+                if (!res.ok) throw new Error('Save failed');
+                
+                const resData = await res.json();
+                if(resData && resData.length > 0 && !slide.id) {
+                    backgrounds[currentIndex].id = resData[0].id; // Assign ID to new slide
+                }
+            }
+            
+            // Update local state
+            slide.url = bgUrl;
+            slide.house_bg_url = bgUrl; // keep both in sync just in case
+            slide.bucket_image_url = fgUrl;
+            slide.tag_text = rawTag;
+            slide.headline = rawTitle;
+            slide.sub_text = rawSub;
+            
+            btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            setTimeout(() => { btn.innerHTML = origText; btn.disabled = false; }, 2000);
+            
+        } catch (e) {
+            console.error(e);
+            alert('An error occurred while saving.');
+            btn.innerHTML = origText;
+            btn.disabled = false;
+        }
+    }
+  </script>
+</body>
+</html>

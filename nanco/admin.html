@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Nanco Paints</title>
   <meta name="description" content="Nanco Paints admin panel for managing products and images.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="stylesheet" href="../nanco/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -152,7 +153,7 @@
   <nav class="nav-float">
     <div class="nav-inner">
       <a href="../nanco/index.html" class="nav-logo">
-        <img src="../nanco/assets/dark-logo.png" alt="Nanco Paints Logo">
+        <img src="../nanco/assets/light-logo.png" alt="Nanco Paints Logo">
       </a>
       <ul class="nav-links">
         <li><a href="../nanco/index.html">Live Site</a></li>
@@ -163,65 +164,56 @@
   </nav>
 
   <!-- Hero Section for Admin -->
-  <header class="hero-section" style="padding: 60px 24px 40px; border-bottom: 1.5px solid rgba(0,0,0,0.08); background: var(--color-white-plate);">
-    <div class="hero-inner" style="grid-template-columns: 1fr;">
+  <header class="hero-section" style="position: relative; padding: 80px 24px 60px; border-bottom: 2px solid var(--color-ink-black); background-image: linear-gradient(rgba(6, 20, 146, 0.6), rgba(30, 35, 48, 0.8)), url('../nanco/product_imgs/product_img_type_1/1.jpeg'); background-size: cover; background-position: center;">
+    <!-- CSS Mosaic/Checkerboard Pattern -->
+    <div style="position: absolute; inset: 0; background-image: linear-gradient(45deg, rgba(0,0,0,0.2) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.2)), linear-gradient(45deg, rgba(0,0,0,0.2) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.2) 75%, rgba(0,0,0,0.2)); background-size: 6px 6px; background-position: 0 0, 3px 3px; pointer-events: none;"></div>
+    
+    <div class="hero-inner" style="grid-template-columns: 1fr; position: relative; z-index: 2;">
       <div>
-        <span class="hero-tag">Admin Panel</span>
-        <h1 class="hero-headline" style="font-size: 56px;">Manage Nanco Platform</h1>
-        <p class="hero-sub">Upload product catalogs, control images, and manage the content of the bento application.</p>
+        <span class="hero-tag" style="background: var(--color-lime-spark); color: var(--color-ink-black); border-color: var(--color-ink-black);">Admin Panel</span>
+        <h1 class="hero-headline" style="font-size: 56px; color: var(--color-white-plate);">Manage Nanco Platform</h1>
+        <p class="hero-sub" style="color: rgba(255,255,255,0.8);">Upload product catalogs, control images, and manage the content of the bento application.</p>
       </div>
     </div>
   </header>
 
   <main class="admin-container">
-    <div class="admin-tabs">
-      <button class="admin-tab active" onclick="switchTab('products')">Manage Products</button>
-      <button class="admin-tab" onclick="switchTab('images')">Image Gallery</button>
-      <button class="admin-tab" onclick="switchTab('heromanager')">Hero Manager</button>
+    <div class="bento-grid" style="margin-bottom: 48px;">
+      <!-- ROW 1: 60/40 Split -->
+      <a class="bento-card card-lime bento-60" href="admin_products_of_the_year.html">
+        <div class="bento-card-icon"><i class="fas fa-award"></i></div>
+        <div class="bento-card-title">Products of the Year Manager</div>
+        <div class="bento-card-desc">Add, edit, and manage the featured 'Products of the Year' displayed on the home page slider.</div>
+        <div class="bento-card-arrow">Open Manager</div>
+      </a>
+      <a class="bento-card card-cobalt bento-40" href="admin_product_media.html">
+        <div class="bento-card-icon"><i class="fas fa-photo-film"></i></div>
+        <div class="bento-card-title">Product Media &amp; Manual Manager</div>
+        <div class="bento-card-desc">Upload product images, gallery photos, instructional videos, and product manuals/datasheets.</div>
+        <div class="bento-card-arrow" style="color:#fff;border-color:rgba(255,255,255,0.4);">Open Gallery</div>
+      </a>
+
+      <!-- ROW 2: Thirds -->
+      <a class="bento-card card-maroon bento-third" href="admin_hero_manager.html">
+        <div class="bento-card-icon"><i class="fas fa-images"></i></div>
+        <div class="bento-card-title">Hero Banner Manager</div>
+        <div class="bento-card-desc">Customize homepage sliders, background images, and marketing text.</div>
+        <div class="bento-card-arrow" style="color:#fff;border-color:rgba(255,255,255,0.4);">Edit Hero</div>
+      </a>
+      <a class="bento-card card-mustard bento-third" href="admin_product_banners.html">
+        <div class="bento-card-icon"><i class="fas fa-bullhorn"></i></div>
+        <div class="bento-card-title">Product Banner</div>
+        <div class="bento-card-desc">Manage featured product banners and promotional carousel slides.</div>
+        <div class="bento-card-arrow">Edit Banners</div>
+      </a>
+      <a class="bento-card card-forest bento-third" href="admin_videos.html">
+        <div class="bento-card-icon"><i class="fas fa-video"></i></div>
+        <div class="bento-card-title">Video Shorts Manager</div>
+        <div class="bento-card-desc">Manage the vertical promotional videos shown in the Inspiration carousel on the homepage.</div>
+        <div class="bento-card-arrow" style="color:#fff;border-color:rgba(255,255,255,0.4);">Edit Videos</div>
+      </a>
     </div>
 
-    <!-- Products Tab -->
-    <div id="tab-products" class="tab-content active">
-      <div class="admin-form-card">
-        <h2 class="section-title" style="font-size: 32px; margin-bottom: 24px;">Add New Product</h2>
-        <form id="productForm">
-          <div class="admin-form-group">
-            <label for="productName">Product Name</label>
-            <input type="text" id="productName" class="admin-input" placeholder="e.g. Nanco Royal Emulsion" required>
-          </div>
-          
-          <div class="admin-form-group">
-            <label for="productCategory">Category</label>
-            <select id="productCategory" class="admin-input" required>
-              <option value="Interior Paints">Interior Paints</option>
-              <option value="Exterior Paints">Exterior Paints</option>
-              <option value="Wood Finishes">Wood Finishes</option>
-              <option value="Waterproofing">Waterproofing</option>
-              <option value="Primers">Primers</option>
-            </select>
-          </div>
-
-          <div class="admin-form-group">
-            <label for="productPrice">Price (Optional)</label>
-            <input type="number" id="productPrice" class="admin-input" placeholder="₹" min="0">
-          </div>
-          
-          <div class="admin-form-group">
-            <label for="productImage">Product Image File</label>
-            <input type="file" id="productImage" class="admin-input" accept="image/*" required>
-          </div>
-
-          <button type="submit" class="btn-primary" style="background: var(--color-lime-spark); color: #000; border: none; width: 100%;">Save Product</button>
-        </form>
-      </div>
-
-      <div>
-        <h2 class="section-title" style="font-size: 32px;">Active Products</h2>
-        <div class="product-grid" id="productGrid">
-          <!-- Products will be rendered here via JS -->
-        </div>
-      </div>
-    </div>
 
     <!-- Images Tab -->
     <div id="tab-images" class="tab-content">
@@ -250,351 +242,21 @@
       </div>
     </div>
 
-    <!-- Hero Manager Tab -->
-    <div id="tab-heromanager" class="tab-content">
-      <style>
-        .hero-manager-grid { display: grid; grid-template-columns: 380px 1fr; gap: 28px; align-items: start; }
-        .hm-controls { display: flex; flex-direction: column; gap: 16px; }
-        .hero-ctrl-group { display: flex; flex-direction: column; gap: 6px; }
-        .hero-ctrl-group label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--color-sage-mute); }
-        .hero-ctrl-group input[type=text], .hero-ctrl-group textarea, .hero-ctrl-group input[type=file] {
-          width: 100%; padding: 10px 14px; border: 1.5px solid rgba(0,0,0,0.12); border-radius: 10px;
-          font-family: 'Inter', sans-serif; font-size: 14px; background: #fff; color: #000; transition: border-color 0.15s; box-sizing: border-box;
-        }
-        .hero-ctrl-group input[type=text]:focus, .hero-ctrl-group textarea:focus { outline: none; border-color: var(--color-lime-spark); }
-        .hero-ctrl-group textarea { resize: vertical; min-height: 80px; }
-        .color-row { display: flex; gap: 10px; align-items: center; }
-        .color-row input[type=color] { width: 52px; height: 40px; border: 1.5px solid rgba(0,0,0,0.12); border-radius: 8px; cursor: pointer; padding: 2px; background: #fff; }
-        .color-row input[type=text] { flex: 1; }
-        
-        /* Top Preview */
-        .hm-preview-wrapper { width: 100%; margin-bottom: 24px; }
-        .mini-hero { border-radius: 20px; overflow: hidden; position: relative; aspect-ratio: 2 / 1; width: 100%; max-height: 500px; display: flex; align-items: center; padding: 32px 48px; box-shadow: 0 8px 32px rgba(0,0,0,0.12); transition: background 0.3s; }
-        .mini-hero-house { position: absolute; top: 0; right: 0; bottom: 0; width: 90% !important; height: 100% !important; object-fit: cover; object-position: right; pointer-events: none; z-index: 1; }
-        .mini-hero-overlay { position: absolute; top: 0; left: 0; bottom: 0; width: 50%; z-index: 2; pointer-events: none; transition: background 0.3s; }
-        .mini-hero-content { position: relative; z-index: 3; max-width: 55%; margin-left: 20px; }
-        .mini-hero-tag { display: inline-block; background: rgba(255,255,255,0.9); border-radius: 99px; padding: 6px 16px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; color: #000; }
-        .mini-hero-headline { font-size: 48px; font-weight: 800; line-height: 1.05; letter-spacing: -1.5px; margin-bottom: 16px; color: #000; }
-        .mini-hero-sub { font-size: 16px; color: #333; line-height: 1.5; max-width: 380px; }
-        .mini-hero-bucket { position: absolute; right: 60px; bottom: 0; height: 380px; width: 325px; object-fit: contain; z-index: 4; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.15)); transform: scale(1.1); }
+    <!-- Product Banner Tab (Placeholder) -->
+    <div id="tab-productbanner" class="tab-content">
+      <div class="admin-form-card" style="text-align: center; padding: 60px 20px;">
+        <i class="fas fa-bullhorn" style="font-size: 48px; color: var(--color-sage-mute); margin-bottom: 20px; opacity: 0.3;"></i>
+        <h2 class="section-title">Product Banner Manager</h2>
+        <p style="color: var(--color-sage-mute); margin-top: 12px;">This module is under construction.</p>
+      </div>
+    </div>
 
-        .hm-btn { background: var(--color-lime-spark); color: #000; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.1s; width: 100%; font-family: 'Inter', sans-serif; }
-        .hm-btn:hover { transform: translateY(-1px); }
-        .hm-btn-secondary { background: #fff; color: #555; border: 1.5px solid rgba(0,0,0,0.15); border-radius: 12px; padding: 14px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: all .15s; width: 100%; }
-        .hm-btn-secondary:hover { background: #f9f9f9; }
-        
-        /* Interactive Live Preview Additions */
-        @keyframes breathe {
-          0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-          70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-          100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-        }
-        .edit-dot {
-          position: absolute; width: 28px; height: 28px;
-          background: #fff; border-radius: 50%; cursor: pointer; z-index: 10;
-          display: flex; align-items: center; justify-content: center;
-          color: var(--color-cobalt-band); font-size: 12px;
-          animation: breathe 2s infinite; border: 2px solid var(--color-cobalt-band);
-          transition: transform 0.2s;
-        }
-        .edit-dot:hover { transform: scale(1.15); animation: none; }
-        .edit-popover {
-          position: absolute; background: #fff; border-radius: 12px;
-          padding: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-          display: none; z-index: 20; flex-direction: column; gap: 4px;
-          min-width: 140px; border: 1px solid rgba(0,0,0,0.05);
-        }
-        .edit-popover button {
-          background: none; border: none; padding: 10px 12px;
-          text-align: left; font-size: 13px; font-weight: 700; cursor: pointer;
-          border-radius: 8px; transition: background 0.15s;
-          display: flex; align-items: center; gap: 8px; color: #333;
-        }
-        .edit-popover button:hover { background: #f0f2f5; }
-        .edit-popover button.danger { color: #c53030; }
-        .inline-save-btn {
-          position: absolute; bottom: 32px; right: 32px; z-index: 10;
-          background: var(--color-midnight-ink); color: #fff;
-          border: none; border-radius: 50%; width: 56px; height: 56px;
-          display: flex; align-items: center; justify-content: center;
-          cursor: pointer; font-size: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-          transition: transform 0.2s, background 0.2s;
-        }
-        .inline-save-btn:hover { transform: scale(1.05) translateY(-2px); background: #000; }
-        
-        .color-swatch-row { display: flex; gap: 12px; padding: 12px; flex-wrap: wrap; width: 140px; justify-content: center; background:#fff; border-radius:12px; }
-        .color-swatch { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2.5px solid transparent; transition: transform 0.15s; }
-        .color-swatch:hover { transform: scale(1.2); border-color: rgba(0,0,0,0.3); }
-        
-        .hm-modal-overlay {
-          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-          display: none; align-items: center; justify-content: center; z-index: 9999;
-        }
-        .hm-modal {
-          background: #fff; border-radius: 20px; padding: 40px;
-          width: 420px; max-width: 90vw; text-align: center;
-          box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: fadeInUp 0.3s forwards;
-        }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-      </style>
-
-      <div class="admin-form-card" style="margin-bottom: 0;">
-        
-        <!-- TOP: Live Preview -->
-        <div class="hm-preview-wrapper">
-          <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:12px;">
-            <h2 class="section-title" style="font-size: 32px; margin: 0;">Live Preview</h2>
-            <div style="display: flex; gap: 8px; align-items: center;">
-              <button onclick="clearHeroForm()" class="hm-btn-secondary" style="width:auto; padding:8px 16px; border-radius:8px; font-size:13px;" title="Clear Changes">
-                <i class="fas fa-undo" style="margin-right:6px;"></i> Clear
-              </button>
-              <button onclick="openSaveModal()" class="hm-btn" style="width:auto; padding:8px 16px; border-radius:8px; font-size:13px; background:var(--color-midnight-ink); color:#fff;" title="Save Slide">
-                <i class="fas fa-save" style="margin-right:6px;"></i> Save
-              </button>
-            </div>
-          </div>
-          <div class="mini-hero" id="miniHero">
-            <!-- Background Image Dot & Popover -->
-            <img class="mini-hero-house" id="miniHouseImg" src="../nanco/assets/house-bg.png" alt="" onerror="this.style.display='none'" onload="this.style.display='block'">
-            <div class="edit-dot" style="top: 24px; right: 24px;" onclick="toggleEditPopover('house-popover')"><i class="fas fa-image"></i></div>
-            <div class="edit-popover" id="house-popover" style="top: 60px; right: 24px; width: 260px; padding: 12px;">
-              <div style="font-size: 12px; color: #2d3748; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 10px; margin-bottom: 12px; line-height: 1.5; text-align: left;">
-                <div style="font-weight: 700; color: #b45309; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <i class="fas fa-exclamation-triangle"></i> Recommendation:
-                </div>
-                For best results, other than for background-removed image use the <strong>.webp</strong> format for fast loading. We suggest selecting a banner in <strong>21:9 ratio</strong> for a better fit.
-                <div style="margin-top: 8px;">
-                  <a href="https://cloudconvert.com/to-webp" target="_blank" style="color: #b45309; font-weight: 700; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;">
-                    <i class="fas fa-external-link-alt" style="font-size: 10px;"></i> Convert image here
-                  </a>
-                </div>
-              </div>
-              <button onclick="document.getElementById('he-house-file').click(); toggleEditPopover('house-popover')"><i class="fas fa-upload"></i> Upload Image</button>
-              <button class="danger" onclick="removeImage('house'); toggleEditPopover('house-popover')"><i class="fas fa-trash"></i> Remove Image</button>
-            </div>
-
-            <div class="mini-hero-overlay" id="miniOverlay"></div>
-            
-            <!-- Background Color Dot -->
-            <div class="edit-dot" style="top: 24px; left: 24px;" title="Background Color" onclick="toggleEditPopover('bgcolor-popover')"><i class="fas fa-fill-drip"></i></div>
-            <div class="edit-popover" id="bgcolor-popover" style="top: 60px; left: 24px; padding:0; border:none; background:transparent;">
-               <div class="color-swatch-row">
-                 <div class="color-swatch" style="background:#c8d90f;" onclick="setPreviewColor('he-bg-color', '#c8d90f')"></div>
-                 <div class="color-swatch" style="background:#1a365d;" onclick="setPreviewColor('he-bg-color', '#1a365d')"></div>
-                 <div class="color-swatch" style="background:#f56565;" onclick="setPreviewColor('he-bg-color', '#f56565')"></div>
-                 <div class="color-swatch" style="background:#48bb78;" onclick="setPreviewColor('he-bg-color', '#48bb78')"></div>
-                 <div class="color-swatch" style="background:#fff; border: 2.5px solid #ccc; position: relative; overflow:hidden;" title="Custom Color">
-                   <i class="fas fa-plus" style="position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:12px; color:#555; pointer-events:none;"></i>
-                   <input type="color" oninput="setPreviewColor('he-bg-color', this.value)" style="position:absolute; top:-10px; left:-10px; width:50px; height:50px; opacity:0; cursor:pointer; pointer-events:auto;">
-                 </div>
-               </div>
-            </div>
-            
-            <!-- Overlay Color Dot -->
-            <div class="edit-dot" style="bottom: 24px; left: 24px;" title="Overlay Gradient Color" onclick="toggleEditPopover('overlay-popover')"><i class="fas fa-palette"></i></div>
-            <div class="edit-popover" id="overlay-popover" style="bottom: 60px; left: 24px; padding:0; border:none; background:transparent;">
-               <div class="color-swatch-row">
-                 <div class="color-swatch" style="background:#c8d90f;" onclick="setPreviewColor('he-overlay-color', '#c8d90f')"></div>
-                 <div class="color-swatch" style="background:#1a365d;" onclick="setPreviewColor('he-overlay-color', '#1a365d')"></div>
-                 <div class="color-swatch" style="background:#f56565;" onclick="setPreviewColor('he-overlay-color', '#f56565')"></div>
-                 <div class="color-swatch" style="background:#48bb78;" onclick="setPreviewColor('he-overlay-color', '#48bb78')"></div>
-                 <div class="color-swatch" style="background:#fff; border: 2.5px solid #ccc; position: relative; overflow:hidden;" title="Custom Color">
-                   <i class="fas fa-plus" style="position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:12px; color:#555; pointer-events:none;"></i>
-                   <input type="color" oninput="setPreviewColor('he-overlay-color', this.value)" style="position:absolute; top:-10px; left:-10px; width:50px; height:50px; opacity:0; cursor:pointer; pointer-events:auto;">
-                 </div>
-               </div>
-            </div>
-
-            <div class="mini-hero-content" style="cursor: text;">
-              
-              <div style="position:relative; display:inline-block; margin-bottom:16px;">
-                <span class="mini-hero-tag editable-text" id="miniTag" contenteditable="true" oninput="document.getElementById('he-tag').value = this.textContent" style="outline:none; border-bottom:1px dashed rgba(0,0,0,0.2); min-width:50px;">ISO 9001-2015 Certified</span>
-                <div class="edit-dot" style="top:-8px; right:-24px; width:20px; height:20px; font-size:10px;" onclick="toggleEditPopover('tagcolor-popover')"><i class="fas fa-palette"></i></div>
-                <div class="edit-popover" id="tagcolor-popover" style="top:-8px; left:calc(100% + 12px); padding:0; border:none; background:transparent;">
-                   <div class="color-swatch-row">
-                     <div class="color-swatch" style="background:#000;" onclick="setPreviewColor('he-tag-color', '#000000')"></div>
-                     <div class="color-swatch" style="background:#fff;" onclick="setPreviewColor('he-tag-color', '#ffffff')"></div>
-                     <div class="color-swatch" style="background:#c8d90f;" onclick="setPreviewColor('he-tag-color', '#c8d90f')"></div>
-                     <div class="color-swatch" style="background:#fff; border: 2.5px solid #ccc; position: relative; overflow:hidden;" title="Custom Color">
-                       <i class="fas fa-plus" style="position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:12px; color:#555; pointer-events:none;"></i>
-                       <input type="color" oninput="setPreviewColor('he-tag-color', this.value)" style="position:absolute; top:-10px; left:-10px; width:50px; height:50px; opacity:0; cursor:pointer;">
-                     </div>
-                   </div>
-                </div>
-              </div>
-              
-              <div style="position:relative; display:inline-block; margin-bottom:16px;">
-                <div class="mini-hero-headline editable-text" id="miniHeadline" contenteditable="true" oninput="document.getElementById('he-headline').value = this.textContent" style="outline:none; border-bottom:1px dashed rgba(0,0,0,0.2); min-width:100px; margin-bottom:0;">Paint for Better Lives.</div>
-                <div class="edit-dot" style="top:-10px; right:-24px; width:20px; height:20px; font-size:10px;" onclick="toggleEditPopover('hdcolor-popover')"><i class="fas fa-palette"></i></div>
-                <div class="edit-popover" id="hdcolor-popover" style="top:-10px; left:calc(100% + 12px); padding:0; border:none; background:transparent;">
-                   <div class="color-swatch-row">
-                     <div class="color-swatch" style="background:#000;" onclick="setPreviewColor('he-headline-color', '#000000')"></div>
-                     <div class="color-swatch" style="background:#fff;" onclick="setPreviewColor('he-headline-color', '#ffffff')"></div>
-                     <div class="color-swatch" style="background:#1a365d;" onclick="setPreviewColor('he-headline-color', '#1a365d')"></div>
-                     <div class="color-swatch" style="background:#fff; border: 2.5px solid #ccc; position: relative; overflow:hidden;" title="Custom Color">
-                       <i class="fas fa-plus" style="position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:12px; color:#555; pointer-events:none;"></i>
-                       <input type="color" oninput="setPreviewColor('he-headline-color', this.value)" style="position:absolute; top:-10px; left:-10px; width:50px; height:50px; opacity:0; cursor:pointer;">
-                     </div>
-                   </div>
-                </div>
-              </div>
-              
-              <div style="position:relative; display:inline-block;">
-                <div class="mini-hero-sub editable-text" id="miniSub" contenteditable="true" oninput="document.getElementById('he-sub').value = this.textContent" style="outline:none; border-bottom:1px dashed rgba(0,0,0,0.2); min-width:100px; margin-bottom:0;">Nanco Paints brings premium-quality paints to Kerala homes.</div>
-                <div class="edit-dot" style="top:-10px; right:-24px; width:20px; height:20px; font-size:10px;" onclick="toggleEditPopover('subcolor-popover')"><i class="fas fa-palette"></i></div>
-                <div class="edit-popover" id="subcolor-popover" style="top:-10px; left:calc(100% + 12px); padding:0; border:none; background:transparent;">
-                   <div class="color-swatch-row">
-                     <div class="color-swatch" style="background:#333;" onclick="setPreviewColor('he-sub-color', '#333333')"></div>
-                     <div class="color-swatch" style="background:#fff;" onclick="setPreviewColor('he-sub-color', '#ffffff')"></div>
-                     <div class="color-swatch" style="background:#c8d90f;" onclick="setPreviewColor('he-sub-color', '#c8d90f')"></div>
-                     <div class="color-swatch" style="background:#fff; border: 2.5px solid #ccc; position: relative; overflow:hidden;" title="Custom Color">
-                       <i class="fas fa-plus" style="position: absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:12px; color:#555; pointer-events:none;"></i>
-                       <input type="color" oninput="setPreviewColor('he-sub-color', this.value)" style="position:absolute; top:-10px; left:-10px; width:50px; height:50px; opacity:0; cursor:pointer;">
-                     </div>
-                   </div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Bucket Image Dot & Popover -->
-            <img class="mini-hero-bucket" id="miniBucketImg" src="../nanco/assets/HERO-PAINT.png" alt="" onerror="this.style.display='none'" onload="this.style.display='block'">
-            <div class="edit-dot" style="bottom: 190px; right: 200px;" onclick="toggleEditPopover('bucket-popover')"><i class="fas fa-paint-roller"></i></div>
-            <div class="edit-popover" id="bucket-popover" style="bottom: 225px; right: 200px; width: 260px; padding: 12px;">
-              <div style="font-size: 12px; color: #2d3748; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; padding: 10px; margin-bottom: 12px; line-height: 1.5; text-align: left;">
-                <div style="font-weight: 700; color: #b45309; display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
-                  <i class="fas fa-exclamation-triangle"></i> Recommendation:
-                </div>
-                For best results, use a <strong>background-removed</strong> image in <strong>.webp</strong> format. We suggest using a <strong>6:7 aspect ratio</strong> image for a perfect fit.
-                <div style="margin-top: 8px;">
-                  <a href="https://cloudconvert.com/to-webp" target="_blank" style="color: #b45309; font-weight: 700; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;">
-                    <i class="fas fa-external-link-alt" style="font-size: 10px;"></i> Convert image here
-                  </a>
-                </div>
-              </div>
-              <button onclick="document.getElementById('he-bucket-file').click(); toggleEditPopover('bucket-popover')"><i class="fas fa-upload"></i> Upload Bucket Image</button>
-              <button class="danger" onclick="removeImage('bucket'); toggleEditPopover('bucket-popover')"><i class="fas fa-trash"></i> Remove Bucket</button>
-            </div>
-
-
-          </div>
-        </div>
-
-        <!-- Save Modal -->
-        <div class="hm-modal-overlay" id="saveModalOverlay">
-          <div class="hm-modal">
-            <div style="font-size:48px; color:var(--color-cobalt-band); margin-bottom:16px;"><i class="fas fa-cloud-upload-alt"></i></div>
-            <h3 style="font-size:26px; font-weight:800; margin-bottom:12px; letter-spacing:-0.5px;">Save Slide Changes</h3>
-            <p style="color:var(--color-sage-mute); font-size:15px; margin-bottom:32px; line-height:1.5;">Do you want to update the existing slide or create a brand new one?</p>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <button onclick="executeInlineSave('replace')" class="hm-btn" style="background:var(--color-cobalt-band); color:#fff;"><i class="fas fa-sync" style="margin-right:8px;"></i> Update Existing Slide</button>
-              <button onclick="executeInlineSave('new')" class="hm-btn" style="background:var(--color-lime-spark);"><i class="fas fa-plus" style="margin-right:8px;"></i> Save as New Slide</button>
-              <button onclick="closeSaveModal()" class="hm-btn-secondary" style="margin-top:8px;">Cancel</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Slide Selector Grid -->
-        <div style="margin-bottom: 32px; background: #fff; border-radius: 12px; padding: 24px; border: 1.5px solid rgba(0,0,0,0.1);">
-          <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px;">
-            <div>
-              <h3 style="font-size: 20px; font-weight:800; margin:0 0 4px 0;">Manage Slides</h3>
-              <p style="font-size: 13px; color: var(--color-sage-mute); margin:0;">Select a slide to edit or create a new one.</p>
-            </div>
-          </div>
-          <div class="product-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 0;">
-            
-            <!-- Default Slide -->
-            <div class="product-item" style="cursor: pointer; position: relative; border: 1.5px solid var(--color-lime-spark); box-shadow: 0 8px 24px rgba(0,0,0,0.04); background: var(--color-leaf-wash); transition: all 0.3s;" onclick="clearHeroForm(); document.querySelector('.hm-preview-wrapper').scrollIntoView({behavior: 'smooth'});" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 16px 32px rgba(0,0,0,0.08)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(0,0,0,0.04)'">
-              <div style="position:relative; width:100%; height:120px; border-radius:12px; overflow:hidden; border-bottom:3px solid var(--color-lime-spark); background:var(--color-lime-spark);">
-                <img src="../nanco/assets/house-bg.png" alt="Default Background" style="position:absolute; top:0; right:0; width:90%; height:100%; object-fit:cover; object-position:right; mix-blend-mode: multiply; opacity:0.8;">
-              </div>
-              <div class="product-title" style="font-size:14px; margin-top:12px; color: var(--color-forest-ink);">Original Lime Theme</div>
-              <button id="hm-default-toggle-btn" onclick="toggleDefaultHero(); event.stopPropagation();" class="hm-btn-secondary" style="margin-top:auto; padding:8px; font-size:12px; width:100%; background: #fff; border: 1px solid rgba(0,0,0,0.05); color: var(--color-forest-ink);">
-                <i class="fas fa-eye" style="margin-right:4px;"></i> Hide Default
-              </button>
-            </div>
-
-            <!-- Custom Slides injected here -->
-            <div id="heroGrid" style="display: contents;"></div>
-
-            <!-- Create New Blank Slide -->
-            <div class="product-item" style="order: 999; cursor: pointer; border: 2px dashed rgba(38,101,214,0.3); background: #f4f8ff; box-shadow: 0 8px 24px rgba(38,101,214,0.04); justify-content:center; align-items:center; min-height: 200px; transition: all 0.3s;" onclick="clearHeroForm(); document.querySelector('.hm-preview-wrapper').scrollIntoView({behavior: 'smooth'});" onmouseover="this.style.borderColor='var(--color-cobalt-band)'; this.style.background='#ebf2ff'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 16px 32px rgba(38,101,214,0.1)'" onmouseout="this.style.borderColor='rgba(38,101,214,0.3)'; this.style.background='#f4f8ff'; this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(38,101,214,0.04)'">
-              <div style="display:flex; flex-direction:column; align-items:center; color:var(--color-cobalt-band);">
-                <div style="width:56px; height:56px; background:#fff; border-radius:50%; display:flex; justify-content:center; align-items:center; box-shadow:0 4px 12px rgba(38,101,214,0.1); margin-bottom:12px;">
-                   <i class="fas fa-plus" style="font-size:24px;"></i>
-                </div>
-                <div style="font-weight:700; font-size:15px;">Add New Slide</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="hero-manager-grid" style="display: none;">
-          <!-- LEFT: Form -->
-          <div class="hm-controls">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-              <h3 style="font-size: 20px; margin:0;" id="hm-form-title">Add New Slide</h3>
-              <button onclick="clearHeroForm()" style="background:none; border:none; color:var(--color-cobalt-band); font-size:13px; font-weight:700; cursor:pointer;" id="hm-cancel-btn">Clear</button>
-            </div>
-            
-            <input type="hidden" id="hm-slide-id" value="">
-            <input type="hidden" id="he-tag-color" value="#000000">
-            <input type="hidden" id="he-headline-color" value="#000000">
-            <input type="hidden" id="he-sub-color" value="#333333">
-
-            <div class="hero-ctrl-group">
-              <label>Background Color</label>
-              <div class="color-row">
-                <input type="color" id="he-bg-color" value="#c8d90f" oninput="updateHeroPreview()">
-                <input type="text" id="he-bg-color-hex" value="#c8d90f" placeholder="#c8d90f" oninput="syncColorFromHex('he-bg-color','he-bg-color-hex')">
-              </div>
-            </div>
-
-            <div class="hero-ctrl-group">
-              <label>Overlay Gradient Color</label>
-              <div class="color-row">
-                <input type="color" id="he-overlay-color" value="#c8d90f" oninput="updateHeroPreview()">
-                <input type="text" id="he-overlay-color-hex" value="#c8d90f" placeholder="#c8d90f" oninput="syncColorFromHex('he-overlay-color','he-overlay-color-hex')">
-              </div>
-            </div>
-
-            <div class="hero-ctrl-group">
-              <label>Badge / Tag Text</label>
-              <input type="text" id="he-tag" value="ISO 9001-2015 Certified" oninput="updateHeroPreview()">
-            </div>
-
-            <div class="hero-ctrl-group">
-              <label>Headline</label>
-              <input type="text" id="he-headline" value="Paint for Better Lives." oninput="updateHeroPreview()">
-            </div>
-
-            <div class="hero-ctrl-group">
-              <label>Sub Text</label>
-              <textarea id="he-sub" oninput="updateHeroPreview()">Nanco Paints brings premium-quality, certified paints to homes, offices, and factories across Kerala. Bold colours. Lasting finish.</textarea>
-            </div>
-
-            <div class="hero-ctrl-group">
-              <label>Hero Bucket Image (Paint Can)</label>
-              <input type="file" id="he-bucket-file" accept="image/*" onchange="previewBucketImage(this)">
-              <p style="font-size:11px;color:var(--color-sage-mute);margin-top:4px;">Current: <span id="he-bucket-current">assets/HERO-PAINT.png</span></p>
-            </div>
-
-            <div class="hero-ctrl-group">
-              <label>House Background Image</label>
-              <input type="file" id="he-house-file" accept="image/*" onchange="previewHouseImage(this)">
-              <p style="font-size:11px;color:var(--color-sage-mute);margin-top:4px;">Current: <span id="he-house-current">assets/house-bg.png</span></p>
-            </div>
-
-            <button class="hm-btn" onclick="saveHeroSlide()" id="heroSaveBtn">
-              <i class="fas fa-save" style="margin-right:8px;"></i> Save Slide
-            </button>
-          </div>
-
-          <!-- RIGHT: Slides Grid moved to Slide Selector section -->
-
-        </div>
+    <!-- Color Manager Tab (Placeholder) -->
+    <div id="tab-colormanager" class="tab-content">
+      <div class="admin-form-card" style="text-align: center; padding: 60px 20px;">
+        <i class="fas fa-palette" style="font-size: 48px; color: var(--color-sage-mute); margin-bottom: 20px; opacity: 0.3;"></i>
+        <h2 class="section-title">Color Div Manager</h2>
+        <p style="color: var(--color-sage-mute); margin-top: 12px;">This module is under construction.</p>
       </div>
     </div>
   </main>
@@ -637,11 +299,13 @@
 
     // Tab switching logic
     function switchTab(tabId) {
-      document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
       
-      event.target.classList.add('active');
-      document.getElementById('tab-' + tabId).classList.add('active');
+      const targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) {
+        targetTab.classList.add('active');
+        targetTab.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     let products = [];
@@ -682,6 +346,7 @@
     // Render functions
     function renderProducts() {
       const grid = document.getElementById('productGrid');
+      if (!grid) return;
       grid.innerHTML = '';
       
       products.forEach(p => {
@@ -699,6 +364,7 @@
 
     function renderImages() {
       const grid = document.getElementById('imageGrid');
+      if (!grid) return;
       grid.innerHTML = '';
       
       images.forEach(img => {
@@ -741,9 +407,11 @@
     }
 
     // Form Submissions
-    document.getElementById('productForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const submitBtn = e.target.querySelector('button[type="submit"]');
+    const pForm = document.getElementById('productForm');
+    if (pForm) {
+      pForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const submitBtn = e.target.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerText;
       submitBtn.innerText = 'Uploading...';
       submitBtn.disabled = true;
@@ -783,9 +451,12 @@
         submitBtn.disabled = false;
       }
     });
+    }
 
-    document.getElementById('imageForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
+    const imgForm = document.getElementById('imageForm');
+    if (imgForm) {
+      imgForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
       const submitBtn = e.target.querySelector('button[type="submit"]');
       const originalText = submitBtn.innerText;
       submitBtn.innerText = 'Uploading...';
@@ -824,8 +495,9 @@
         submitBtn.disabled = false;
       }
     });
+  }
 
-    // Deletion
+  // Deletion
     window.deleteProduct = async function(id) {
       if(confirm('Are you sure you want to delete this product?')) {
         const res = await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE', headers: authHeaders });

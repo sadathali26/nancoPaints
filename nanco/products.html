@@ -1390,14 +1390,14 @@
                             </div>
                         </div>
 
-                        <!-- Tutorials Card -->
-                        <div onclick="alert('Tutorials coming soon!')" style="flex: 1; background: #ffffff; padding: 16px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                        <!-- Product Media Card -->
+                        <div onclick="localStorage.setItem('datasheetProduct', JSON.stringify(currentPdpProduct)); window.location.href='product_info.html';" style="flex: 1; background: #ffffff; padding: 16px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); cursor: pointer; display: flex; align-items: center; gap: 12px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
                             <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-linen-canvas); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                <i class="fas fa-play" style="color: var(--color-ink-black); font-size: 16px;"></i>
+                                <i class="fas fa-play-circle" style="color: var(--color-ink-black); font-size: 16px;"></i>
                             </div>
                             <div style="display: flex; flex-direction: column;">
-                                <span style="font-size: 13px; font-weight: 800; color: var(--color-ink-black);">Tutorials</span>
-                                <span style="font-size: 11px; color: var(--color-sage-mute); font-weight: 600;">How to apply guide</span>
+                                <span style="font-size: 13px; font-weight: 800; color: var(--color-ink-black);">Media & Tutorials</span>
+                                <span style="font-size: 11px; color: var(--color-sage-mute); font-weight: 600;">Photos & Videos</span>
                             </div>
                         </div>
                     </div>
@@ -1862,29 +1862,27 @@
             return generateBucketHTML(product);
         }
 
+        const API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" || window.location.hostname === "")
+            ? "http://localhost:5000/api" : "/api";
+
+        function openProductInfo(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            localStorage.setItem('datasheetProduct', JSON.stringify(product));
+            if (product.pricing && product.pricing.length > 0) {
+                localStorage.setItem('datasheetVariantId', product.pricing[0].variant_id || product.id);
+            }
+            window.location.href = 'product_info.html';
+        }
+
         async function fetchProducts() {
             try {
-                const url = 'https://sawbglsfqyayuysqcjto.supabase.co/rest/v1/items?select=*';
-                const anonKey = 'sb_publishable_dT1pmAyJdFf1pbGn_yw7_g_E2UFN5l2';
-                const response = await fetch(url, {
-                    headers: {
-                        'apikey': anonKey,
-                        'Authorization': `Bearer ${anonKey}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const response = await fetch(`${API_URL}/items`);
                 
-                if (!response.ok) throw new Error('Failed to fetch from Supabase');
+                if (!response.ok) throw new Error('Failed to fetch from backend');
                 const data = await response.json();
                 
-                const iconsUrl = 'https://sawbglsfqyayuysqcjto.supabase.co/rest/v1/icons?select=*';
-                const iconsRes = await fetch(iconsUrl, {
-                    headers: {
-                        'apikey': anonKey,
-                        'Authorization': `Bearer ${anonKey}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
+                const iconsRes = await fetch(`${API_URL}/icons`);
                 if (iconsRes.ok) {
                     const iconsData = await iconsRes.json();
                     window.allIcons = {};

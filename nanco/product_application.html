@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Product Application | Nanco Paints</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ── CSS VARIABLES ── */
+    :root {
+      --color-lime-spark: #d2e823;
+      --color-linen-canvas: #f3f3f1;
+      --color-white-plate: #ffffff;
+      --color-ink-black: #000000;
+      --font-primary: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-linen-canvas);
+      font-family: var(--font-primary);
+      color: var(--color-ink-black);
+      overflow-x: hidden;
+      margin: 0;
+    }
+
+    /* ════════════════════════════════════
+       NAV BAR — floating pill
+    ════════════════════════════════════ */
+    .pinfo-nav {
+      position: fixed;
+      top: 12px;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+      pointer-events: none;
+    }
+
+    .pinfo-nav-inner {
+      background: var(--color-white-plate);
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px 8px 12px;
+      width: 100%;
+      max-width: 1200px;
+      gap: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+      pointer-events: all;
+      min-height: 60px;
+    }
+
+    /* Logo */
+    .pinfo-nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .pinfo-nav-logo img {
+      height: 36px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    /* Product name (right side) */
+    .pinfo-nav-product {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--color-ink-black);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 55vw;
+    }
+
+    @media (max-width: 600px) {
+      .pinfo-nav {
+        position: fixed;
+        top: 8px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .pinfo-nav { top: 8px; padding: 0 10px; }
+      .pinfo-nav-inner { padding: 6px 14px 6px 10px; gap: 10px; min-height: 50px; }
+      .pinfo-nav-logo img { height: 28px; }
+      .pinfo-nav-product { font-size: 13px; max-width: 45vw; }
+    }
+
+    /* ════════════════════════════════════
+       HIDE GOOGLE TRANSLATE UI
+    ════════════════════════════════════ */
+    .goog-te-banner-frame.skiptranslate { display: none !important; }
+    body { top: 0px !important; }
+    #google_translate_element { display: none !important; }
+    /* Hide the google translate popup */
+    .VIpgJd-ZVi9od-ORHb-OEVmcd, .VIpgJd-ZVi9od-l4eHX-hSRGPd { display: none !important; }
+    
+    /* ════════════════════════════════════
+       LANG TOGGLE DROPDOWN STYLES
+    ════════════════════════════════════ */
+    .nav-lang-selector {
+      position: relative;
+      display: inline-block;
+    }
+    .nav-lang-btn {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-ink-black);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, border-color 0.15s;
+      outline: none;
+    }
+    .nav-lang-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+    .nav-lang-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      background: var(--color-white-plate);
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 6px;
+      display: none;
+      flex-direction: column;
+      min-width: 140px;
+      z-index: 1000;
+    }
+    .nav-lang-dropdown.open {
+      display: flex;
+    }
+    .lang-option {
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-ink-black);
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.15s;
+      text-align: left;
+    }
+    .lang-option:hover {
+      background: var(--color-linen-canvas);
+    }
+    .lang-option.active {
+      background: var(--color-lime-spark);
+      font-weight: 700;
+    }
+
+    /* ════════════════════════════════════
+       IMAGE STACK
+    ════════════════════════════════════ */
+    .image-stack {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      min-height: 100vh;
+      /* If you want images to fill full width, remove max-width. 
+         Otherwise uncomment max-width to center them */
+      /* max-width: 1200px; margin: 0 auto; */
+    }
+    
+    .image-stack img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    /* ════════════════════════════════════
+       HERO SECTION
+    ════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 90vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #111;
+      overflow: hidden;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.6;
+      transition: opacity 0.5s ease;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      text-align: left;
+      color: #fff;
+      padding: 0 24px;
+      max-width: 1000px;
+      gap: 60px;
+    }
+    
+    @media (max-width: 768px) {
+      .hero-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 32px;
+      }
+    }
+
+    .hero-fg-img {
+      width: 450px;
+      height: 450px;
+      max-width: 100%;
+      object-fit: cover;
+      border-radius: 30px;
+      box-shadow: 0 0 0 10px rgba(255,255,255,0.1), 0 20px 40px rgba(0,0,0,0.4);
+      animation: float 6s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    .hero-title {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    
+    .hero-desc {
+      font-size: clamp(16px, 2vw, 20px);
+      font-weight: 500;
+      opacity: 0.9;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    /* ════════════════════════════════════
+       PRODUCT DETAILS SECTION
+    ════════════════════════════════════ */
+    .product-details-container {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      color: var(--color-ink-black);
+      margin-bottom: 32px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--color-lime-spark);
+      margin: 12px auto 0;
+      border-radius: 4px;
+    }
+
+    /* Overview Section */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      background: #fff;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    @media (min-width: 768px) {
+      .overview-grid { grid-template-columns: 1fr 2fr; }
+    }
+    .overview-meta p { margin-bottom: 12px; font-weight: 600; color: #333;}
+    .overview-meta span { color: #888; font-weight: 500; display: block; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;}
+    .overview-tagline { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 16px; line-height: 1.3;}
+    .overview-desc { font-size: 16px; color: #555; line-height: 1.7; }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .features-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    }
+    .feature-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .feature-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .feature-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #f0f0f0;
+    }
+    .feature-content { padding: 32px 24px; flex-grow: 1; display:flex; flex-direction:column; justify-content:center;}
+    .feature-title { font-size: 20px; font-weight: 800; margin-bottom: 12px; color: #111; display:flex; align-items:center;}
+    .feature-text { font-size: 15px; color: #666; line-height: 1.6; margin:0;}
+
+    /* How to Use Section */
+    .how-to-use {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .phase-card {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    @media (min-width: 768px) {
+      .phase-card { flex-direction: row; }
+      .phase-card:nth-child(even) { flex-direction: row-reverse; }
+    }
+    .phase-img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+    @media (min-width: 768px) { .phase-img { width: 50%; height: auto; min-height: 400px; } }
+    .phase-content {
+      padding: 40px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .phase-title { font-size: 24px; font-weight: 800; margin-bottom: 24px; color: var(--color-ink-black); }
+    .step-item {
+      margin-bottom: 20px;
+      padding-left: 20px;
+      border-left: 3px solid var(--color-lime-spark);
+    }
+    .step-title { font-weight: 800; color: #111; margin-bottom: 6px; font-size: 18px;}
+    .step-desc { font-size: 15px; color: #555; line-height: 1.6; }
+
+    /* Specs Table */
+    .specs-wrapper {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      overflow-x: auto;
+    }
+    .specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .specs-table th, .specs-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid #eee;
+    }
+    .specs-table th { font-weight: 800; color: #111; width: 40%; font-size: 16px;}
+    .specs-table td { color: #555; font-size: 15px; font-weight: 500;}
+    .specs-table tr:last-child th, .specs-table tr:last-child td { border-bottom: none; }
+
+    /* Warranty */
+    .warranty-box {
+      background: linear-gradient(135deg, #111, #222);
+      color: #fff;
+      border-radius: 24px;
+      padding: 60px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .warranty-box::before {
+      content: '\f0a3';
+      font-family: 'Font Awesome 5 Free', 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 120px;
+      color: rgba(255,255,255,0.03);
+      transform: rotate(15deg);
+    }
+    .warranty-title { font-size: 28px; font-weight: 800; margin-bottom: 16px; color: var(--color-lime-spark); }
+    .warranty-desc { font-size: 16px; opacity: 0.9; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+    .w-icon-badge {
+      position: relative; width: 60px; height: 60px; border-radius: 12px; overflow: hidden; background: #fff; padding: 6px; box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+      transition: transform 0.3s ease;
+    }
+    .w-icon-badge:hover { transform: translateY(-5px); }
+    .w-icon-badge img { width: 100%; height: 100%; object-fit: contain; }
+    .warranty-icons-container {
+      margin-top: 32px; display: flex; gap: 20px; justify-content: center; align-items: center; flex-wrap: wrap;
+    }
+    /* ════════════════════════════════════
+       MEDIA GALLERY
+    ════════════════════════════════════ */
+    .media-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .media-card {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+    .media-card:hover { transform: translateY(-5px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+    .media-card-content {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      background: #f0f0f0;
+    }
+    .media-card-title {
+      padding: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #111;
+      text-align: center;
+      border-top: 1px solid #eee;
+      text-transform: capitalize;
+    }
+    
+    /* ════════════════════════════════════
+       PRINT STYLES (For PDF Download)
+    ════════════════════════════════════ */
+    @media print {
+      /* Hide browser headers and footers (Date, Page Title, URL) */
+      @page {
+        margin: 0;
+      }
+      
+      /* Force background images and colors to print */
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* Hide navbar, translate widget, and interactive elements */
+      .pinfo-nav,
+      #google_translate_element,
+      .goog-te-spinner-pos,
+      .goog-te-spinner-animation,
+      iframe.skiptranslate {
+        display: none !important;
+      }
+      
+      /* Ensure body takes up full page width without nav spacing */
+      body {
+        margin: 0;
+        padding: 20px !important; /* Add padding back since @page margin is 0 */
+        background: white;
+      }
+
+      /* Force desktop (Windows) view by overriding mobile breakpoints */
+      .overview-grid { grid-template-columns: 1fr 2fr !important; }
+      .features-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .phase-card { flex-direction: row !important; }
+      .phase-card:nth-child(even) { flex-direction: row-reverse !important; }
+      .phase-img { width: 40% !important; height: auto !important; min-height: 250px !important; }
+      
+      /* Avoid breaking table rows across pages */
+      .specs-table tr,
+      .warranty-box {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+      
+      /* Make hero section fit better on paper */
+      .hero {
+        height: auto;
+        min-height: 0;
+        padding: 40px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV BAR -->
+  <nav class="pinfo-nav" role="navigation" aria-label="Product navigation">
+    <div class="pinfo-nav-inner">
+      <a class="pinfo-nav-logo" href="#" onclick="event.preventDefault(); history.back();" aria-label="Go back">
+        <img src="assets/light-logo.png" alt="Nanco Paints" id="pinfo-nav-logo-img">
+      </a>
+      <div class="pinfo-nav-product" id="nav-product-name" style="flex: 1; margin: 0 16px;">Product Application</div>
+      <div class="pinfo-nav-actions" style="display: flex; gap: 8px; align-items: center;">
+        <button id="navDownloadBtn" class="nav-download-btn" onclick="window.print()" style="background: var(--color-ink-black); color: var(--color-white-plate); border: none; padding: 0 16px; height: 40px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+          <i class="fas fa-download"></i> <span id="label-download">Download</span>
+        </button>
+        
+        <div class="nav-lang-selector notranslate" translate="no" id="langSelectorWrap">
+          <button class="nav-lang-btn" id="lang-btn" aria-label="Select Language" aria-expanded="false" onclick="toggleLangMenu()">
+            <span class="lang-text" id="currentLangBtnText">EN</span>
+          </button>
+          <div class="nav-lang-dropdown" id="lang-dropdown">
+            <a href="#" class="lang-option active" data-lang="en" onclick="selectLang(event, 'en')">English</a>
+            <a href="#" class="lang-option" data-lang="ml" onclick="selectLang(event, 'ml')">മലയാളം</a>
+            <a href="#" class="lang-option" data-lang="hi" onclick="selectLang(event, 'hi')">हिंदी</a>
+            <a href="#" class="lang-option" data-lang="ta" onclick="selectLang(event, 'ta')">தமிழ்</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="hero" id="heroSection">
+    <img id="heroBg" class="hero-bg" src="assets/catelog.jpg" alt="Hero Background">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <img id="heroFg" class="hero-fg-img" src="" alt="Product" style="display: none;">
+      <div>
+        <h1 class="hero-title" id="heroTitle">Product Application</h1>
+        <p class="hero-desc" id="heroDesc">Loading details...</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="product-details-container">
+    
+    <!-- 1. Product Overview -->
+    <section>
+      <h2 class="section-title" id="title-overview">Product Overview</h2>
+      <div class="overview-grid">
+        <div class="overview-meta">
+          <p><span id="label-product-name">Product Name</span>Nanco Paints PU Hybrid Advanced Emulsion</p>
+          <p><span id="label-category">Category</span>Exterior & Interior Premium Wall Protection</p>
+        </div>
+        <div>
+          <h3 class="overview-tagline">Ultimate Protection for Concrete and Masonry Foundations</h3>
+          <p class="overview-desc">Engineered with cutting-edge PU Hybrid Technologies, Nanco Paints offers an elite, high-performance emulsion coat designed to shield your home's exterior walls and concrete foundations. Formulated to withstand extreme weather, it bridges hairline cracks while delivering a pristine, ultra-white finish that lasts for years.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Key Product Features -->
+    <section>
+      <h2 class="section-title" id="title-features">Key Product Features</h2>
+      <div class="features-grid">
+        <!-- Card 1 -->
+        <div class="feature-card">
+          <img src="assets/alkali_dust_shield_1784208072318.png" class="feature-img" alt="Alkali & Dust Shield">
+          <div class="feature-content">
+            <h3 class="feature-title"><i class="fas fa-shield-alt" style="color:var(--color-lime-spark); margin-right:12px;"></i> Alkali & Dust Shield</h3>
+            <p class="feature-text">Advanced formulation blocks structural efflorescence and actively repels surface dust.</p>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="feature-card">
+          <img src="assets/ultra_white_finish_1784208084792.png" class="feature-img" alt="Ultra-White Finish">
+          <div class="feature-content">
+            <h3 class="feature-title"><i class="fas fa-paint-roller" style="color:var(--color-lime-spark); margin-right:12px;"></i> Ultra-White Finish</h3>
+            <p class="feature-text">High-opacity polymers deliver an exceptionally brilliant, non-yellowing white finish.</p>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="feature-card">
+          <img src="assets/elastomeric_paint_1784208096186.png" class="feature-img" alt="Elastomeric Properties">
+          <div class="feature-content">
+            <h3 class="feature-title"><i class="fas fa-compress-arrows-alt" style="color:var(--color-lime-spark); margin-right:12px;"></i> Elastomeric Properties</h3>
+            <p class="feature-text">Highly flexible paint film that stretches to accommodate micro-movements in concrete foundations, preventing surface cracking.</p>
+          </div>
+        </div>
+        <!-- Card 4 (with image) -->
+        <div class="feature-card">
+          <img src="assets/uv_protection_1784207482008.png" class="feature-img" alt="UV & Weather Resistance">
+          <div class="feature-content">
+            <h3 class="feature-title"><i class="fas fa-sun" style="color:var(--color-lime-spark); margin-right:12px;"></i> UV & Weather Resistance</h3>
+            <p class="feature-text">Superior anti-rain formula coupled with UV-blocking tech ensures colors do not fade under harsh sun.</p>
+          </div>
+        </div>
+        <!-- Card 5 (with image) -->
+        <div class="feature-card">
+          <img src="assets/eco_friendly_1784207492155.png" class="feature-img" alt="Eco-Friendly Formulation">
+          <div class="feature-content">
+            <h3 class="feature-title"><i class="fas fa-leaf" style="color:var(--color-lime-spark); margin-right:12px;"></i> Eco-Friendly Formulation</h3>
+            <p class="feature-text">Ultra-low VOC emissions and 100% lead-free, ensuring safety for both applicators and the environment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Application Phases -->
+    <section>
+      <h2 class="section-title" id="title-phases">Application Phases</h2>
+      <div class="how-to-use">
+        <!-- Phase 1 -->
+        <div class="phase-card">
+          <img src="assets/wall_prep_1784207513168.png" class="phase-img" alt="Preparation Phase">
+          <div class="phase-content">
+            <h3 class="phase-title">Phase 1: Preparation</h3>
+            <div class="step-item">
+              <div class="step-title">Clean</div>
+              <div class="step-desc">Ensure the target concrete or plaster surface is thoroughly dry, clean, and free from any efflorescence, dirt, or grease.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-title">Repair</div>
+              <div class="step-desc">Fill any major surface dents or structural cracks using a heavy-duty exterior wall filler.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-title">Stir</div>
+              <div class="step-desc">Stir well before use to perfectly blend the polyurethane-hybrid binders and pigments.</div>
+            </div>
+          </div>
+        </div>
+        <!-- Phase 2 -->
+        <div class="phase-card">
+          <img src="assets/paint_application_1784207501706.png" class="phase-img" alt="Application Phase">
+          <div class="phase-content">
+            <h3 class="phase-title">Phase 2: Application</h3>
+            <div class="step-item">
+              <div class="step-title">Dilution</div>
+              <div class="step-desc">For raw, highly porous concrete foundations, thin the first coat with up to 10% clean water. For regular surfaces, direct application is recommended.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-title">Tools</div>
+              <div class="step-desc">Apply using a high-quality synthetic roller or brush.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-title">Coats</div>
+              <div class="step-desc">Apply 2 coats for optimum protection, maintaining a 2 to 4-hour drying interval between coats.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Technical Specifications -->
+    <section>
+      <h2 class="section-title" id="title-specs">Technical Specifications</h2>
+      <div class="specs-wrapper">
+        <table class="specs-table">
+          <tbody>
+            <tr>
+              <th>Available Packaging</th>
+              <td>1 Liter / 4 Liters / 10 Liters / 20 Liters</td>
+            </tr>
+            <tr>
+              <th>Coverage Area</th>
+              <td>10 - 12 m² per liter per coat (varies by surface porosity)</td>
+            </tr>
+            <tr>
+              <th>Touch Dry Time</th>
+              <td>30 to 45 minutes</td>
+            </tr>
+            <tr>
+              <th>Recoating Window</th>
+              <td>2 to 4 hours</td>
+            </tr>
+            <tr>
+              <th>VOC Content</th>
+              <td>&lt; 15 grams/liter (Ultra-Low VOC)</td>
+            </tr>
+            <tr>
+              <th>pH Level</th>
+              <td>8.5 - 9.5 (Optimized for Alkali Resistance)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. Media Gallery -->
+    <section>
+      <h2 class="section-title" id="title-media">Video & Photo Gallery</h2>
+      <div class="media-grid" id="productMediaGrid">
+        <p style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">Loading media...</p>
+      </div>
+    </section>
+
+    <!-- 6. Warranty & Certification -->
+    <section>
+      <div class="warranty-box">
+        <h3 class="warranty-title" id="title-warranty"><i class="fas fa-certificate" style="margin-right:12px;"></i> Warranty & Certification</h3>
+        <p class="warranty-desc">Nanco Paints PU Hybrid Advanced Emulsion comes with a comprehensive performance warranty when applied according to the specified guidelines. Certified ISO 9001-2015 for uncompromised quality standards.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const coyId = urlParams.get('coy_id');
+      const API_BASE_URL = 'http://127.0.0.1:5000';
+      
+      if (coyId) {
+        try {
+          // Fetch base hero item data
+          const res = await fetch(`${API_BASE_URL}/api/coy-items`);
+          if (res.ok) {
+            const items = await res.json();
+            const item = items.find(i => String(i.id) === String(coyId));
+            
+            if (item) {
+              document.getElementById('heroBg').src = item.bottom_image_url || 'assets/catelog.jpg';
+              const fgImg = document.getElementById('heroFg');
+              fgImg.src = item.top_image_url;
+              fgImg.style.display = 'block';
+              document.getElementById('heroTitle').textContent = item.title;
+              document.getElementById('heroDesc').textContent = item.description;
+              document.querySelector('.pinfo-nav-product').textContent = item.title;
+            }
+          }
+          
+          // Fetch dynamic page details
+          const detailRes = await fetch(`${API_BASE_URL}/api/coy-page-details/${coyId}`);
+          if (detailRes.ok) {
+            const detailData = await detailRes.json();
+            if (detailData && detailData.page_data && Object.keys(detailData.page_data).length > 0) {
+              const p = detailData.page_data;
+              
+              // Overview
+              if(p.overview) {
+                 const ovGrid = document.querySelector('.overview-grid');
+                 if(ovGrid) {
+                    ovGrid.innerHTML = `
+                        <div class="overview-meta">
+                          <p><span id="label-product-name">Product Name</span>${p.overview.product_name}</p>
+                          <p><span id="label-category">Category</span>${p.overview.category}</p>
+                        </div>
+                        <div>
+                          <h3 class="overview-tagline">${p.overview.tagline}</h3>
+                          <p class="overview-desc">${p.overview.description}</p>
+                        </div>
+                    `;
+                 }
+              }
+              
+              // Features
+              if(p.features && p.features.length > 0) {
+                 const featGrid = document.querySelector('.features-grid');
+                 if(featGrid) {
+                    featGrid.innerHTML = p.features.map(f => `
+                        <div class="feature-card">
+                          <img src="${f.image_url || f.img_url}" class="feature-img" alt="${f.title}">
+                          <div class="feature-content">
+                            <h3 class="feature-title"><i class="${f.icon}" style="color:var(--color-lime-spark); margin-right:12px;"></i> ${f.title}</h3>
+                            <p class="feature-text">${f.description || f.text}</p>
+                          </div>
+                        </div>
+                    `).join('');
+                 }
+              }
+              
+              // Application Phases
+              if(p.application && p.application.length > 0) {
+                 const phaseGrid = document.querySelector('.how-to-use');
+                 if(phaseGrid) {
+                    phaseGrid.innerHTML = p.application.map(ph => `
+                        <div class="phase-card">
+                          <img src="${ph.image_url || ph.img_url}" class="phase-img" alt="${ph.title}">
+                          <div class="phase-content">
+                            <h3 class="phase-title">${ph.title}</h3>
+                            ${ph.steps.map(s => `
+                                <div class="step-item">
+                                  <div class="step-title">${s.title}</div>
+                                  <div class="step-desc">${s.desc}</div>
+                                </div>
+                            `).join('')}
+                          </div>
+                        </div>
+                    `).join('');
+                 }
+              }
+              
+              // Specs
+              if(p.specs && p.specs.length > 0) {
+                 const specsTbody = document.querySelector('.specs-table tbody');
+                 if(specsTbody) {
+                    specsTbody.innerHTML = p.specs.map(s => `
+                        <tr>
+                          <th>${s.label}</th>
+                          <td>${s.value}</td>
+                        </tr>
+                    `).join('');
+                 }
+              }
+              
+              if(p.warranty) {
+                 const warrantyBox = document.querySelector('.warranty-box');
+                 if(warrantyBox) {
+                    let iconsHtml = '';
+                    if (p.warranty_icons && p.warranty_icons.length > 0) {
+                        iconsHtml = `
+                            <div class="warranty-icons-container">
+                                ${p.warranty_icons.map(icon => `
+                                    <div class="w-icon-badge" title="${icon.name}">
+                                        <img src="${icon.img_url}" alt="${icon.name}">
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                    
+                    warrantyBox.innerHTML = `
+                        <h3 class="warranty-title"><i class="fas fa-certificate" style="margin-right:12px;"></i> ${p.warranty.title}</h3>
+                        <p class="warranty-desc">${p.warranty.desc}</p>
+                        ${iconsHtml}
+                    `;
+                 }
+              }
+            }
+          }
+          
+          // Fetch Product Media
+          const mediaRes = await fetch(`${API_BASE_URL}/api/product-media/${coyId}`);
+          const mediaGrid = document.getElementById('productMediaGrid');
+          if (mediaRes.ok && mediaGrid) {
+            const mediaItems = await mediaRes.json();
+            if (mediaItems && mediaItems.length > 0) {
+              mediaGrid.innerHTML = mediaItems.map(m => `
+                <div class="media-card">
+                  ${m.type === 'video' || (m.url && m.url.match(/\.(mp4|webm|ogg)$/i))
+                    ? `<video class="media-card-content" src="${m.url}" controls></video>` 
+                    : `<img class="media-card-content" src="${m.url}" alt="Product Media">`
+                  }
+                  <div class="media-card-title">${m.type === 'video' ? 'Product Video' : 'Product Photo'}</div>
+                </div>
+              `).join('');
+            } else {
+              mediaGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">No media available for this product.</p>';
+            }
+          } else if (mediaGrid) {
+            mediaGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: #777; padding: 20px;">No media available for this product.</p>';
+          }
+          
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      
+      // Auto-set language from localStorage if exists
+      const savedLang = localStorage.getItem('nanco-lang');
+      if (savedLang) {
+        setLanguage(savedLang);
+      }
+    });
+
+    // Toggle menu logic
+    function toggleLangMenu() {
+      document.getElementById('lang-dropdown').classList.toggle('open');
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const wrap = document.getElementById('langSelectorWrap');
+      if (wrap && !wrap.contains(e.target)) {
+        document.getElementById('lang-dropdown').classList.remove('open');
+      }
+    });
+
+    function selectLang(e, lang) {
+      e.preventDefault();
+      setLanguage(lang);
+      document.getElementById('lang-dropdown').classList.remove('open');
+    }
+
+    function setLanguage(lang) {
+      localStorage.setItem('nanco-lang', lang);
+      
+      // Update UI active states
+      document.getElementById('currentLangBtnText').textContent = lang.toUpperCase();
+      document.querySelectorAll('.lang-option').forEach(opt => {
+        if (opt.getAttribute('data-lang') === lang) opt.classList.add('active');
+        else opt.classList.remove('active');
+      });
+
+      // Trigger Google Translate
+      triggerGoogleTranslate(lang);
+    }
+
+    function triggerGoogleTranslate(lang) {
+      const selectField = document.querySelector(".goog-te-combo");
+      if (selectField) {
+        selectField.value = lang;
+        selectField.dispatchEvent(new Event('change'));
+      } else {
+        // If script hasn't loaded yet, try again in 500ms
+        setTimeout(() => triggerGoogleTranslate(lang), 500);
+      }
+    }
+  </script>
+  
+  <!-- Hidden Google Translate Element -->
+  <div id="google_translate_element"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,ml,hi,ta',
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
+  </script>
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
