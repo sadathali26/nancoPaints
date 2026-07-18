@@ -841,6 +841,8 @@ a, button, [role="button"], label {
   top: 0; left: 0; right: 0;
   background: var(--color-white-plate);
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
   padding: 72px 16px 20px;
   z-index: 99;
   flex-direction: column;
