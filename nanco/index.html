@@ -1447,8 +1447,11 @@
       }
 
       desktopLangOpts.forEach(opt => {
-        if (opt.getAttribute('data-lang') === lang) opt.classList.add('active');
-        else opt.classList.remove('active');
+        if (opt.getAttribute('data-lang') === lang) {
+          opt.classList.add('active');
+        } else {
+          opt.classList.remove('active');
+        }
       });
 
       mobileLangOpts.forEach(opt => {
@@ -1472,6 +1475,7 @@
           gtCombo.dispatchEvent(new Event('change'));
         }
       }
+
       // Translate all DOM elements
       const dict = translations[lang];
       for (const id in dict) {
